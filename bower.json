@@ -1,0 +1,20 @@
+{
+  "name": "training-system-oe27",
+  "description": "",
+  "main": "",
+  "authors": [
+    "thaonp <nguyenphuongthao12041998@gmail.com>"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/npthao98/training-system-oe27",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bower_package": "https://github.com/npthao98/bower_package.git"
+  }
+}
