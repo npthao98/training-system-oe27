@@ -50,9 +50,6 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <script>
-                                        initSample();
-                                    </script>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center">
@@ -72,4 +69,5 @@
     <script src="{{ asset('bower_components/bower_package/js/plugins/fullscreen.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/summernote/dist/summernote.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/summernote/dist/summernote-bs4.min.js') }}"></script>
+    <script src="{{ asset('js/createSubject.js') }}"></script>
 @endsection
