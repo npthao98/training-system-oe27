@@ -19,6 +19,6 @@ class BothController extends Controller
 
     public function index()
     {
-        return view('supervisor.manage-course.detail-course');
+        return view('supervisor.manage-course.list-courses');
     }
 }
