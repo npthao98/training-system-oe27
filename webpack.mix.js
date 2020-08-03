@@ -25,3 +25,6 @@ mix.styles([
 mix.styles([
     'resources/assets/css/supervisor_list_courses.css',
 ], 'public/css/supervisor_list_courses.css');
+mix.styles([
+    'resources/assets/css/supervisor_detail_user.css',
+], 'public/css/supervisor_detail_user.css');
