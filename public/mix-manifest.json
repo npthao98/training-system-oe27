@@ -1,5 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/css/supervisor_detail_course.css": "/css/supervisor_detail_course.css"
+    "/css/supervisor_detail_course.css": "/css/supervisor_detail_course.css",
+    "/css/supervisor_header.css": "/css/supervisor_header.css",
+    "/css/supervisor_list_courses.css": "/css/supervisor_list_courses.css"
 }

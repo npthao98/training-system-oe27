@@ -16,3 +16,9 @@ mix.js('resources/assets/js/app.js', 'public/js')
 mix.styles([
     'resources/assets/css/supervisor_detail_course.css',
 ], 'public/css/supervisor_detail_course.css');
+mix.styles([
+    'resources/assets/css/supervisor_header.css',
+], 'public/css/supervisor_header.css');
+mix.styles([
+    'resources/assets/css/supervisor_list_courses.css',
+], 'public/css/supervisor_list_courses.css');
