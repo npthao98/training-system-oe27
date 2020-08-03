@@ -16,6 +16,9 @@
 .column-width17 {
     width: 17px;
 }
+.column-width401 {
+    width: 401px;
+}
 .column-id {
     min-width:30px;
     text-align:center
