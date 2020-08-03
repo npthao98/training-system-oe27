@@ -17,7 +17,7 @@
                         <div class="padding d-flex">
                             <div class="page-title">
                                 <h2 class="text-md text-highlight">
-                                    {{ trans('supervisor.create_course.new_course') }}
+                                    {{ trans('supervisor.create_subject.new_subject') }}
                                 </h2>
                             </div>
                         </div>
@@ -26,29 +26,53 @@
                         <div class="padding">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.create_course.title') }}</strong>
+                                    <strong>{{ trans('supervisor.create_subject.title') }}</strong>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" placeholder="Title of course">
+                                    <input type="text" class="form-control">
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.create_course.image') }}</strong>
+                                    <strong>{{ trans('supervisor.create_subject.image') }}</strong>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="file" class="form-control" placeholder="Image od course">
+                                    <input type="file" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">
+                                    <strong>{{ trans('supervisor.create_subject.time') }}</strong>
+                                </label>
+                                <div class="col-sm-10">
+                                    <input type="number" class="form-control">
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label">
+                                    <strong>{{ trans('supervisor.create_subject.course') }}</strong>
+                                </label>
+                                <div class="col-sm-10">
+                                    <div class="form-group row">
+                                        <div class="col-sm-12">
+                                            <select class="form-control" name="course">
+                                                <option value="">
+                                                    {{--value--}}
+                                                </option>
+                                            </select>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-12 col-form-label">
-                                    <strong>{{ trans('supervisor.create_course.description') }}</strong>
+                                    <strong>{{ trans('supervisor.create_subject.description') }}</strong>
                                 </label>
                                 <div class="col-sm-12">
                                     <div class="adjoined-bottom">
                                         <div class="grid-container">
                                             <div class="grid-width-100">
-                                                <input name="description" id="editor">
+                                                <input name="description" id="editor">\
                                             </div>
                                         </div>
                                     </div>
@@ -56,7 +80,7 @@
                             </div>
                             <div class="d-flex justify-content-center">
                                 <button type="submit" class="btn btn-info">
-                                    {{ trans('supervisor.create_course.submit') }}
+                                    {{ trans('supervisor.create_subject.submit') }}
                                 </button>
                             </div>
                         </div>

@@ -49,7 +49,7 @@
                         </a>
                         <ul class="nav-sub nav-mega">
                             <li>
-                                <a href="#" class="">
+                                <a href="#">
                                     <span class="nav-text">{{ trans('supervisor.app.trainee') }}</span>
                                 </a>
                             </li>
