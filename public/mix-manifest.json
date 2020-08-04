@@ -1,9 +1,12 @@
 {
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
-    "/resources/assets/sass/app.scss.js": "/resources/assets/sass/app.scss.js",
+    "/js/createSubject.js": "/js/createSubject.js",
+    "/js/trainee_calendar.js": "/js/trainee_calendar.js",
     "/css/supervisor_detail_course.css": "/css/supervisor_detail_course.css",
     "/css/supervisor_header.css": "/css/supervisor_header.css",
     "/css/supervisor_list_courses.css": "/css/supervisor_list_courses.css",
-    "/css/supervisor_detail_user.css": "/css/supervisor_detail_user.css"
+    "/css/supervisor_detail_user.css": "/css/supervisor_detail_user.css",
+    "/css/trainee_detail_subject.css": "/css/trainee_detail_subject.css",
+    "/css/calendar.css": "/css/calendar.css"
 }
