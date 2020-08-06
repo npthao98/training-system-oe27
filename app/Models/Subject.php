@@ -12,6 +12,7 @@ class Subject extends Model
         'title',
         'time',
         'description',
+        'status',
     ];
 
     public $timestamps = true;

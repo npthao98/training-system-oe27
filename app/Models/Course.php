@@ -10,6 +10,7 @@ class Course extends Model
         'title',
         'image',
         'description',
+        'status',
     ];
 
     public $timestamps = true;
