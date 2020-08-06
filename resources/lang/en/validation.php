@@ -5,7 +5,7 @@ return [
     /*
     |--------------------------------------------------------------------------
     | Validation Language Lines
-    |--------------------------------------------------------------------------
+    |----------------------------------------------------------------------Confirm Password----
     |
     | The following language lines contain the default error messages used by
     | the validator class. Some of these rules have multiple versions such

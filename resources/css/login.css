@@ -1,0 +1,41 @@
+.bg-sun {
+    background-image: url('/images/sun-banner.jpg');
+    width: 100%;
+    min-height: 100vh;
+    padding-top: 100px;
+}
+.title {
+    margin-top: 40px;
+}
+.margin {
+    margin: 0rem 4rem;
+}
+.logo {
+    height: 32px;
+    position: absolute;
+    top: 20px;
+    left: 20px
+}
+.language {
+    position: relative;
+    top: -40px;
+    right: 20px;
+}
+.language img {
+    height: 15px;
+    width: 25px;
+}
+.margin-left-4 {
+    margin-left: 4rem;
+}
+.width-100 {
+    width: 100px;
+}
+.margin-tb {
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+.bt-logout {
+    background-color: #fff;
+    padding-left: 24px;
+}

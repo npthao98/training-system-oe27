@@ -8,5 +8,6 @@
     "/css/supervisor_list_courses.css": "/css/supervisor_list_courses.css",
     "/css/supervisor_detail_user.css": "/css/supervisor_detail_user.css",
     "/css/trainee_detail_subject.css": "/css/trainee_detail_subject.css",
-    "/css/calendar.css": "/css/calendar.css"
+    "/css/calendar.css": "/css/calendar.css",
+    "/css/login.css": "/css/login.css"
 }

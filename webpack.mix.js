@@ -12,7 +12,7 @@ const mix = require('laravel-mix');
  */
 
 mix.js('resources/js/app.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css');
+    .sass('resources/sass/app.scss', 'public/css');
 mix.js([
     'resources/js/createSubject.js',
 ], 'public/js/createSubject.js');
@@ -37,3 +37,6 @@ mix.styles([
 mix.js([
     'resources/js/trainee_calendar.js',
 ], 'public/js/trainee_calendar.js');
+mix.styles([
+    'resources/css/login.css',
+], 'public/css/login.css');

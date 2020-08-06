@@ -68,7 +68,12 @@
                     <a class="dropdown-item" href="#">
                         <span>{{ trans('supervisor.app.account_settings') }}</span>
                     </a>
-                    <a class="dropdown-item" href="#">{{ trans('supervisor.app.sign_out') }}</a>
+                    <form id="logout-form" action="{{ route('logout') }}" method="POST">
+                        @csrf
+                        <button type="submit" class="border-0 bt-logout">
+                            {{ trans('supervisor.app.sign_out') }}
+                        </button>
+                    </form>
                 </div>
             </li>
             <li class="nav-item d-lg-none">
