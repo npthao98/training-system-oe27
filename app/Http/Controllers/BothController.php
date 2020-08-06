@@ -19,6 +19,6 @@ class BothController extends Controller
 
     public function index()
     {
-        return view('trainee.progress');
+        return view('trainee.detail-subject');
     }
 }
