@@ -11,29 +11,29 @@ const mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
+mix.js('resources/js/app.js', 'public/js')
     .sass('resources/assets/sass/app.scss', 'public/css');
 mix.js([
-    'resources/assets/js/createSubject.js',
+    'resources/js/createSubject.js',
 ], 'public/js/createSubject.js');
 mix.styles([
-    'resources/assets/css/supervisor_detail_course.css',
+    'resources/css/supervisor_detail_course.css',
 ], 'public/css/supervisor_detail_course.css');
 mix.styles([
-    'resources/assets/css/supervisor_header.css',
+    'resources/css/supervisor_header.css',
 ], 'public/css/supervisor_header.css');
 mix.styles([
-    'resources/assets/css/supervisor_list_courses.css',
+    'resources/css/supervisor_list_courses.css',
 ], 'public/css/supervisor_list_courses.css');
 mix.styles([
-    'resources/assets/css/supervisor_detail_user.css',
+    'resources/css/supervisor_detail_user.css',
 ], 'public/css/supervisor_detail_user.css');
 mix.styles([
-    'resources/assets/css/trainee_detail_subject.css',
+    'resources/css/trainee_detail_subject.css',
 ], 'public/css/trainee_detail_subject.css');
 mix.styles([
-    'resources/assets/css/calendar.css',
+    'resources/css/calendar.css',
 ], 'public/css/calendar.css');
 mix.js([
-    'resources/assets/js/trainee_calendar.js',
+    'resources/js/trainee_calendar.js',
 ], 'public/js/trainee_calendar.js');
