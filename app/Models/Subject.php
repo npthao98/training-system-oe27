@@ -31,4 +31,14 @@ class Subject extends Model
     {
         return $this->belongsTo(Course::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function usersActive()
+    {
+        return $this->users()->wherePivot('status', config('number.active'));
+    }
 }

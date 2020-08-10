@@ -1,11 +1,8 @@
-.color_light {
-    color: #fff;
-}
 .dashboard {
-    display: none;
+    display: block;
 }
 .course {
-    display: block;
+    display: none;
 }
 .progress {
     display: none;
@@ -13,3 +10,4 @@
 .calendar {
     display: none;
 }
+

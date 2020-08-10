@@ -13,16 +13,21 @@ use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware('supervisor')->only('index');
+    }
+
     public function index()
     {
         $courses = Course::all()->load([
             'subjects',
-            'subject.subjectUsers',
+            'subjects.subjectUsers',
         ]);
-        $totalSubjects = count(Subject::all());
+        $subjects = Subject::paginate(config('view.paginate_10'));
 
         return view('supervisor.manage-subject.list-subjects',
-            compact('courses', 'totalSubjects'));
+            compact('courses', 'subjects'));
     }
 
     public function create()
@@ -44,10 +49,9 @@ class SubjectController extends Controller
 
         if ($user->role_id == config('number.role.supervisor')) {
             $today = now()->format(config('view.format_date.date'));
-            $subject = Subject::find($id)->load('user');
-            $tasks = $subject->tasks
-                ->where('created_at', 'like', $today . "%")
-                ->get();
+            $subject = Subject::find($id)->load('usersActive');
+            $tasks = $subject->tasks->load('user')
+                ->where('created_at', 'like', $today . "%");
 
             return view('supervisor.manage-subject.detail-subject',
                 compact('subject', 'tasks'));
@@ -56,7 +60,7 @@ class SubjectController extends Controller
                 ->where('user_id', $user->id)->first();
 
             if ($subjectUser) {
-                $data['subject'] = $subjectById->load('users');
+                $data['subject'] = $subjectById->load('usersActive');
                 $data['tasks'] = $user->tasks
                     ->where('subject_id', $id);
                 $data['subjectUser'] = $subjectUser;
