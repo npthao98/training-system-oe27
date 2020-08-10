@@ -7,6 +7,12 @@ return [
         'english' => 'English',
         'vietnam' => 'VietNamese',
         'logo' => 'Logo',
+        'course' => 'Course',
+        'subject' => 'Subject',
+        'active' => 'Active',
+        'inactive' => 'InActive',
+        'passed' => 'Passed',
+        'task' => 'Task',
     ],
     'detail_course' => [
         'alt_image' => 'Image of Course',
@@ -14,6 +20,7 @@ return [
         'list_trainees' => 'List Trainees of Course',
     ],
     'detail_subject' => [
+        'alt_image' => 'Image of Subject',
         'list_tasks' => 'List Tasks',
         'create_task' => 'Create Task',
         'task' => 'TASK',
@@ -36,5 +43,12 @@ return [
     'detail_member' => [
         'detail_member' => 'Detail Member',
         'back' => 'Back',
+    ],
+    'request' => [
+        'required' => 'The field is required',
+    ],
+    'message' => [
+        'create_task' => 'Create new task success',
+        'update_task' => 'Update task success',
     ],
 ];

@@ -32,4 +32,9 @@ return [
         'VIEW_COMPILED_PATH',
         realpath(storage_path('framework/views'))
     ),
+    'paginate_10' => 10,
+    'format_date' => [
+        'date' => 'Y-m-d',
+        'datetime' => 'Y-m-d h:m:s',
+    ],
 ];

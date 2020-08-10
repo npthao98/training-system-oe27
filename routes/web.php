@@ -14,8 +14,18 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::middleware('locale')->group(function () {
-    Route::get('change-language/{language}', 'HomeController@changeLanguage')
-        ->name('user.change-language');
     Auth::routes();
-    Route::get('/home', 'HomeController@index')->name('home');
+    Route::middleware('auth')->group(function () {
+        Route::get('/', 'HomeController@index')->name('home');
+        Route::get('/home', 'HomeController@index')->name('home');
+        Route::get('change-language/{language}', 'HomeController@changeLanguage')
+            ->name('user.change-language');
+        Route::get('/calendar', 'TraineeController@showCalendar')->name('calendar');
+        Route::get('/progress', 'TraineeController@showProgress')->name('progress');
+        Route::resource('course','CourseController');
+        Route::resource('subject','SubjectController');
+        Route::resource('task','TaskController');
+        Route::resource('trainee','TraineeController');
+        Route::resource('supervisor','SupervisorController');
+    });
 });
