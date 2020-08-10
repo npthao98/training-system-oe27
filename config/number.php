@@ -26,4 +26,5 @@ return [
         'supervisor' => 2,
     ],
     'default_text' => 50,
+    'init' => 1,
 ];

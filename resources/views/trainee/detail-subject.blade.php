@@ -191,6 +191,7 @@
                                                                             </div>
                                                                         </div>
                                                                         @if ($task->status == config('number.task.new'))
+                                                                            <input type="hidden" name="review" value="">
                                                                             <div class="modal-footer d-flex justify-content-center">
                                                                                 <button class="btn btn-info" type="submit">
                                                                                     {{ trans('trainee.detail_subject.update') }}
@@ -311,6 +312,7 @@
                                         </div>
                                     @enderror
                                 </div>
+                                <input type="hidden" name="review" value="">
                             </div>
                         </div>
                         <input type="hidden" value="{{ $subject->id }}" name="subject_id">

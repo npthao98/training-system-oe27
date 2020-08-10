@@ -18,6 +18,7 @@ class TaskRequest extends FormRequest
             'actual' => 'required',
             'next_plan' => 'required',
             'comment' => 'required',
+            'review' => 'required',
         ];
     }
 
@@ -28,6 +29,7 @@ class TaskRequest extends FormRequest
             'actual.required' => trans('trainee.request.required'),
             'next_plan.required' => trans('trainee.request.required'),
             'comment.required' => trans('trainee.request.required'),
+            'review.required' => trans('trainee.request.required'),
         ];
     }
 }
