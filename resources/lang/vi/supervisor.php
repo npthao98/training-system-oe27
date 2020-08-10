@@ -148,4 +148,13 @@ return [
         'subject' => 'Chủ đề',
         'trainee' => 'Học viên',
     ],
+    'request' => [
+        'image_type' => 'Yêu cầu tải đúng định dạng',
+        'image_required' => 'Yêu cầu thêm ảnh',
+        'image_large' => 'Kích cỡ ảnh quá lớn, yêu cầu kích cỡ nhỏ hơn',
+        'title_large' => 'Tiêu đề quá dài, yêu cầu chọn tiêu đề ngắn hơn',
+        'description_required' => 'Yêu cầu thêm mô tả',
+        'time_required' => 'Yêu cầu thêm thời gian dự kiến',
+        'time_min' => 'Thời gian quá nhỏ, yêu cầu chọn thời gian lớn hơn 1',
+    ],
 ];

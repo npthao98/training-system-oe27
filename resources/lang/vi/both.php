@@ -14,4 +14,11 @@ return [
         'email_address' => 'Địa chỉ E-Mail',
         'send_password' => 'Gửi mật khẩu đến địa chỉ đã nhập',
     ],
+    'image_of_course' => 'Ảnh của khoá học',
+    'image_of_subject' => 'Ảnh của chủ đề',
+    'avatar' => 'Ảnh đại diện',
+    'delete' => 'Xoá',
+    'back' => 'Quay lại',
+    'update' => 'Cập nhật',
+    'cancel' => 'Huỷ',
 ];

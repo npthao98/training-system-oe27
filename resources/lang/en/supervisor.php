@@ -148,4 +148,13 @@ return [
         'subject' => 'Subject',
         'trainee' => 'Trainee',
     ],
+    'request' => [
+        'image_type' => 'Please upload an image',
+        'image_required' => 'image field is required',
+        'image_large' => 'File too large, choose smaller than this file',
+        'title_large' => 'Title to large, choose smaller than this title',
+        'description_required' => 'Description field is required',
+        'time_required' => 'Time field is required',
+        'time_min' => 'Time too small, choose bigger than this time',
+    ],
 ];

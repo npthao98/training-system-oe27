@@ -8,6 +8,8 @@
         href="{{ asset('bower_components/bower_package/summernote/dist/summernote.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/supervisor_detail_course.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/supervisor_detail_user.css') }}">
+    <link type="text/css" rel="stylesheet" href="{{ asset('css/trainee_detail_subject.css') }}">
+    <script src="{{ asset('bower_components/bower_package/jquery/dist/jquery.min.js') }}"></script>
 @endsection
 @section('content')
     <div id="main" class="layout-column flex">
@@ -18,11 +20,11 @@
                         <div class="page-title">
                             <h2 class="text-md text-highlight">
                                 {{ trans('trainee.detail_member.detail_member') }} -
-                                @if (true) {{--role = user--}}
+                                @if ($trainee->status == config('number.user.active'))
                                     <strong class="text-success">
                                         {{ trans('supervisor.detail_user.active') }}
                                     </strong>
-                                @else {{--role = supervisor--}}
+                                @else
                                     <strong class="text-danger">
                                         {{ trans('supervisor.detail_user.inactive') }}
                                     </strong>
@@ -34,16 +36,16 @@
                         <div class="p-4 d-sm-flex no-shrink b-b">
                             <div>
                                 <a href="#" class="avatar w-96" data-pjax-state="">
-                                    <img src="{{ asset('images/download.png') }}"
-                                        alt="" class="avatar">
+                                    <img src="{{ asset(config('image.folder') . $trainee->avatar) }}"
+                                        class="avatar">
                                 </a>
                             </div>
                             <div class="px-sm-4 my-3 my-sm-0 flex">
                                 <h2 class="text-md">
-                                    {{--fullname--}}
+                                    {{ $trainee->fullname }}
                                 </h2>
                                 <strong class="d-block text-fade text-primary">
-                                    ~ {{--role--}} ~
+                                    ~ {{ $trainee->role->name }} ~
                                 </strong>
                                 <br>
                                 <div class="form-group row">
@@ -53,7 +55,7 @@
                                         </strong>
                                     </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" disabled>
+                                        <input type="text" class="form-control" value="{{ $trainee->email }}" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -63,7 +65,7 @@
                                         </strong>
                                     </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" disabled>
+                                        <input type="text" class="form-control" value="{{ $trainee->birthday }}" disabled>
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -73,39 +75,48 @@
                                         </strong>
                                     </label>
                                     <div class="col-sm-10">
-                                        <input type="text" class="form-control" disabled>
+                                        <input type="text" class="form-control" value="{{ $trainee->gender }}" disabled>
                                     </div>
                                 </div>
                                 <div class="timeline p-4 block mb-4">
                                     <h6>{{ trans('supervisor.detail_user.progress') }}</h6>
-                                    <div class="tl-item  active">
-                                        <div class="tl-dot ">
-                                        </div>
-                                        <div class="tl-date text-muted">
-                                            {{--datetime--}}
-                                        </div>
-                                        <div class="tl-content">
-                                            <div class="">
-                                                {{--content--}}
+                                    @foreach ($courses as $course)
+                                        <div class="tl-item  active">
+                                            <div class="tl-dot ">
+                                            </div>
+                                            <div class="tl-date text-muted">
+                                                {{ $course->pivot->start_time }}
+                                            </div>
+                                            <div class="tl-content">
+                                                <div class="text-info">
+                                                    <strong>
+                                                        {{ $course->title }}
+                                                    </strong>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="tl-item">
-                                        <div class="tl-dot ">
-                                        </div>
-                                        <div class="tl-date text-muted">{{--datetime--}}</div>
-                                        <div class="tl-content">
-                                            <div class="">{{--content--}}</div>
-                                        </div>
-                                    </div>
+                                        @foreach ($subjects as $subject)
+                                            @if ($subject->course_id == $course->id)
+                                                <div class="tl-item  ">
+                                                    <div class="tl-dot ">
+                                                    </div>
+                                                    <div class="tl-date text-muted">{{ $subject->pivot->start_time }}</div>
+                                                    <div class="tl-content">
+                                                        <div class="">{{ $subject->title }}</div>
+                                                    </div>
+                                                </div>
+                                            @endif
+                                        @endforeach
+                                    @endforeach
                                 </div>
                             </div>
                         </div>
                         <br>
                         <div class="d-flex justify-content-center">
-                            <button class="btn w-sm mb-1 btn-info">
+                            <a href="{{ route('subject.show', ['subject' => $subject_id]) }}"
+                                class="btn w-sm mb-1 btn-info">
                                 {{ trans('trainee.detail_member.back') }}
-                            </button>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -114,7 +125,6 @@
     </div>
 @endsection
 @section('js')
-    <script src="{{ asset('bower_components/bower_package/jquery/dist/jquery.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/typeahead.js/dist/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/plugins/typeahead.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/jquery-fullscreen-plugin/jquery.fullscreen-min.js') }}"></script>
