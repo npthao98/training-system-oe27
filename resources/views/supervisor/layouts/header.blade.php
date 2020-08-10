@@ -1,16 +1,6 @@
 <div id="header" class="page-header ">
     <div class="navbar navbar-expand-lg">
         <div class="collapse navbar-collapse order-2 order-lg-1" id="navbarToggler">
-            <form class="input-group m-2 my-lg-0 ">
-                <div class="input-group-prepend">
-                    <button type="button" class="btn no-shadow no-bg px-0">
-                        <i data-feather="search"></i>
-                    </button>
-                </div>
-                <input type="text" class="form-control no-border no-shadow no-bg typeahead"
-                    placeholder="{{ trans('supervisor.app.search_components') }}" data-plugin="typeahead"
-                    data-api="bower_components/bower_package/api/menu.json">
-            </form>
         </div>
         <ul class="nav navbar-menu order-1 order-lg-2">
             <li class="nav-item dropdown">
@@ -41,10 +31,10 @@
                         <div class="mb-2">
                             <div class="navbar-header language">
                                 <a class="navbar-brand float-left" href="{{ route('user.change-language', ['en']) }}">
-                                    <img class="language-image" src="{{ config('image.en') }}" alt="English">
+                                    <img class="language-image" src="{{ asset(config('image.en')) }}">
                                 </a>
                                 <a class="navbar-brand float-left" href="{{ route('user.change-language', ['vi']) }}">
-                                    <img src="{{ config('image.vi') }}" alt="VietNam" class="language-image">
+                                    <img src="{{ asset(config('image.vi')) }}" class="language-image">
                                 </a>
                             </div>
                         </div>
@@ -54,7 +44,7 @@
             <li class="nav-item dropdown">
                 <a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center px-2 text-color">
                     <span class="avatar-image avatar w-24">
-                        <img src="{{ asset('image/a3.jpg') }}" alt="..."></span>
+                        <img src="{{ asset(config('image.vi')) }}"></span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right w mt-3 animate fadeIn">
                     <a class="dropdown-item" href="#">

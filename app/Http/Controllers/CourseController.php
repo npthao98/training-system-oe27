@@ -7,7 +7,7 @@ use App\Models\Course;
 use App\Models\CourseUser;
 use App\Models\Role;
 use App\Models\Subject;
-use App\User;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -26,7 +26,7 @@ class CourseController extends Controller
         } else {
             $courseUsers = $user->courseUsers->load([
                 'course',
-                'course.subject',
+                'course.subjects',
             ]);
 
             return view('trainee.list-courses-subjects', compact('courseUsers'));
@@ -53,7 +53,6 @@ class CourseController extends Controller
                 'subjects',
                 'users',
             ]);
-
             return view('supervisor.manage-course.detail-course', compact('course'));
         } else {
             $courseUser = $courseById->courseUsers

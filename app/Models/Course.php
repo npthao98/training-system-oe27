@@ -24,4 +24,15 @@ class Course extends Model
     {
         return $this->hasMany(Subject::class);
     }
+
+    public function users()
+    {
+        return $this->belongsToMany(User::class);
+    }
+
+    public function traineesActive()
+    {
+        return $this->users()
+            ->wherePivot('status', config('number.active'));
+    }
 }

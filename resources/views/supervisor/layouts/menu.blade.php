@@ -2,7 +2,7 @@
     <div class="sidenav h-100 modal-dialog bg-light">
         <div class="navbar">
             <a href="#" class="navbar-brand ">
-                <img src="{{ config('image.logo') }}" alt="logo" height="32px">
+                <img src="{{ asset(config('image.logo')) }}">
             </a>
         </div>
         <div class="flex scrollable hover">
@@ -12,7 +12,7 @@
                         <span class="text-muted">{{ trans('supervisor.app.main') }}</span>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{ route('home') }}">
                             <span class="nav-icon text-primary"><i data-feather='home'></i></span>
                             <span class="nav-text">{{ trans('supervisor.app.dashboard') }}</span>
                         </a>
@@ -21,20 +21,20 @@
                         <span class="text-muted">{{ trans('supervisor.app.menu') }}</span>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{ route('course.index') }}">
                             <span class="nav-icon text-info"><i data-feather='calendar'></i></span>
                             <span class="nav-text">{{ trans('supervisor.app.course') }}</span>
                             <span class="nav-badge"><b class="badge-circle xs text-danger"></b></span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{ route('subject.index') }}">
                             <span class="nav-icon text-danger"><i data-feather='list'></i></span>
                             <span class="nav-text">{{ trans('supervisor.app.subject') }}</span>
                         </a>
                     </li>
                     <li>
-                        <a href="#">
+                        <a href="{{ route('task.index') }}">
                             <span class="nav-icon text-success"><i data-feather='file'></i></span>
                             <span class="nav-text">{{ trans('supervisor.app.task') }}</span>
                         </a>
@@ -49,12 +49,12 @@
                         </a>
                         <ul class="nav-sub nav-mega">
                             <li>
-                                <a href="#">
+                                <a href="{{ route('trainee.index') }}">
                                     <span class="nav-text">{{ trans('supervisor.app.trainee') }}</span>
                                 </a>
                             </li>
                             <li>
-                                <a href="#" class="">
+                                <a href="{{ route('supervisor.index') }}" class="">
                                     <span class="nav-text">{{ trans('supervisor.app.supervisor') }}</span>
                                 </a>
                             </li>
