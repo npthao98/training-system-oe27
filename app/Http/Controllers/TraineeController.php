@@ -52,7 +52,7 @@ class TraineeController extends Controller
             $subject_id = $trainee->subjectActive->first()->id;
 
             return view('trainee.detail-member',
-                compact('courseUsers', 'subjectUsers', 'subject_id', 'trainee'));
+                compact('courses', 'subjects', 'subject_id', 'trainee'));
         }
     }
 

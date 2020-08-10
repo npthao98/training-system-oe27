@@ -71,7 +71,7 @@
                                                                 <div class="card mb-1">
                                                                     <div class="card-header no-border" id="headingOne">
                                                                         <a href="#" data-toggle="collapse"
-                                                                            data-target="#collapse{{ $c->course->id }}"
+                                                                            data-target="#collapse{{ $courseUser->course->id }}"
                                                                             aria-expanded="false" aria-controls="collapseOne">
                                                                             {{ trans('trainee.app.course') }}
                                                                             {{ $courseUser->course->id }}:
@@ -91,7 +91,7 @@
                                                                             <ul class="list-group list-group-flush">
                                                                                 @foreach ($courseUser->course->subjects as $subject)
                                                                                     <li class="list-group-item list-group-item-action">
-                                                                                        <a href="{{ route('subject.show', ['subject' => $s->id]) }}">
+                                                                                        <a href="{{ route('subject.show', ['subject' => $subject->id]) }}">
                                                                                             {{ $subject->title }}
                                                                                         </a>
                                                                                     </li>

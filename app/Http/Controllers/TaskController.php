@@ -31,9 +31,8 @@ class TaskController extends Controller
         $data['user_id']  = auth()->user()->id;
         $data['review'] = '';
         $data['status'] = config('number.task.new');
-        $data['created_at'] = now()->format(config('format_date.datetime'));
+        $data['created_at'] = now()->format(config('view.format_date.datetime'));
         $data = $request->merge($data);
-
         Task::create($data->all());
         session(['messageTask' => trans('trainee.message.create_task')]);
 

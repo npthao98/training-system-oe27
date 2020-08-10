@@ -16,21 +16,21 @@ class TaskSeeder extends Seeder
         $subjectUsers = SubjectUser::all();
 
         foreach ($subjectUsers as $subjectUser) {
-            if ($subjectUser->status != 1) {
+            if ($subjectUser->status != config('number.inactive')) {
                 $review = '';
-                $status = 1;
+                $status = config('number.inactive');
 
-                if ($subjectUser->status == 1) {
-                    $status = 1;
-                    $review = $faker->text(50);
-                } elseif ($subjectUser->status == 1) {
-                    $status = 1;
+                if ($subjectUser->status == config('number.passed')) {
+                    $status = config('number.active');
+                    $review = $faker->text(config('number.default_text'));
+                } elseif ($subjectUser->status == config('number.active')) {
+                    $status = config('number.inactive');
                 }
                 DB::table('tasks')->insert([
-                    'plan' => $faker->text(50),
-                    'actual' => $faker->text(50),
-                    'next_plan' => $faker->text(50),
-                    'comment' => $faker->text(50),
+                    'plan' => $faker->text(config('number.default_text')),
+                    'actual' => $faker->text(config('number.default_text')),
+                    'next_plan' => $faker->text(config('number.default_text')),
+                    'comment' => $faker->text(config('number.default_text')),
                     'review' => $review,
                     'user_id' => $subjectUser->user_id,
                     'subject_id' => $subjectUser->subject_id,
