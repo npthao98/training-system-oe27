@@ -92,8 +92,13 @@ class TaskController extends Controller
 
             return redirect()->route('task.show', ['task' => $id]);
         } else {
-            $task = Task::find($id);
-            $task->update($request->only(['plan', 'next_plan', 'comment', 'actual']));
+            $task = Task::findOrFail($id);
+            $task->update($request->only([
+                'plan',
+                'next_plan',
+                'comment',
+                'actual',
+            ]));
             session(['messageTask' => trans('trainee.message.update_task')]);
 
             return redirect(route('subject.show', ['subject' => $task->subject_id]));

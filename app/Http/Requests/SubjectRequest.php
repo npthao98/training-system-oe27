@@ -14,9 +14,9 @@ class SubjectRequest extends FormRequest
     public function rules()
     {
         return [
-            'image' => 'required|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'title' => 'unique:subjects|max:50',
-            'description' => 'required',
+            'content_description' => 'required',
             'time' => 'required|numeric|min:2',
             'course_id' => 'required',
         ];
@@ -29,7 +29,7 @@ class SubjectRequest extends FormRequest
             'image.mimes' => trans('supervisor.request.image_type'),
             'image.max' => trans('supervisor.request.image_large'),
             'title.max' => trans('supervisor.request.title_large'),
-            'description.required' => trans('supervisor.request.description_required'),
+            'content_description.required' => trans('supervisor.request.description_required'),
             'time.required' => trans('supervisor.request.time_required'),
             'time.min' => trans('supervisor.request.time_min'),
         ];

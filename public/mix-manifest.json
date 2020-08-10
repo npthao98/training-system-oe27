@@ -1,6 +1,7 @@
 {
     "/js/app.js": "/js/app.js",
-    "/js/createSubject.js": "/js/createSubject.js",
+    "/js/ckeditor.js": "/js/ckeditor.js",
+    "/js/create_subject.js": "/js/create_subject.js",
     "/css/app/app.css": "/css/app/app.css",
     "/js/message.js": "/js/message.js",
     "/js/trainee_calendar.js": "/js/trainee_calendar.js",

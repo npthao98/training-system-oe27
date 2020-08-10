@@ -3,7 +3,8 @@ const mix = require('laravel-mix');
 mix.js('resources/js/create_subject.js', 'public/js/create_subject.js')
     .js('resources/js/trainee_calendar.js', 'public/js/trainee_calendar.js')
     .js('resources/js/app.js', 'public/js/app.js')
-    .js('resources/js/message.js', 'public/js/message.js');
+    .js('resources/js/message.js', 'public/js/message.js')
+    .js('resources/js/ckeditor.js', 'public/js/ckeditor.js');
 
 mix.styles('resources/css/supervisor_detail_course.css', 'public/css/supervisor_detail_course.css')
     .styles('resources/css/supervisor_header.css', 'public/css/supervisor_header.css')

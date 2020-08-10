@@ -19,6 +19,7 @@ return [
         'profile' => 'Profile',
         'account_settings' => 'Account Settings',
         'sign_out' => 'Sign out',
+        'message' => 'Message',
     ],
     'list_courses' => [
         'list_courses' => 'List Courses',
@@ -51,6 +52,7 @@ return [
         'detail_course' => 'Detail Course',
         'list_subjects' =>  'List Subjects',
         'list_trainees' => 'List Trainees Attending',
+        'message_delete' => 'Do you want to delete this course?',
     ],
     'list_subjects' => [
         'list_subjects' => 'List Subjects',
@@ -85,6 +87,7 @@ return [
         'detail_subject' => 'Detail Subject',
         'list_tasks' =>  'List Tasks Of Today',
         'list_trainees' => 'List Trainees Attending',
+        'message_delete' => 'Do you want to delete this subject?',
     ],
     'list_tasks' => [
         'id' => 'ID',

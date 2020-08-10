@@ -19,6 +19,7 @@ return [
         'profile' => 'Hồ sơ',
         'account_settings' => 'Thiết lập tài khoản',
         'sign_out' => 'Đăng xuất',
+        'message' => 'Thông báo',
     ],
     'list_courses' => [
         'list_courses' => 'Danh sách khoá học',
@@ -51,6 +52,7 @@ return [
         'detail_course' => 'Chi tiết khoá học',
         'list_subjects' =>  'Danh sách chủ đề',
         'list_trainees' => 'Danh sách học viên đang tham gia',
+        'message_delete' => 'Bạn muốn xoá khoá học này?',
     ],
     'list_subjects' => [
         'list_subjects' => 'Danh sách chủ đề',
@@ -85,6 +87,7 @@ return [
         'detail_subject' => 'Chi Tiết Chủ Đề',
         'list_tasks' =>  'Danh sách báo cáo trong ngày',
         'list_trainees' => 'Danh sách học viên đang tham gia',
+        'message_delete' => 'Bạn muốn xoá chủ đề này?',
     ],
     'list_tasks' => [
         'id' => 'STT',
