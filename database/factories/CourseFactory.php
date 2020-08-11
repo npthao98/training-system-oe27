@@ -10,6 +10,6 @@ $factory->define(Course::class, function (Faker $faker) {
         'title' => $faker->text(50),
         'image' => 'course.png',
         'description' => $faker->text(2000),
-        'status' => '1',
+        'status' => 1,
     ];
 });
