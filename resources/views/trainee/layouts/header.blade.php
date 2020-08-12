@@ -30,12 +30,12 @@
                             <div class="navbar-header language">
                                 <a class="navbar-brand float-left"
                                     href="{{ route('user.change-language', ['en']) }}">
-                                    <img class="language-image" src="{{ config('image.en') }}"
+                                    <img class="language-image" src="{{ asset(config('image.en')) }}"
                                         alt="{{ trans('trainee.app.english') }}">
                                 </a>
                                 <a class="navbar-brand float-left"
                                     href="{{ route('user.change-language', ['vi']) }}">
-                                    <img src="{{ config('image.vi') }}"
+                                    <img src="{{ asset(config('image.vi')) }}"
                                         alt="{{ trans('trainee.app.vietnam') }}" class="language-image">
                                 </a>
                             </div>
@@ -47,7 +47,8 @@
                 <a href="#" data-toggle="dropdown"
                     class="nav-link d-flex align-items-center px-2 text-color">
                     <span class="avatar-image avatar w-24">
-                        <img src="{{ asset('image/a3.jpg') }}" alt=""></span>
+                        <img src="{{ asset(config('image.en')) }}">
+                    </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right w mt-3 animate fadeIn">
                     <a class="dropdown-item" href="#">
