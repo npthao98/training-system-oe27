@@ -7,6 +7,12 @@ return [
         'english' => 'Tiếng Anh',
         'vietnam' => 'Tiếng Việt',
         'logo' => 'Logo',
+        'course' => 'Khoá học',
+        'subject' => 'Chủ đề',
+        'active' => 'Đang học',
+        'inactive' => 'Chưa hoàn thành',
+        'passed' => 'Đã Hoàn thành',
+        'task' => 'Báo cáo',
     ],
     'detail_course' => [
         'alt_image' => 'Ảnh khoá học',
@@ -14,6 +20,7 @@ return [
         'list_trainees' => 'Danh sách học viên',
     ],
     'detail_subject' => [
+        'alt_image' => 'Ảnh của chủ đề',
         'list_tasks' => 'Danh sách báo cáo',
         'create_task' => 'Tạo mới báo cáo',
         'task' => 'Báo Cáo',
@@ -36,5 +43,12 @@ return [
     'detail_member' => [
         'detail_member' => 'Chi tiết thành viên',
         'back' => 'Quay lại',
+    ],
+    'request' => [
+        'required' => 'Đây là trường bắt buộc',
+    ],
+    'message' => [
+        'create_task' => 'Tạo báo cáo thành công',
+        'update_task' => 'Cập nhật thành công',
     ],
 ];
