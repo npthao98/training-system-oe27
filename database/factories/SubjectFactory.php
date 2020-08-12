@@ -12,6 +12,6 @@ $factory->define(Subject::class, function (Faker $faker) {
         'description' => $faker->text(2000),
         'time' => 2,
         'course_id' => $faker->numberBetween($min = 1, $max = 10),
-        'status' => '1',
+        'status' => 1,
     ];
 });

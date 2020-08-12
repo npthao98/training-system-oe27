@@ -14,15 +14,17 @@ class TaskSeeder extends Seeder
     {
         $faker = Faker\Factory::create();
         $subjectUsers = SubjectUser::all();
-        foreach ($subjectUsers as $i) {
-            if ($i->status != '0') {
+
+        foreach ($subjectUsers as $subjectUser) {
+            if ($subjectUser->status != 1) {
                 $review = '';
-                $status = '0';
-                if ($i->status == '2') {
-                    $status = '1';
+                $status = 1;
+
+                if ($subjectUser->status == 1) {
+                    $status = 1;
                     $review = $faker->text(50);
-                } elseif ($i->status == '1') {
-                    $status = '0';
+                } elseif ($subjectUser->status == 1) {
+                    $status = 1;
                 }
                 DB::table('tasks')->insert([
                     'plan' => $faker->text(50),
@@ -30,10 +32,10 @@ class TaskSeeder extends Seeder
                     'next_plan' => $faker->text(50),
                     'comment' => $faker->text(50),
                     'review' => $review,
-                    'user_id' => $i->user_id,
-                    'subject_id' => $i->subject_id,
+                    'user_id' => $subjectUser->user_id,
+                    'subject_id' => $subjectUser->subject_id,
                     'status' => $status,
-                    'created_at' => $i->end_time,
+                    'created_at' => $subjectUser->end_time,
                 ]);
             }
         }
