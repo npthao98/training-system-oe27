@@ -7,7 +7,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/supervisor_detail_course.css') }}">
 @endsection
 @section('content')
-    <div id="main" class="layout-column flex">
+    <div id="main" class="layout-column flex mb-5">
         <div id="content" class="flex ">
             <div>
                 <div class="page-hero page-container " id="page-hero">
@@ -20,64 +20,122 @@
                     </div>
                     <div class="d-flex justify-content-center">
                         <h1>
-                            {{--title--}}
+                            {{ $course->title }}
                         </h1>
                     </div>
                     <div class="padding">
-                        <div>
-                            <img src="{{ asset('images/download.png') }}" alt="image of course">
+                        <div class="d-flex justify-content-center padding">
+                            <img src="{{ asset(config('image.folder') . $course->image) }}"
+                                alt="{{ trans('both.image_of_course') }}"
+                                class="w-50">
                         </div>
                         <br>
                         <div>
-                            {{--description--}}
+                            {{ $course->description }}
                         </div>
                     </div>
-                    <div class="padding">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a href="#" class="link">
+                    <div id="accordion" class="mb-4 padding">
+                        <div class="card mb-1">
+                            <div class="card-header no-border" id="headingOne">
+                                <h4>
+                                    <span><i data-feather='arrow-right'></i></span>
+                                    <span>
+                                        <a href="#" data-toggle="collapse" data-target="#collapseOne"
+                                            aria-expanded="false" aria-controls="collapseOne">
+                                            {{ trans('supervisor.detail_course.list_subjects') }}
+                                        </a>
+                                    </span>
+                                    <span class="badge badge-success float-right">
+                                        {{ count($course->subjects) }}
+                                    </span>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        @foreach ($course->subjects as $subject)
+                                            <li class="list-group-item">
+                                                <a href="{{ route('subject.show', ['subject' => $subject->id]) }}" class="link">
+                                            <span class="nav-text">
+                                                {{ $subject->title }}
+                                            </span>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card mb-1">
+                                <div class="card-header no-border" id="headingTwo">
                                     <h4>
                                         <span><i data-feather='arrow-right'></i></span>
-                                        <span>{{ trans('supervisor.detail_course.list_subjects') }}</span>
+                                        <span>
+                                        <a href="#" data-toggle="collapse" data-target="#collapseTwo"
+                                            aria-expanded="false" aria-controls="collapseTwo">
+                                        {{ trans('trainee.detail_course.list_trainees') }}
+                                    </a>
+                                    </span>
                                         <span class="badge badge-success float-right">
-                                            {{--number subjects--}}
-                                        </span>
+                                        {{ count($course->users) }}
+                                    </span>
                                     </h4>
-                                </a>
-                                <ul class="list-group list-group-flush">
-                                    <li class="list-group-item">
-                                        <a href="#" class="link">
-                                            <span class="nav-text">
-                                                {{--name subject--}}
-                                            </span>
-                                        </a>
-                                    </li>
-                                    <li class="list-group-item">
-                                        <a href="#" class="link">
-                                            <span class="nav-text">
-                                                {{--name subject--}}
-                                            </span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="#" class="link">
-                                    <h4>
-                                        <span><i data-feather='arrow-right'></i></span>
-                                        <span>{{ trans('supervisor.detail_course.list_trainees') }}</span>
-                                        <span class="badge badge-primary float-right">
-                                            {{--number trainee--}}
-                                        </span>
-                                    </h4>
-                                </a>
-                            </li>
-                        </ul>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            @foreach ($course->users as $user)
+                                                <li class="list-group-item">
+                                                    <a href="{{ route('trainee.show', ['trainee' => $user->id]) }}" class="link">
+                                                        <span class="nav-text">
+                                                            {{ $user->fullname }}
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-3"></div>
+                <div class="col-2 d-flex justify-content-center">
+                    <a href="{{ route('course.index') }}"
+                        class="btn w-sm mb-1 btn-info">
+                        {{ trans('both.back') }}
+                    </a>
+                </div>
+                <div class="col-2 d-flex justify-content-center">
+                    <form id="logout-form"
+                        action="{{ route('course.destroy', ['course' => $course->id]) }}"
+                        method="POST">
+                        @method('DELETE')
+                        @csrf
+                        <button type="submit"
+                            class="btn w-sm mb-1 red">
+                            {{ trans('both.delete') }}
+                        </button>
+                    </form>
+                </div>
+                <div class="col-2 d-flex justify-content-center">
+                    <a href="{{ route('course.edit', ['course' => $course->id]) }}"
+                        class="btn w-sm mb-1 btn-primary">
+                        {{ trans('both.update') }}
+                    </a>
+                </div>
+                <div class="col-3"></div>
+            </div>
+        </div>
     </div>
+@endsection
+@section('js')
     <script src="{{ asset('bower_components/bower_package/typeahead.js/dist/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/plugins/typeahead.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/jquery-fullscreen-plugin/jquery.fullscreen-min.js') }}"></script>

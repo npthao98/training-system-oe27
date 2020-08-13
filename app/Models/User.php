@@ -85,25 +85,39 @@ class User extends Authenticatable
             ->where('status', config('number.active'));
     }
 
-    public function coursesNotInActive() {
+    public function courses()
+    {
+        return $this->belongsToMany(Course::class);
+    }
+
+    public function subjects()
+    {
+        return $this->belongsToMany(Subject::class);
+    }
+
+    public function coursesNotInActive()
+    {
         return $this->courses()
             ->wherePivotIn('status', [config('number.active'), config('number.passed')])
             ->withPivot('start_time', 'status');
     }
 
-    public function subjectsNotInActive() {
+    public function subjectsNotInActive()
+    {
         return $this->subjects()
             ->wherePivotIn('status', [config('number.active'), config('number.passed')])
             ->withPivot('start_time', 'status');
     }
 
-    public function courseActive() {
+    public function courseActive()
+    {
         return $this->courses()
             ->wherePivot('status', config('number.active'))
             ->withPivot('start_time', 'status');
     }
 
-    public function subjectActive() {
+    public function subjectActive()
+    {
         return $this->subjects()
             ->wherePivot('status', config('number.active'))
             ->withPivot('start_time', 'status');
