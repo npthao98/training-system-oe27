@@ -1,3 +1,6 @@
 .link:hover, .link span:hover {
     color: #00e0e0;
 }
+.modal-dialog {
+    max-width: 900px !important;
+}

@@ -22,43 +22,86 @@
                     </div>
                     <div class="d-flex justify-content-center">
                         <h1>
-                            {{--title--}}
+                            {{ $subject->title }}
                         </h1>
                     </div>
                     <div class="padding">
-                        <div>
-                            <img src="{{ asset('images/download.png') }}" alt="image of course">
+                        <div class="d-flex justify-content-center">
+                            <img src="{{ asset(config('image.folder') . $subject->image) }}"
+                                alt="{{ trans('both.image_of_subject') }}"
+                                class="w-50">
                         </div>
                         <br>
                         <div>
-                            {{--description--}}
+                            {{ $subject->description }}
                         </div>
                     </div>
-                    <div class="padding">
-                        <ul class="list-group list-group-flush">
-                            <li class="list-group-item">
-                                <a href="#" class="link">
+                    <div id="accordion" class="mb-4 padding">
+                        <div class="card mb-1">
+                            <div class="card-header no-border" id="headingOne">
+                                <h4>
+                                    <span><i data-feather='arrow-right'></i></span>
+                                    <span>
+                                        <a href="#" data-toggle="collapse" data-target="#collapseOne"
+                                            aria-expanded="false" aria-controls="collapseOne">
+                                            {{ trans('supervisor.detail_subject.list_trainees') }}
+                                        </a>
+                                    </span>
+                                    <span class="badge badge-success float-right">
+                                        {{ count($subject->users) }}
+                                    </span>
+                                </h4>
+                            </div>
+                            <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        @foreach ($subject->users as $user)
+                                            <li class="list-group-item">
+                                                <a href="{{ route('trainee.show', ['trainee' => $user->id]) }}" class="link">
+                                                    <span class="nav-text">
+                                                        {{ $user->fullname }}
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="card mb-1">
+                                <div class="card-header no-border" id="headingTwo">
                                     <h4>
                                         <span><i data-feather='arrow-right'></i></span>
-                                        <span>{{ trans('supervisor.detail_subject.list_trainees') }}</span>
-                                        <span class="badge badge-primary float-right">
-                                            {{--number trainee--}}
+                                        <span>
+                                            <a href="#" data-toggle="collapse" data-target="#collapseTwo"
+                                                aria-expanded="false" aria-controls="collapseTwo">
+                                                {{ trans('supervisor.detail_subject.list_tasks') }}
+                                            </a>
+                                        </span>
+                                        <span class="badge badge-success float-right">
+                                            {{ count($tasks) }}
                                         </span>
                                     </h4>
-                                </a>
-                            </li>
-                            <li class="list-group-item">
-                                <a href="#" class="link">
-                                    <h4>
-                                        <span><i data-feather='arrow-right'></i></span>
-                                        <span>{{ trans('supervisor.detail_subject.list_tasks') }}</span>
-                                        <span class="badge badge-primary float-right">
-                                            {{--number tasks--}}
-                                        </span>
-                                    </h4>
-                                </a>
-                            </li>
-                        </ul>
+                                </div>
+                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                    data-parent="#accordion">
+                                    <div class="card-body">
+                                        <ul class="list-group list-group-flush">
+                                            @foreach ($tasks as $task)
+                                                <li class="list-group-item">
+                                                    <a href="{{ route('task.show', ['task' => $task->id]) }}" class="link">
+                                                        <span class="nav-text">
+                                                            {{ trans('supervisor.app.task') . " " . $task->id . ": " }}
+                                                            {{ $task->user->fullname }}
+                                                        </span>
+                                                    </a>
+                                                </li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
