@@ -24,5 +24,6 @@ return [
     'role' => [
         'trainee' => 1,
         'supervisor' => 2,
-    ]
+    ],
+    'default_text' => 50,
 ];

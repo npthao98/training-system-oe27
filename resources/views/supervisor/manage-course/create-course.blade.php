@@ -207,5 +207,5 @@
     <script src="{{ asset('bower_components/bower_package/js/plugins/fullscreen.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/summernote/dist/summernote.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/summernote/dist/summernote-bs4.min.js') }}"></script>
-    <script src="{{ asset('js/createSubject.js') }}"></script>
+    <script src="{{ asset('js/create_subject.js') }}"></script>
 @endsection
