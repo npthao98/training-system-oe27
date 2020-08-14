@@ -35,4 +35,9 @@ class Course extends Model
         return $this->users()
             ->wherePivot('status', config('number.active'));
     }
+
+    public function subjectTasks()
+    {
+        return $this->hasManyThrough(Task::class, Subject::class);
+    }
 }
