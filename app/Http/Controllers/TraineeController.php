@@ -11,6 +11,10 @@ use Illuminate\Http\Request;
 
 class TraineeController extends Controller
 {
+    public function assign() {
+        return view('supervisor.manage-user.assign');
+    }
+
     public function showProgress()
     {
         $user = auth()->user();

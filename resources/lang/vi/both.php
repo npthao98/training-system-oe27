@@ -21,4 +21,14 @@ return [
     'back' => 'Quay lại',
     'update' => 'Cập nhật',
     'cancel' => 'Huỷ',
+    'submit' => 'Gửi đi',
+    'detail' => 'Chi tiết',
+    'message' => [
+        'update_success' => 'cập nhật thành công!',
+    ],
+    'status' => [
+        'active' => 'Đang học',
+        'inactive' => 'Đã được gán',
+        'passed' => 'Đã Hoàn thành',
+    ],
 ];

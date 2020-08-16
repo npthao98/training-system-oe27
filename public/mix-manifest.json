@@ -1,8 +1,11 @@
 {
+    "/js/add_subject.js": "/js/add_subject.js",
     "/js/app.js": "/js/app.js",
     "/js/ckeditor.js": "/js/ckeditor.js",
+    "/js/assign_trainee.js": "/js/assign_trainee.js",
     "/js/create_subject.js": "/js/create_subject.js",
     "/css/app/app.css": "/css/app/app.css",
+    "/js/datatable.js": "/js/datatable.js",
     "/js/message.js": "/js/message.js",
     "/js/trainee_calendar.js": "/js/trainee_calendar.js",
     "/css/supervisor_detail_course.css": "/css/supervisor_detail_course.css",

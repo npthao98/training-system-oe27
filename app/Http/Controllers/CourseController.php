@@ -3,15 +3,49 @@
 namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\CourseRequest;
 use App\Models\Course;
 use App\Models\CourseUser;
 use App\Models\Role;
 use App\Models\Subject;
+use App\Models\SubjectUser;
 use App\Models\User;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
+    public function assign(Request $request, $id)
+    {
+        $course = Course::findOrFail($id);
+        $users = explode(",", $request->users);
+        $subjects = $course->subjects;
+        $date = now()->format(config('view.format_date.date'));
+
+        foreach ($users as $user) {
+            CourseUser::create([
+                'course_id' => $id,
+                'user_id' => intval($user),
+                'status' => config('number.inactive'),
+                'start_time' => $date,
+                'end_time' => $date,
+            ]);
+
+            foreach ($subjects as $subject) {
+                SubjectUser::create([
+                    'subject_id' => $subject->id,
+                    'user_id' => intval($user),
+                    'status' => config('number.inactive'),
+                    'start_time' => $date,
+                    'end_time' => now()->addDays($subject->time)
+                        ->format(config('view.format_date.date')),
+                ]);
+            }
+        }
+        session(['assign' => trans('both.message.update_success')]);
+
+        return redirect()->route('course.show', ['course' => $id]);
+    }
+
     public function index()
     {
         $user = auth()->user();
@@ -38,9 +72,29 @@ class CourseController extends Controller
         return view('supervisor.manage-course.create-course');
     }
 
-    public function store(Request $request)
+    public function store(CourseRequest $request)
     {
+        $course = Course::create([
+            'title' => $request->title,
+            'image' => $request->image->getClientOriginalName(),
+            'description' => $request->content_description,
+            'created_at' => now()->format(config('view.format_date.datetime')),
+            'status' => config('number.subject.active'),
+        ]);
 
+        for ($item = 0; $item < count($request->titleSubject); $item++) {
+            Subject::create([
+                'title' => $request->titleSubject[$item],
+                'image' => '',
+                'description' => '',
+                'course_id' => $course->id,
+                'time' => $request->timeSubject[$item],
+                'created_at' => now()->format(config('view.format_date.datetime')),
+                'status' => config('number.subject.active'),
+            ]);;
+        }
+
+        return redirect()->route('course.show', ['course' => $course->id]);
     }
 
     public function show($id)
@@ -49,11 +103,22 @@ class CourseController extends Controller
         $courseById = Course::find($id);
 
         if ($user->role_id == config('number.role.supervisor')) {
+            if (session()->has('assign')) {
+                $data['messenger'] = session('assign');
+                session()->forget('assign');
+            }
             $course = $courseById->load([
                 'subjects',
-                'users',
+                'courseUsers.user',
             ]);
-            return view('supervisor.manage-course.detail-course', compact('course'));
+            $users = User::where([
+                ['role_id', config('number.role.trainee')],
+                ['status', config('number.user.active')]
+            ])->get()->diff($course->users);
+            $data['course'] = $course;
+            $data['users'] = $users;
+
+            return view('supervisor.manage-course.detail-course', $data);
         } else {
             $courseUser = $courseById->courseUsers
                 ->where('user_id', $user->id)->first();

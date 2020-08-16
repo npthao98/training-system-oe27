@@ -4,7 +4,10 @@ mix.js('resources/js/create_subject.js', 'public/js/create_subject.js')
     .js('resources/js/trainee_calendar.js', 'public/js/trainee_calendar.js')
     .js('resources/js/app.js', 'public/js/app.js')
     .js('resources/js/message.js', 'public/js/message.js')
-    .js('resources/js/ckeditor.js', 'public/js/ckeditor.js');
+    .js('resources/js/ckeditor.js', 'public/js/ckeditor.js')
+    .js('resources/js/add_subject.js', 'public/js/add_subject.js')
+    .js('resources/js/datatable.js', 'public/js/datatable.js')
+    .js('resources/js/assign_trainee.js', 'public/js/assign_trainee.js');
 
 mix.styles('resources/css/supervisor_detail_course.css', 'public/css/supervisor_detail_course.css')
     .styles('resources/css/supervisor_header.css', 'public/css/supervisor_header.css')
