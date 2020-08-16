@@ -136,6 +136,7 @@ class CourseController extends Controller
                     'subjects',
                     'traineesActive',
                 ]);
+
                 return view('trainee.detail-course', compact('course', 'courseUser'));
             } else {
                 abort(404);
@@ -243,12 +244,12 @@ class CourseController extends Controller
                 ->whereIn('subject_id', $subjectsNotDeleteId)
                 ->first();
 
-            if ($subjectUserActive == null) {
+            if ($subjectUserActive) {
                 $subjectUserInactive = $user->subjectUsers
                     ->where('status', config('number.inactive'))
                     ->whereIn('subject_id', $subjectsNotDeleteId)->first();
 
-                if ($subjectUserInactive != null) {
+                if (!$subjectUserInactive) {
                     SubjectUser::where('id', $subjectUserInactive->id)
                         ->update(['status' => config('number.active')]);
                 } else {

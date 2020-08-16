@@ -116,6 +116,12 @@ class User extends Authenticatable
             ->withPivot('start_time', 'status');
     }
 
+    public function courseInActive()
+    {
+        return $this->courses()
+            ->wherePivot('status', config('number.inactive'));
+    }
+
     public function subjectActive()
     {
         return $this->subjects()

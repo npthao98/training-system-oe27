@@ -100,9 +100,27 @@
                                                 <div class="tl-item  ">
                                                     <div class="tl-dot ">
                                                     </div>
-                                                    <div class="tl-date text-muted">{{ $subject->pivot->start_time }}</div>
+                                                    <div class="tl-date text-muted">
+                                                        @if ($subject->pivot->status == config('number.active'))
+                                                            <div class="text-success">
+                                                                {{ $subject->pivot->start_time }}
+                                                            </div>
+                                                        @else
+                                                            <div>
+                                                                {{ $subject->pivot->start_time }}
+                                                            </div>
+                                                        @endif
+                                                    </div>
                                                     <div class="tl-content">
-                                                        <div class="">{{ $subject->title }}</div>
+                                                        @if ($subject->pivot->status == config('number.active'))
+                                                            <div class="text-success">
+                                                                {{ $subject->title }}
+                                                            </div>
+                                                        @else
+                                                            <div>
+                                                                {{ $subject->title }}
+                                                            </div>
+                                                        @endif
                                                     </div>
                                                 </div>
                                             @endif
