@@ -54,7 +54,7 @@
                         <div>
                             {{ $subject->description }}
                         </div>
-                        @if ($subjectUser->status == config('number.active'))
+                        @if ($subjectUser->status == config('number.active') && $task_new == null)
                             <div class="d-flex justify-content-center padding">
                                 <button type="button" class="btn w-sm mb-1 btn-outline-info"
                                     data-toggle="modal" data-target="#myModal">
@@ -62,7 +62,7 @@
                                 </button>
                             </div>
                         @endif
-                        <div id="accordion" class="mb-4">
+                        <div id="accordion" class="mb-4 mt-5">
                             @if ($subjectUser->status != config('number.inactive'))
                                 <div class="card mb-1">
                                     <div class="card-header no-border" id="headingOne">
@@ -191,7 +191,7 @@
                                                                             </div>
                                                                         </div>
                                                                         @if ($task->status == config('number.task.new'))
-                                                                            <input type="hidden" name="review" value="">
+                                                                            <input type="hidden" name="review" value="nothing">
                                                                             <div class="modal-footer d-flex justify-content-center">
                                                                                 <button class="btn btn-info" type="submit">
                                                                                     {{ trans('trainee.detail_subject.update') }}
@@ -312,7 +312,7 @@
                                         </div>
                                     @enderror
                                 </div>
-                                <input type="hidden" name="review" value="">
+                                <input type="hidden" name="review" value="nothing">
                             </div>
                         </div>
                         <input type="hidden" value="{{ $subject->id }}" name="subject_id">
