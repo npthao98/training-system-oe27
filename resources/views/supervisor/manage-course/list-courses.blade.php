@@ -1,17 +1,27 @@
 @extends('supervisor.layouts.app')
 @section('css')
+    <script src="{{ asset('js/message.js') }}"></script>
     <link rel="stylesheet" type="text/css"
         href="{{ asset('bower_components/bower_package/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/supervisor_list_courses.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/message.css') }}">
 @endsection
 @section('content')
+    @if (isset($messenger))
+        <div id="messenger" class="alert alert-success" role="alert">
+            <i data-feather="check"></i>
+            <span class="mx-2">{{ $messenger }}</span>
+        </div>
+    @endif
     <div id="main" class="layout-column flex">
         <div id="content" class="flex ">
             <div>
                 <div class="page-hero page-container " id="page-hero">
                     <div class="padding pb-0">
                         <div class="page-title">
-                            <h2 class="text-md text-highlight">{{ trans('supervisor.list_courses.list_courses') }}</h2>
+                            <h2 class="text-md text-highlight">
+                                {{ trans('supervisor.list_courses.list_courses') }}
+                            </h2>
                         </div>
                         <a href="{{ route('course.create') }}" class="btn btn-primary mt-2">
                             {{ trans('supervisor.create_course.new_course') }}
@@ -116,20 +126,56 @@
                                                                         href="{{ route('course.edit', ['course' => $course->id]) }}">
                                                                         {{ trans('supervisor.list_courses.edit') }}
                                                                     </a>
-                                                                    <form id="logout-form"
-                                                                        action="{{ route('course.destroy', ['course' => $course->id]) }}"
-                                                                        method="POST">
-                                                                        @method('DELETE')
-                                                                        @csrf
-                                                                        <button type="submit"
-                                                                            class="border-0 dropdown-item trash">
-                                                                            {{ trans('supervisor.list_courses.delete') }}
-                                                                        </button>
-                                                                    </form>
+                                                                    <button type="submit"
+                                                                        class="border-0 dropdown-item trash"
+                                                                        data-toggle="modal" data-target="#delete{{ $course->id }}">
+                                                                        {{ trans('supervisor.list_courses.delete') }}
+                                                                    </button>
                                                                 </div>
                                                             </div>
                                                         </td>
                                                     </tr>
+                                                    <div class="container">
+                                                        <div class="modal fade" id="delete{{ $course->id }}" role="dialog">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="row">
+                                                                    <div class="col-md-1"></div>
+                                                                    <div class="col-md-10">
+                                                                        <div class="modal-content box-shadow mb-4">
+                                                                            <div class="modal-header">
+                                                                                <h5 class="modal-title">
+                                                                                    {{ trans('supervisor.app.course') .
+                                                                                        $course->id . ': ' . $course->title }}
+                                                                                </h5>
+                                                                                <button class="close" data-dismiss="modal">&times;</button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p>
+                                                                                    {{ trans('supervisor.detail_course.message_delete') }}
+                                                                                </p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-light" data-dismiss="modal">
+                                                                                    {{ trans('both.cancel') }}
+                                                                                </button>
+                                                                                <form id="logout-form"
+                                                                                    action="{{ route('course.destroy', ['course' => $course->id]) }}"
+                                                                                    method="POST">
+                                                                                    @method('DELETE')
+                                                                                    @csrf
+                                                                                    <button type="submit" data-toggle="modal" data-target="#delete"
+                                                                                        class="btn w-sm mb-1 btn-danger">
+                                                                                        {{ trans('both.delete') }}
+                                                                                    </button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-1"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
                                                 @endforeach
                                             </tbody>
                                         </table>

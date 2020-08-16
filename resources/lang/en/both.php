@@ -25,6 +25,8 @@ return [
     'detail' => 'Detail',
     'message' => [
         'update_success' => 'update success!',
+        'delete_course_success' => 'Delete course success!',
+        'delete_subject_success' => 'Delete subject success!',
     ],
     'status' => [
         'active' => 'Active',

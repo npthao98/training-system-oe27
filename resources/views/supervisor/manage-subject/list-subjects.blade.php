@@ -1,10 +1,18 @@
 @extends('supervisor.layouts.app')
 @section('css')
+    <script src="{{ asset('js/message.js') }}"></script>
     <link rel="stylesheet" type="text/css"
         href="{{ asset('bower_components/bower_package/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/supervisor_list_courses.css') }}" >
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/message.css') }}">
 @endsection
 @section('content')
+    @if (isset($messenger))
+        <div id="messenger" class="alert alert-success" role="alert">
+            <i data-feather="check"></i>
+            <span class="mx-2">{{ $messenger }}</span>
+        </div>
+    @endif
     <div id="main" class="layout-column flex">
         <div id="content" class="flex ">
             <div class="d-flex flex fixed-content">
@@ -163,19 +171,55 @@
                                                                                     href="{{ route('subject.edit', ['subject' => $subject->id]) }}">
                                                                                     {{ trans('supervisor.list_courses.edit') }}
                                                                                 </a>
-                                                                                <form id="logout-form"
-                                                                                    action="{{ route('subject.destroy', ['subject' => $subject->id]) }}"
-                                                                                    method="POST">
-                                                                                    @method('DELETE')
-                                                                                    @csrf
-                                                                                    <button type="submit"
-                                                                                        class="border-0 dropdown-item trash">
-                                                                                        {{ trans('supervisor.list_courses.delete') }}
-                                                                                    </button>
-                                                                                </form>
+                                                                                <button type="submit"
+                                                                                    class="border-0 dropdown-item trash"
+                                                                                    data-toggle="modal" data-target="#delete{{ $subject->id }}">
+                                                                                    {{ trans('supervisor.list_courses.delete') }}
+                                                                                </button>
                                                                             </div>
                                                                         </div>
                                                                     </td>
+                                                                    <div class="container">
+                                                                        <div class="modal fade" id="delete{{ $subject->id }}" role="dialog">
+                                                                            <div class="modal-dialog" role="document">
+                                                                                <div class="row">
+                                                                                    <div class="col-md-1"></div>
+                                                                                    <div class="col-md-10">
+                                                                                        <div class="modal-content box-shadow mb-4">
+                                                                                            <div class="modal-header">
+                                                                                                <h5 class="modal-title">
+                                                                                                    {{ trans('supervisor.app.subject') . ' ' .
+                                                                                                        $subject->id . ': ' . $subject->title }}
+                                                                                                </h5>
+                                                                                                <button class="close" data-dismiss="modal">&times;</button>
+                                                                                            </div>
+                                                                                            <div class="modal-body">
+                                                                                                <p>
+                                                                                                    {{ trans('supervisor.detail_subject.message_delete') }}
+                                                                                                </p>
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button class="btn btn-light" data-dismiss="modal">
+                                                                                                    {{ trans('both.cancel') }}
+                                                                                                </button>
+                                                                                                <form id="logout-form"
+                                                                                                    action="{{ route('subject.destroy', ['subject' => $subject->id]) }}"
+                                                                                                    method="POST">
+                                                                                                    @method('DELETE')
+                                                                                                    @csrf
+                                                                                                    <button type="submit" data-toggle="modal" data-target="#delete"
+                                                                                                        class="btn w-sm mb-1 btn-danger">
+                                                                                                        {{ trans('both.delete') }}
+                                                                                                    </button>
+                                                                                                </form>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                    <div class="col-md-1"></div>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
                                                                 </tr>
                                                             @endforeach
                                                         </tbody>
