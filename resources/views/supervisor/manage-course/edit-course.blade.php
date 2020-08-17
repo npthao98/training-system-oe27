@@ -43,19 +43,23 @@
                                     <strong>{{ trans('supervisor.edit_course.description') }}</strong>
                                 </label>
                                 <div class="col-sm-12">
-                                    <div class="adjoined-bottom">
-                                        <div class="grid-container">
-                                            <div class="grid-width-100">
-                                                <input name="description" id="editor">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <textarea name="ten" name="description"></textarea>
+                                    <script>CKEDITOR.replace('ten');</script>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-center">
-                                <button type="submit" class="btn btn-info">
-                                    {{ trans('supervisor.edit_course.submit') }}
-                                </button>
+                            <div class="d-flex justify-content-center container">
+                                <div class="col-3"></div>
+                                <div class="col-3 justify-content-center d-flex">
+                                    <a href="{{ url()->previous() }}" class="btn red">
+                                        {{ trans('both.cancel') }}
+                                    </a>
+                                </div>
+                                <div class="col-3 justify-content-center d-flex">
+                                    <button type="submit" class="btn btn-info">
+                                        {{ trans('supervisor.create_subject.submit') }}
+                                    </button>
+                                </div>
+                                <div class="col-3"></div>
                             </div>
                         </div>
                     </div>

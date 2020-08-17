@@ -17,3 +17,4 @@ public/js
 resources/views/test/
 public/resources/
 *.DS_Store
+public/mix-manifest.json

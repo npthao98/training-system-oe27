@@ -28,7 +28,9 @@
                         <div class="padding">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.create_course.title') }}</strong>
+                                    <strong>
+                                        {{ trans('supervisor.create_course.title') }}
+                                    </strong>
                                 </label>
                                 <div class="col-sm-10">
                                     <input type="text" class="form-control">
@@ -36,7 +38,9 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.create_course.image') }}</strong>
+                                    <strong>
+                                        {{ trans('supervisor.create_course.image') }}
+                                    </strong>
                                 </label>
                                 <div class="col-sm-10">
                                     <input type="file" class="form-control">
@@ -44,21 +48,19 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-12 col-form-label">
-                                    <strong>{{ trans('supervisor.create_course.description') }}</strong>
+                                    <strong>
+                                        {{ trans('supervisor.create_course.description') }}
+                                    </strong>
                                 </label>
                                 <div class="col-sm-12">
-                                    <div class="adjoined-bottom">
-                                        <div class="grid-container">
-                                            <div class="grid-width-100">
-                                                <input name="description" id="editor">
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <textarea name="content_description"></textarea>
                                 </div>
                             </div>
                             <div class="form-group row mt-5">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.list_subjects.list_subjects') }}</strong>
+                                    <strong>
+                                        {{ trans('supervisor.list_subjects.list_subjects') }}
+                                    </strong>
                                 </label>
                                 <div class="col-sm-10">
                                     <button type="button" class="btn btn-outline-info"
@@ -175,17 +177,8 @@
                                                     <input type="number" class="form-control" id="time" required>
                                                 </div>
                                             </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">
-                                                    <strong>{{ trans('supervisor.create_subject.description') }}</strong>
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <textarea rows="3" class="form-control" id="descrition" required>
-                                                    </textarea>
-                                                </div>
-                                            </div>
                                             <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-info" data-dismiss="modal" onclick="add()">
+                                                <button type="button" class="btn btn-info" data-dismiss="modal">
                                                     {{ trans('supervisor.create_subject.submit') }}
                                                 </button>
                                             </div>
@@ -207,5 +200,5 @@
     <script src="{{ asset('bower_components/bower_package/js/plugins/fullscreen.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/summernote/dist/summernote.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/summernote/dist/summernote-bs4.min.js') }}"></script>
-    <script src="{{ asset('js/create_subject.js') }}"></script>
+    <script src="{{ asset('js/ckeditor.js') }}"></script>
 @endsection

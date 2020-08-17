@@ -24,7 +24,6 @@
                         <a href="{{ route('course.index') }}">
                             <span class="nav-icon text-info"><i data-feather='calendar'></i></span>
                             <span class="nav-text">{{ trans('supervisor.app.course') }}</span>
-                            <span class="nav-badge"><b class="badge-circle xs text-danger"></b></span>
                         </a>
                     </li>
                     <li>

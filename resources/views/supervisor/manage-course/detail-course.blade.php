@@ -107,22 +107,16 @@
             <div class="row">
                 <div class="col-3"></div>
                 <div class="col-2 d-flex justify-content-center">
-                    <a href="{{ route('course.index') }}"
+                    <a href="{{ url()->previous() }}"
                         class="btn w-sm mb-1 btn-info">
                         {{ trans('both.back') }}
                     </a>
                 </div>
                 <div class="col-2 d-flex justify-content-center">
-                    <form id="logout-form"
-                        action="{{ route('course.destroy', ['course' => $course->id]) }}"
-                        method="POST">
-                        @method('DELETE')
-                        @csrf
-                        <button type="submit"
-                            class="btn w-sm mb-1 red">
-                            {{ trans('both.delete') }}
-                        </button>
-                    </form>
+                    <button type="submit" data-toggle="modal" data-target="#delete"
+                        class="btn w-sm mb-1 red">
+                        {{ trans('both.delete') }}
+                    </button>
                 </div>
                 <div class="col-2 d-flex justify-content-center">
                     <a href="{{ route('course.edit', ['course' => $course->id]) }}"
@@ -131,6 +125,44 @@
                     </a>
                 </div>
                 <div class="col-3"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="modal fade" id="delete" role="dialog">
+            <div class="modal-dialog" role="document">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div class="modal-content box-shadow mb-4">
+                            <div class="modal-header">
+                                <h5 class="modal-title">Message</h5>
+                                <button class="close" data-dismiss="modal">&times;</button>
+                            </div>
+                            <div class="modal-body">
+                                <p>
+                                    {{ trans('supervisor.detail_course.message_delete') }}
+                                </p>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-light" data-dismiss="modal">
+                                    {{ trans('both.cancel') }}
+                                </button>
+                                <form id="logout-form"
+                                    action="{{ route('course.destroy', ['course' => $course->id]) }}"
+                                    method="POST">
+                                    @method('DELETE')
+                                    @csrf
+                                    <button type="submit"
+                                        class="btn w-sm mb-1 red">
+                                        {{ trans('both.delete') }}
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
             </div>
         </div>
     </div>

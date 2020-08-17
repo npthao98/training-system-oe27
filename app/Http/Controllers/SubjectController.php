@@ -15,7 +15,8 @@ class SubjectController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('supervisor')->only('index');
+        $this->middleware('supervisor')
+            ->except('show');
     }
 
     public function index()
@@ -35,11 +36,23 @@ class SubjectController extends Controller
         $courses = Course::where('status', config('number.course.active'))
             ->get();
 
-        return view('supervisor.manage-subject.create-subject', compact('courses'));
+        return view('supervisor.manage-subject.create-subject',
+            compact('courses'));
     }
 
-    public function store(Request $request)
+    public function store(SubjectRequest $request)
     {
+        $subject = Subject::create([
+            'title' => $request->title,
+            'image' => $request->image->getClientOriginalName(),
+            'description' => $request->content_description,
+            'course_id' => $request->course_id,
+            'time' => $request->time,
+            'created_at' => now()->format(config('view.format_date.datetime')),
+            'status' => config('number.subject.active'),
+        ]);
+
+        return redirect()->route('subject.show', ['subject' => $subject->id]);
     }
 
     public function show($id)
@@ -79,11 +92,26 @@ class SubjectController extends Controller
 
     public function edit($id)
     {
-        return view('supervisor.manage-subject.edit-subject');
+        $subject = Subject::findOrFail($id);
+        $courses = Course::where('status', config('number.course.active'))
+            ->get();
+
+        return view('supervisor.manage-subject.edit-subject',
+            compact('subject', 'courses'));
     }
 
-    public function update(Request $request, $id)
+    public function update(SubjectRequest $request, $id)
     {
+        $subject = Subject::findOrFail($id)->update([
+            'title' => $request->title,
+            'image' => $request->image->getClientOriginalName(),
+            'description' => $request->content_description,
+            'course_id' => $request->course_id,
+            'time' => $request->time,
+        ]);
+
+        return redirect()->route('subject.show', ['subject' => $id]);
+
     }
 
     public function destroy($id)

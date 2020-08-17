@@ -26,14 +26,8 @@
                         </h1>
                     </div>
                     <div class="padding">
-                        <div class="d-flex justify-content-center">
-                            <img src="{{ asset(config('image.folder') . $subject->image) }}"
-                                alt="{{ trans('both.image_of_subject') }}"
-                                class="w-50">
-                        </div>
-                        <br>
                         <div>
-                            {{ $subject->description }}
+                            {!! $subject->description !!}
                         </div>
                     </div>
                     <div id="accordion" class="mb-4 padding">
@@ -107,6 +101,71 @@
             </div>
         </div>
     </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-3"></div>
+            <div class="col-2 d-flex justify-content-center">
+                <a href="{{ url()->previous() }}"
+                    class="btn w-sm mb-1 btn-info">
+                    {{ trans('both.back') }}
+                </a>
+            </div>
+            <div class="col-2 d-flex justify-content-center">
+                <button type="submit" data-toggle="modal" data-target="#delete"
+                    class="btn w-sm mb-1 red">
+                    {{ trans('both.delete') }}
+                </button>
+            </div>
+            <div class="col-2 d-flex justify-content-center">
+                <a href="{{ route('subject.edit', ['subject' => $subject->id]) }}"
+                    class="btn w-sm mb-1 btn-primary">
+                    {{ trans('both.update') }}
+                </a>
+            </div>
+            <div class="col-3"></div>
+        </div>
+        <div class="container">
+            <div class="modal fade" id="delete" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="row">
+                        <div class="col-md-3"></div>
+                        <div class="col-md-6">
+                            <div class="modal-content box-shadow mb-4">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">
+                                        {{ trans('supervisor.app.message') }}
+                                    </h5>
+                                    <button class="close" data-dismiss="modal">&times;</button>
+                                </div>
+                                <div class="modal-body">
+                                    <p>
+                                        {{ trans('supervisor.detail_subject.message_delete') }}
+                                    </p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button class="btn btn-light" data-dismiss="modal">
+                                        {{ trans('both.cancel') }}
+                                    </button>
+                                    <form id="logout-form"
+                                        action="{{ route('subject.destroy', ['subject' => $subject->id]) }}"
+                                        method="POST">
+                                        @method('DELETE')
+                                        @csrf
+                                        <button type="submit" data-toggle="modal" data-target="#delete"
+                                            class="btn w-sm mb-1 red">
+                                            {{ trans('both.delete') }}
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+@endsection
+@section('js')
     <script src="{{ asset('bower_components/bower_package/typeahead.js/dist/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/plugins/typeahead.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/jquery-fullscreen-plugin/jquery.fullscreen-min.js') }}"></script>

@@ -22,44 +22,62 @@
                 </div>
                 <div class="page-content page-container" id="page-content">
                     <div class="padding">
-                        <form action="{{ route('subject.store') }}" method="post">
+                        <form action="{{ route('subject.store') }}"
+                            method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.create_subject.title') }}</strong>
+                                    <strong>
+                                        {{ trans('supervisor.create_subject.title') }}
+                                    </strong>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control" name="title" value="{{ old('title') }}" required>
+                                    <input type="text" class="form-control" name="title"
+                                        value="{{ old('title') }}" required>
                                     @error ('title')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.create_subject.image') }}</strong>
+                                    <strong>
+                                        {{ trans('supervisor.create_subject.image') }}
+                                    </strong>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="file" class="form-control" name="image" value="{{ old('image') }}" required>
+                                    <input type="file" class="form-control" name="image"
+                                        value="{{ old('image') }}" required>
                                     @error ('image')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.create_subject.time') }}</strong>
+                                    <strong>
+                                        {{ trans('supervisor.create_subject.time') }}
+                                    </strong>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="number" class="form-control" name="time" value="{{ old('time') }}" required>
+                                    <input type="number" class="form-control"
+                                        name="time" value="{{ old('time') }}" required>
                                     @error ('time')
-                                        <div class="alert alert-danger">{{ $message }}</div>
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
                                     @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.create_subject.course') }}</strong>
+                                    <strong>
+                                        {{ trans('supervisor.create_subject.course') }}
+                                    </strong>
                                 </label>
                                 <div class="col-sm-10">
                                     <div class="form-group row">
@@ -68,7 +86,7 @@
                                                 @foreach ($courses as $course)
                                                     @if (old('course_id') == $course->id)
                                                         <option value="{{ $course->id }}" selected>
-                                                            {{ $coursec->title }}
+                                                            {{ $course->title }}
                                                         </option>
                                                     @else
                                                         <option value="{{ $course->id }}">
@@ -83,19 +101,17 @@
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-12 col-form-label">
-                                    <strong>{{ trans('supervisor.create_subject.description') }}</strong>
+                                    <strong>
+                                        {{ trans('supervisor.create_subject.description') }}
+                                    </strong>
                                 </label>
                                 <div class="col-sm-12">
-                                    <div class="adjoined-bottom">
-                                        <div class="grid-container">
-                                            <div class="grid-width-100">
-                                                <input type="text" name="description" id="editor" required>
-                                                @error ('description')
-                                                    <div class="alert alert-danger">{{ $message }}</div>
-                                                @enderror
-                                            </div>
+                                    <textarea name="content_description">{{ old('content_description') }}</textarea>
+                                    @error ('content_description')
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
                                         </div>
-                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center container">
@@ -127,4 +143,5 @@
     <script src="{{ asset('bower_components/bower_package/summernote/dist/summernote.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/summernote/dist/summernote-bs4.min.js') }}"></script>
     <script src="{{ asset('js/create_subject.js') }}"></script>
+    <script src="{{ asset('js/ckeditor.js') }}"></script>
 @endsection
