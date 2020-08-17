@@ -18,13 +18,13 @@ class TaskSeeder extends Seeder
         foreach ($subjectUsers as $subjectUser) {
             if ($subjectUser->status != config('number.inactive')) {
                 $review = '';
-                $status = config('number.inactive');
+                $status = config('number.task.new');
 
                 if ($subjectUser->status == config('number.passed')) {
-                    $status = config('number.active');
+                    $status = config('number.task.passed');
                     $review = $faker->text(config('number.default_text'));
                 } elseif ($subjectUser->status == config('number.active')) {
-                    $status = config('number.inactive');
+                    $status = config('number.task.new');
                 }
                 DB::table('tasks')->insert([
                     'plan' => $faker->text(config('number.default_text')),

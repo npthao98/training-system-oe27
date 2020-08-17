@@ -72,10 +72,15 @@ class SubjectController extends Controller
             $subjectUser = $subjectById->subjectUsers
                 ->where('user_id', $user->id)->first();
 
-            if ($subjectUser) {
+            if ($subjectUser != null) {
                 $data['subject'] = $subjectById->load('usersActive');
                 $data['tasks'] = $user->tasks
                     ->where('subject_id', $id);
+                $data['task_new'] = Task::where([
+                    ['subject_id', $id],
+                    ['user_id', $user->id],
+                    ['status', config('number.task.new')],
+                ])->first();
                 $data['subjectUser'] = $subjectUser;
 
                 if (session()->has('messageTask')) {
