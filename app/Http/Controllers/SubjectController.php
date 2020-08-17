@@ -21,14 +21,17 @@ class SubjectController extends Controller
 
     public function index()
     {
-        $courses = Course::all()->load([
+        if (session()->has('subject')) {
+            $data['messenger'] = session('subject');
+            session()->forget('subject');
+        }
+        $data['courses'] = Course::all()->load([
             'subjects',
             'subjects.subjectUsers',
         ]);
-        $subjects = Subject::paginate(config('view.paginate_10'));
+        $data['subjects'] = Subject::paginate(config('view.paginate_10'));
 
-        return view('supervisor.manage-subject.list-subjects',
-            compact('courses', 'subjects'));
+        return view('supervisor.manage-subject.list-subjects', $data);
     }
 
     public function create()
@@ -121,5 +124,61 @@ class SubjectController extends Controller
 
     public function destroy($id)
     {
+        $course = Subject::findOrFail($id);
+        $this->handelDeleteSubjectUsers($id);
+        $this->handelDeleteTasks($id);
+        $this->handelDeleteSubject($id);
+        $this->handelStatus($course);
+        session(['subject' => trans('both.message.delete_subject_success')]);
+
+        return redirect()->route('subject.index');
+    }
+
+    public function handelDeleteSubject($subject_id)
+    {
+        Subject::destroy($subject_id);
+    }
+
+    public function handelDeleteSubjectUsers($subject_id)
+    {
+        SubjectUser::where('subject_id', $subject_id)->delete();
+    }
+
+    public function handelDeleteTasks($subject_id)
+    {
+        Task::where('subject_id', $subject_id)->delete();
+    }
+
+    public function handelStatus($course)
+    {
+        $courseUsersActive = CourseUser::where([
+            ['course_id', $course->id],
+            ['status', config('number.active')],
+        ])->with('user')->get();
+        $subjects = $course->subjects->modelKeys();
+
+        foreach ($courseUsersActive as $courseUserActive) {
+            $user = $courseUserActive->user;
+            $subjectUserActive = $user->subjectUsers
+                ->where('status', config('number.active'))
+                ->whereIn('subject_id', $subjects)
+                ->first();
+
+            if ($subjectUserActive == null) {
+                $subjectUserInactive = $user->subjectUsers
+                    ->where('status', config('number.inactive'))
+                    ->whereIn('subject_id', $subjects)->first();
+
+                if ($subjectUserInactive != null) {
+                    SubjectUser::where('id', $subjectUserInactive->id)
+                        ->update(['status' => config('number.active')]);
+                } else {
+                    CourseUser::where([
+                        ['course_id', $course->id],
+                        ['user_id', $user->id]
+                    ])->update(['status' => config('number.passed')]);
+                }
+            }
+        }
     }
 }

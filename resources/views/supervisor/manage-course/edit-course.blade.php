@@ -2,11 +2,17 @@
 @section('css')
     <script src="{{ asset('bower_components/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('bower_components/ckeditor/samples/js/sample.js') }}"></script>
-    <link rel="stylesheet" type="text/css" href="{{ asset('bower_components/bower_package/summernote/dist/summernote-bs4.css') }}">
-    <link rel="stylesheet" type="text/css" href="{{ asset('bower_components/bower_package/summernote/dist/summernote.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('bower_components/bower_package/summernote/dist/summernote-bs4.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('bower_components/bower_package/summernote/dist/summernote.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('css/supervisor_detail_course.css') }}">
 @endsection
 @section('content')
-    <form action="#" method="post">
+    <form action="{{ route('course.update', ['course' => $course->id]) }}"
+        method="post" enctype="multipart/form-data">
+        @method('PUT')
         @csrf
         <div id="main" class="layout-column flex">
             <div id="content" class="flex ">
@@ -24,42 +30,121 @@
                         <div class="padding">
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.edit_course.title') }}</strong>
+                                    <strong>{{ trans('supervisor.create_course.title') }}</strong>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control"
+                                        name="title" required value="{{ $course->title }}">
+                                    @error ('title')
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-2 col-form-label">
-                                    <strong>{{ trans('supervisor.edit_course.image') }}</strong>
+                                    <strong>{{ trans('supervisor.create_course.image') }}</strong>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="file" class="form-control">
+                                    <input type="file" class="form-control"
+                                        name="image" required value="{{ old('image') }}">
+                                    @error ('image')
+                                    <div class="alert alert-danger">
+                                        {{ $message }}
+                                    </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
                                 <label class="col-sm-12 col-form-label">
-                                    <strong>{{ trans('supervisor.edit_course.description') }}</strong>
+                                    <strong>{{ trans('supervisor.create_course.description') }}</strong>
                                 </label>
                                 <div class="col-sm-12">
-                                    <textarea name="ten" name="description"></textarea>
-                                    <script>CKEDITOR.replace('ten');</script>
+                                    <textarea name="content_description">{{ $course->description }}</textarea>
+                                    @error ('content_description')
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-center container">
-                                <div class="col-3"></div>
-                                <div class="col-3 justify-content-center d-flex">
-                                    <a href="{{ url()->previous() }}" class="btn red">
-                                        {{ trans('both.cancel') }}
-                                    </a>
-                                </div>
-                                <div class="col-3 justify-content-center d-flex">
-                                    <button type="submit" class="btn btn-info">
-                                        {{ trans('supervisor.create_subject.submit') }}
+                            <div class="form-group row mt-5">
+                                <label class="col-sm-2 col-form-label">
+                                    <strong>{{ trans('supervisor.list_subjects.list_subjects') }}</strong>
+                                </label>
+                                <div class="col-sm-10">
+                                    <button type="button" class="btn btn-outline-info"
+                                        onclick="addItem()">
+                                        {{ trans('supervisor.create_subject.new_subject') }}
                                     </button>
                                 </div>
-                                <div class="col-3"></div>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="table-responsive">
+                                                <table id="mytable" class="table table-bordred table-striped">
+                                                    <thead>
+                                                        <th>
+                                                            {{ trans('supervisor.app.subject') }}
+                                                        </th>
+                                                        <th>
+                                                            {{ trans('supervisor.list_subjects.time') }}
+                                                        </th>
+                                                        <th>{{ trans('both.delete') }}</th>
+                                                    </thead>
+                                                    <tbody id="subjects">
+                                                        @foreach ($course->subjects as $subject)
+                                                            <tr id="item{{ $subject->id }}">
+                                                                <td>
+                                                                    <input type="hidden" value="{{ $subject->id }}" name="subject_id[]">
+                                                                    <input type="text" required name="titleSubject[]"
+                                                                        class="border-0 w-100" value="{{ $subject->title }}">
+                                                                    @error ('titleSubject[]')
+                                                                        <div class="alert alert-danger">
+                                                                            {{ $message }}
+                                                                        </div>
+                                                                    @enderror
+                                                                </td>
+                                                                <td>
+                                                                    <input type="number" min="2" required name="timeSubject[]"
+                                                                        class="border-0 w-100" value="{{ $subject->time }}">
+                                                                    @error ('timeSubject[]')
+                                                                        <div class="alert alert-danger">
+                                                                            {{ $message }}
+                                                                        </div>
+                                                                    @enderror
+                                                                </td>
+                                                                <td>
+                                                                    <button class="btn red btn-xs"
+                                                                        onclick="deleteItem('item{{ $subject->id }}')">
+                                                                        {{ trans('both.delete') }}
+                                                                    </button>
+                                                                </td>
+                                                            </tr>
+                                                        @endforeach
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="container mt-5">
+                                <div class="row">
+                                    <div class="col-3"></div>
+                                    <div class="col-3 d-flex justify-content-center">
+                                        <button type="submit" class="btn red">
+                                            {{ trans('both.cancel') }}
+                                        </button>
+                                    </div>
+                                    <div class="col-3 d-flex justify-content-center">
+                                        <button type="submit" class="btn btn-primary">
+                                            {{ trans('supervisor.create_course.submit') }}
+                                        </button>
+                                    </div>
+                                    <div class="col-3"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -67,11 +152,14 @@
             </div>
         </div>
     </form>
+@endsection
+@section('js')
+    <script src="{{ asset('js/add_subject.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/typeahead.js/dist/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/plugins/typeahead.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/jquery-fullscreen-plugin/jquery.fullscreen-min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/plugins/fullscreen.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/summernote/dist/summernote.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/summernote/dist/summernote-bs4.min.js') }}"></script>
-    <script src="{{ asset('js/createSubject.js') }}"></script>
+    <script src="{{ asset('js/ckeditor.js') }}"></script>
 @endsection

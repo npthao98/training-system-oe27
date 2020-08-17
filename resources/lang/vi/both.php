@@ -25,6 +25,8 @@ return [
     'detail' => 'Chi tiết',
     'message' => [
         'update_success' => 'cập nhật thành công!',
+        'delete_course_success' => 'Xoá khoá học thành công!',
+        'delete_subject_success' => 'Xoá chủ đề thành công!',
     ],
     'status' => [
         'active' => 'Đang học',
