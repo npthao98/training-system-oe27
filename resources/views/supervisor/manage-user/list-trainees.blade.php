@@ -26,7 +26,7 @@
                                                 </a>
                                             </li>
                                             <li>
-                                                <a href="#">
+                                                <a href="{{ route('assign') }}">
                                                     <button class="btn w-sm mb-1 btn-rounded btn-outline-success">
                                                         {{ trans('supervisor.list_trainees.assign') }}
                                                     </button>

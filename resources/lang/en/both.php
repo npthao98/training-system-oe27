@@ -21,4 +21,14 @@ return [
     'back' => 'Back',
     'update' => 'Update',
     'cancel' => 'Cancel',
+    'submit' => 'Submit',
+    'detail' => 'Detail',
+    'message' => [
+        'update_success' => 'update success!',
+    ],
+    'status' => [
+        'active' => 'Active',
+        'inactive' => 'InActive',
+        'passed' => 'Passed',
+    ],
 ];

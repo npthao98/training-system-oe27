@@ -10,7 +10,8 @@
         href="{{ asset('css/supervisor_detail_course.css') }}">
 @endsection
 @section('content')
-    <form action="#" method="post">
+    <form action="{{ route('course.store') }}"
+        method="post" enctype="multipart/form-data">
         @csrf
         <div id="main" class="layout-column flex">
             <div id="content" class="flex ">
@@ -33,7 +34,13 @@
                                     </strong>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="text" class="form-control">
+                                    <input type="text" class="form-control"
+                                        name="title" required value="{{ old('title') }}">
+                                    @error ('title')
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -43,7 +50,13 @@
                                     </strong>
                                 </label>
                                 <div class="col-sm-10">
-                                    <input type="file" class="form-control">
+                                    <input type="file" class="form-control"
+                                        name="image" required value="{{ old('image') }}">
+                                    @error ('image')
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row">
@@ -53,7 +66,12 @@
                                     </strong>
                                 </label>
                                 <div class="col-sm-12">
-                                    <textarea name="content_description"></textarea>
+                                    <textarea name="content_description">{{ old('content_description') }}</textarea>
+                                    @error ('content_description')
+                                        <div class="alert alert-danger">
+                                            {{ $message }}
+                                        </div>
+                                    @enderror
                                 </div>
                             </div>
                             <div class="form-group row mt-5">
@@ -64,7 +82,7 @@
                                 </label>
                                 <div class="col-sm-10">
                                     <button type="button" class="btn btn-outline-info"
-                                        data-toggle="modal" data-target="#myModal">
+                                        onclick="addItem()">
                                         {{ trans('supervisor.create_subject.new_subject') }}
                                     </button>
                                 </div>
@@ -74,34 +92,38 @@
                                             <div class="table-responsive">
                                                 <table id="mytable" class="table table-bordred table-striped">
                                                     <thead>
-                                                        <th>{{ trans('supervisor.list_subjects.list_subjects') }}</th>
-                                                        <th>{{ trans('supervisor.list_subjects.time') }}</th>
-                                                        <th>{{ trans('both.update') }}</th>
+                                                        <th>
+                                                            {{ trans('supervisor.app.subject') }}
+                                                        </th>
+                                                        <th>
+                                                            {{ trans('supervisor.list_subjects.time') }}
+                                                        </th>
                                                         <th>{{ trans('both.delete') }}</th>
                                                     </thead>
                                                     <tbody id="subjects">
-                                                        <tr>
+                                                        <tr id="item0">
                                                             <td>
-                                                                <input type="text" name="titleSubject" class="border-0 w-100" readonly>
+                                                                <input type="text" required name="titleSubject[]"
+                                                                    class="border-0 w-100" value="{{ old('timeSubject[]') }}">
+                                                                @error ('titleSubject[]')
+                                                                    <div class="alert alert-danger">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
                                                             </td>
                                                             <td>
-                                                                <input type="text" name="timeSubject" class="border-0 w-100" readonly>
-                                                            </td>
-                                                            <input type="hidden" name="imageSubject" class="border-0 w-100" readonly>
-                                                            <input type="hidden" name="descriptionSubject" class="border-0 w-100" readonly>
-                                                            <td>
-                                                                <p data-placement="top" data-toggle="tooltip" title="Edit">
-                                                                    <button class="btn btn-primary btn-xs" data-title="Edit" data-toggle="modal" data-target="#edit" >
-                                                                        <i class="mx-2" data-feather="edit"></i>
-                                                                    </button>
-                                                                </p>
+                                                                <input type="number" min="2" required name="timeSubject[]"
+                                                                    class="border-0 w-100" value="{{ old('timeSubject[]') }}">
+                                                                @error ('timeSubject[]')
+                                                                    <div class="alert alert-danger">
+                                                                        {{ $message }}
+                                                                    </div>
+                                                                @enderror
                                                             </td>
                                                             <td>
-                                                                <p data-placement="top" data-toggle="tooltip" title="Delete">
-                                                                    <button class="btn red btn-xs" data-title="Delete" data-toggle="modal" data-target="#delete" >
-                                                                        <i class="mx-2" data-feather="trash-2"></i>
-                                                                    </button>
-                                                                </p>
+                                                                <button class="btn red btn-xs" onclick="deleteItem(item0)">
+                                                                    {{ trans('both.delete') }}
+                                                                </button>
                                                             </td>
                                                         </tr>
                                                     </tbody>
@@ -133,67 +155,9 @@
             </div>
         </div>
     </form>
-    <div class="container">
-        <div class="modal fade" id="myModal" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header text-center border">
-                        <h4 class="modal-title w-100 color_light">
-                            {{ trans('supervisor.create_subject.new_subject') }}
-                        </h4>
-                        <button type="button" class="close"
-                                data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                    <form action="#" method="post">
-                        @csrf
-                        <div id="main" class="layout-column flex">
-                            <div id="content" class="flex ">
-                                <div>
-                                    <div class="page-content page-container" id="page-content">
-                                        <div class="padding">
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">
-                                                    <strong>{{ trans('supervisor.create_subject.title') }}</strong>
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="text" class="form-control" id="title" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">
-                                                    <strong>{{ trans('supervisor.create_subject.image') }}</strong>
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="file" class="form-control" id="image" required>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-2 col-form-label">
-                                                    <strong>{{ trans('supervisor.create_subject.time') }}</strong>
-                                                </label>
-                                                <div class="col-sm-10">
-                                                    <input type="number" class="form-control" id="time" required>
-                                                </div>
-                                            </div>
-                                            <div class="d-flex justify-content-center">
-                                                <button type="button" class="btn btn-info" data-dismiss="modal">
-                                                    {{ trans('supervisor.create_subject.submit') }}
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
 @endsection
 @section('js')
+    <script src="{{ asset('js/add_subject.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/typeahead.js/dist/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/js/plugins/typeahead.js') }}"></script>
     <script src="{{ asset('bower_components/bower_package/jquery-fullscreen-plugin/jquery.fullscreen-min.js') }}"></script>

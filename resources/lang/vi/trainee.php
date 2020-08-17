@@ -10,7 +10,7 @@ return [
         'course' => 'Khoá học',
         'subject' => 'Chủ đề',
         'active' => 'Đang học',
-        'inactive' => 'Chưa hoàn thành',
+        'inactive' => 'Đã được gán',
         'passed' => 'Đã Hoàn thành',
         'task' => 'Báo cáo',
     ],
