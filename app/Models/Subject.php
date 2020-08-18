@@ -40,6 +40,7 @@ class Subject extends Model
 
     public function usersActive()
     {
-        return $this->users()->wherePivot('status', config('number.active'));
+        return $this->users()->wherePivot('status', config('number.active'))
+            ->withPivot(['start_time']);
     }
 }

@@ -20,6 +20,22 @@
         </div>
     @endif
     <div id="main" class="layout-column flex">
+        <div class="padding">
+            <div class="float-left">
+                <p>
+                    <a href="{{ route('course.show', ['course' => $subject->course_id]) }}">
+                        {{ trans('trainee.app.course') . ' '
+                            . $subject->course_id . ': ' .  $subject->course->title }}
+                    </a>
+                </p>
+            </div>
+            <div class="float-right">
+                <h3 class="text-success">
+                    {{ trans('supervisor.list_subjects.time')
+                    . ' : ' . $subject->time . ' ' . trans('supervisor.app.days') }}
+                </h3>
+            </div>
+        </div>
         <div id="content" class="flex ">
             <div>
                 <div class="page-hero page-container " id="page-hero">
@@ -65,6 +81,9 @@
                                         <a href="#" data-toggle="collapse" data-target="#collapseOne"
                                             aria-expanded="false" aria-controls="collapseOne">
                                             {{ trans('trainee.detail_subject.list_tasks') }}
+                                            <span class="badge badge-success float-right">
+                                                {{ count($tasks) }}
+                                            </span>
                                         </a>
                                     </div>
                                     <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
@@ -210,16 +229,30 @@
                                     <a href="#" data-toggle="collapse" data-target="#collapseTwo"
                                         aria-expanded="false" aria-controls="collapseTwo">
                                         {{ trans('trainee.detail_course.list_trainees') }}
+                                        <span class="badge badge-success float-right">
+                                            {{ count($subject->usersActive) }}
+                                        </span>
                                     </a>
                                 </div>
                                 <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
                                     data-parent="#accordion">
                                     <div class="card-body">
                                         <ul class="list-group list-group-flush">
-                                            @foreach ($subject->users as $user)
-                                                <li class="list-group-item list-group-item-action">
-                                                    <a href="{{ route('trainee.show', ['trainee' => $user->id]) }}">
-                                                        {{ $user->fullname }}
+                                            @foreach ($subject->usersActive as $user)
+                                                <li class="list-group-item">
+                                                    <a href="{{ route('trainee.show', ['trainee' => $user->id]) }}" class="link">
+                                                        <span class="nav-text">
+                                                            {{ $user->fullname }}
+                                                        </span>
+                                                        @if ($user->time > $subject->time)
+                                                            <span class="text-danger">
+                                                                ( {{ trans('supervisor.detail_subject.workdays') . ' : ' . $user->time }} )
+                                                            </span>
+                                                            @else
+                                                                <span class="text-warning">
+                                                                ( {{ trans('supervisor.detail_subject.workdays') . ' : ' . $user->time }} )
+                                                            </span>
+                                                        @endif
                                                     </a>
                                                 </li>
                                             @endforeach
@@ -231,6 +264,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="d-flex justify-content-center mb-5">
+            <a href="{{ url()->previous() }}" class="btn btn-primary w-sm">
+                {{ trans('both.back') }}
+            </a>
         </div>
     </div>
     <div class="container">

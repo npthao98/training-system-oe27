@@ -33,7 +33,8 @@ class Course extends Model
     public function traineesActive()
     {
         return $this->users()
-            ->wherePivot('status', config('number.active'));
+            ->wherePivot('status', config('number.active'))
+            ->withPivot('start_time');
     }
 
     public function subjectTasks()

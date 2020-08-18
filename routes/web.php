@@ -28,6 +28,8 @@ Route::middleware('locale')->group(function () {
         Route::resource('task','TaskController');
         Route::get('/active/{course}/{user}', 'TraineeController@active')->name('active');
         Route::resource('trainee','TraineeController');
+        Route::put('trainee/{trainee}/pass-subject/{subject}', 'TraineeController@passSubject')
+            ->name('trainee.subject.pass');
         Route::get('assign', 'TraineeController@assign')->name('assign');
         Route::resource('supervisor','SupervisorController');
     });

@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\Subject;
 use App\Models\SubjectUser;
 use App\Models\Task;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class SubjectController extends Controller
@@ -25,7 +26,7 @@ class SubjectController extends Controller
             'subjects',
             'subjects.subjectUsers',
         ]);
-        $data['subjects'] = Subject::paginate(config('view.paginate_10'));
+        $data['subjects'] = Subject::all();
 
         return view('supervisor.manage-subject.list-subjects', $data);
     }
@@ -58,10 +59,19 @@ class SubjectController extends Controller
     {
         $user = auth()->user();
         $subjectById = Subject::find($id);
+        $subject = $subjectById->load([
+            'usersActive',
+            'course',
+        ]);
+        $today = now()->format(config('view.format_date.date'));
+
+        foreach ($subject->usersActive as $user) {
+            $todayParse = Carbon::parse($today);
+            $startTimeParse = Carbon::parse($user->pivot->start_time);
+            $user->time = $startTimeParse->diffInDays($todayParse, false);
+        }
 
         if ($user->role_id == config('number.role.supervisor')) {
-            $today = now()->format(config('view.format_date.date'));
-            $subject = Subject::find($id)->load('usersActive');
             $tasks = $subject->tasks->load('user')
                 ->where('created_at', 'like', $today . "%");
 
@@ -72,7 +82,7 @@ class SubjectController extends Controller
                 ->where('user_id', $user->id)->first();
 
             if ($subjectUser) {
-                $data['subject'] = $subjectById->load('usersActive');
+                $data['subject'] = $subject;
                 $data['tasks'] = $user->tasks
                     ->where('subject_id', $id);
                 $data['task_new'] = Task::where([
