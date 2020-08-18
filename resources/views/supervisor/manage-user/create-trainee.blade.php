@@ -7,51 +7,69 @@
             <h3>{{ trans('supervisor.new_trainee.new_trainee') }}</h3>
         </div>
         <div class="card-body">
-            <form action="#" method="POST">
+            <form action="{{ route('trainee.store') }}" method="POST">
                 @csrf
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">
+                    <label class="col-sm-3 col-form-label">
                         {{ trans('supervisor.new_trainee.fullname') }}
                     </label>
                     <div class="col-sm-9">
-                        <input type="text" class="form-control" id="inputEmail3" name="fullname"
-                            placeholder="{{ trans('supervisor.new_trainee.fullname') }}">
+                        <input type="text" required class="form-control" name="fullname"
+                            placeholder="{{ trans('supervisor.new_trainee.fullname') }}"
+                            value="{{ old('fullname') }}">
+                        @error ('titleSubject[]')
+                            <div class="alert alert-danger">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">
+                    <label class="col-sm-3 col-form-label">
                         {{ trans('supervisor.new_trainee.email') }}
                     </label>
                     <div class="col-sm-9">
-                        <input type="email" class="form-control" id="inputEmail3" name="email"
-                            placeholder="{{ trans('supervisor.new_trainee.email') }}">
+                        <input type="email" required class="form-control" name="email"
+                            placeholder="{{ trans('supervisor.new_trainee.email') }}"
+                            value="{{ old('email') }}">
+                        @error ('titleSubject[]')
+                            <div class="alert alert-danger">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">
+                    <label class="col-sm-3 col-form-label">
                         {{ trans('supervisor.new_trainee.birthday') }}
                     </label>
                     <div class="col-sm-9">
-                        <input id="event-start-date" type="date" class="form-control" name="birthday"
-                            placeholder="{{ trans('supervisor.new_trainee.birthday') }}">
+                        <input required type="date" class="form-control" name="birthday"
+                            placeholder="{{ trans('supervisor.new_trainee.birthday') }}"
+                            value="{{ old('birthday') }}" max="{{ $birthdayMax }}">
+                        @error ('titleSubject[]')
+                            <div class="alert alert-danger">
+                                {{ $message }}
+                            </div>
+                        @enderror
                     </div>
                 </div>
                 <div class="form-group row">
-                    <label for="inputEmail3" class="col-sm-3 col-form-label">
+                    <label class="col-sm-3 col-form-label">
                         {{ trans('supervisor.new_trainee.gender') }}
                     </label>
                     <div class="col-sm-9">
                         <div class="form-check">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="radio"
-                                    name="gender" id="gridRadios1" value="male" checked>
+                                    name="gender" value="male" checked>
                                 {{ trans('supervisor.new_trainee.male') }}
                             </label>
                         </div>
                         <div class="form-check">
                             <label class="form-check-label">
                                 <input class="form-check-input" type="radio" name="gender"
-                                    id="gridRadios2" value="female">
+                                    value="female">
                                 {{ trans('supervisor.new_trainee.female') }}
                             </label>
                         </div>
@@ -63,12 +81,16 @@
                     </label>
                     <div class="col-sm-9">
                         <input type="password" class="form-control"
-                            value="123456" id="inputEmail3"
+                            value="password" id="inputEmail3"
                             placeholder="{{ trans('supervisor.new_trainee.password') }}" disabled>
                         {{ trans('supervisor.new_trainee.default') }}
                     </div>
                 </div>
-                <button type="submit" class="btn btn-primary mt-1">{{ trans('supervisor.new_trainee.submit') }}</button>
+                <div class="d-flex justify-content-center mt-5">
+                    <button type="submit" class="btn btn-primary mt-1 w-sm">
+                        {{ trans('supervisor.new_trainee.submit') }}
+                    </button>
+                </div>
             </form>
         </div>
     </div>

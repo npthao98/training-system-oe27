@@ -42,9 +42,9 @@ class CourseController extends Controller
                 ]);
             }
         }
-        session(['assign' => trans('both.message.update_success')]);
 
-        return redirect()->route('course.show', ['course' => $id]);
+        return redirect()->route('course.show', ['course' => $id])
+            ->with('messenger', trans('both.message.update_success'));
     }
 
     public function index()
@@ -52,10 +52,6 @@ class CourseController extends Controller
         $user = auth()->user();
 
         if ($user->role_id == config('number.role.supervisor')) {
-            if (session()->has('course')) {
-                $data['messenger'] = session('course');
-                session()->forget('course');
-            }
             $data['courses'] = Course::withCount([
                 'subjects',
                 'courseUsers',
@@ -108,13 +104,6 @@ class CourseController extends Controller
         $courseById = Course::find($id);
 
         if ($user->role_id == config('number.role.supervisor')) {
-            if (session()->has('assign')) {
-                $data['messenger'] = session('assign');
-                session()->forget('assign');
-            } elseif (session()->has('course')) {
-                $data['messenger'] = session('course');
-                session()->forget('course');
-            }
             $course = $courseById->load([
                 'subjects',
                 'courseUsers.user',
@@ -191,9 +180,9 @@ class CourseController extends Controller
                 ]);
             }
         }
-        session(['course' => trans('both.message.update_success')]);
 
-        return redirect()->route('course.show', ['course' => $id]);
+        return redirect()->route('course.show', ['course' => $id])
+            ->with('messenger', trans('both.message.update_success'));
     }
 
     public function destroy($id)
@@ -205,9 +194,9 @@ class CourseController extends Controller
         $this->handelDeleteTasks($subjects);
         $this->handelDeleteSubjects($subjects);
         Course::destroy($id);
-        session(['course' => trans('both.message.delete_course_success')]);
 
-        return redirect()->route('course.index');
+        return redirect()->route('course.index')
+            ->with('messenger', trans('both.message.delete_course_success'));
     }
 
     public function handelDeleteCourseUsers($courseId)

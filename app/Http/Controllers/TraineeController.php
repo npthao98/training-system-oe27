@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UserRequest;
 use App\Models\Course;
 use App\Models\CourseUser;
 use App\Models\Role;
@@ -62,11 +63,27 @@ class TraineeController extends Controller
 
     public function create()
     {
-        return view('supervisor.manage-user.create-trainee');
+        $birthdayMax = now()->format('Y-m-d');
+
+        return view('supervisor.manage-user.create-trainee',
+            compact('birthdayMax'));
     }
 
-    public function store(Request $request)
+    public function store(UserRequest $request)
     {
+        $user = User::create([
+            'fullname' => $request['fullname'],
+            'birthday' => $request['birthday'],
+            'gender' => $request['gender'],
+            'email' => $request['email'],
+            'avatar' => config('view.avatar_default'),
+            'password' => bcrypt(config('view.password_default')),
+            'status' => config('number.user.active'),
+            'role_id' => config('number.role.trainee'),
+            'avatar' => config('view.avatar_default'),
+        ]);
+
+        return redirect()->route('trainee.show', ['trainee' => $user->id]);
     }
 
     public function show($id)

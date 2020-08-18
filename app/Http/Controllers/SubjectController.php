@@ -21,10 +21,6 @@ class SubjectController extends Controller
 
     public function index()
     {
-        if (session()->has('subject')) {
-            $data['messenger'] = session('subject');
-            session()->forget('subject');
-        }
         $data['courses'] = Course::all()->load([
             'subjects',
             'subjects.subjectUsers',
@@ -86,11 +82,6 @@ class SubjectController extends Controller
                 ])->first();
                 $data['subjectUser'] = $subjectUser;
 
-                if (session()->has('messageTask')) {
-                    $data['messenger'] = session('messageTask');
-                    session()->forget('messageTask');
-                }
-
                 return view('trainee.detail-subject', $data);
             } else {
                 abort(404);
@@ -129,9 +120,9 @@ class SubjectController extends Controller
         $this->handelDeleteTasks($id);
         $this->handelDeleteSubject($id);
         $this->handelStatus($course);
-        session(['subject' => trans('both.message.delete_subject_success')]);
 
-        return redirect()->route('subject.index');
+        return redirect()->route('subject.index')
+            ->with('messenger', trans('both.message.delete_subject_success'));
     }
 
     public function handelDeleteSubject($subject_id)

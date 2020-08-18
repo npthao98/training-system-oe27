@@ -153,7 +153,7 @@ return [
         'female' => 'Female',
         'submit' => 'Submit',
         'password' => 'Password',
-        'default' => 'Default: 123456',
+        'default' => 'Default: "password"',
     ],
     'assign' => [
         'assign' => 'ASSIGN',
