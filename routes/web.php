@@ -26,6 +26,7 @@ Route::middleware('locale')->group(function () {
         Route::post('course/assign/{course}', 'CourseController@assign')->name('course.assign');
         Route::resource('subject','SubjectController');
         Route::resource('task','TaskController');
+        Route::get('/active/{course}/{user}', 'TraineeController@active')->name('active');
         Route::resource('trainee','TraineeController');
         Route::get('assign', 'TraineeController@assign')->name('assign');
         Route::resource('supervisor','SupervisorController');

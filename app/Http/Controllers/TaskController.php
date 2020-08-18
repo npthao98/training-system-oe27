@@ -137,12 +137,12 @@ class TaskController extends Controller
                 ->whereIn('subject_id', $subjects)
                 ->first();
 
-            if ($subject_user_active == null) {
+            if (!$subject_user_active) {
                 $subject_user_inactive = $user->subjectUsers
                     ->where('status', config('number.inactive'))
                     ->whereIn('subject_id', $subjects)->first();
 
-                if ($subject_user_inactive != null) {
+                if ($subject_user_inactive) {
                     SubjectUser::where('id', $subject_user_inactive->id)
                         ->update(['status' => config('number.active')]);
                 } else {

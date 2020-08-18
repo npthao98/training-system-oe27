@@ -37,4 +37,5 @@ return [
         'date' => 'Y-m-d',
         'datetime' => 'Y-m-d h:m:s',
     ],
+    'password_default' => 'password',
 ];

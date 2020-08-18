@@ -75,7 +75,7 @@ class SubjectController extends Controller
             $subjectUser = $subjectById->subjectUsers
                 ->where('user_id', $user->id)->first();
 
-            if ($subjectUser != null) {
+            if ($subjectUser) {
                 $data['subject'] = $subjectById->load('usersActive');
                 $data['tasks'] = $user->tasks
                     ->where('subject_id', $id);
@@ -164,12 +164,12 @@ class SubjectController extends Controller
                 ->whereIn('subject_id', $subjects)
                 ->first();
 
-            if ($subjectUserActive == null) {
+            if (!$subjectUserActive) {
                 $subjectUserInactive = $user->subjectUsers
                     ->where('status', config('number.inactive'))
                     ->whereIn('subject_id', $subjects)->first();
 
-                if ($subjectUserInactive != null) {
+                if ($subjectUserInactive) {
                     SubjectUser::where('id', $subjectUserInactive->id)
                         ->update(['status' => config('number.active')]);
                 } else {
