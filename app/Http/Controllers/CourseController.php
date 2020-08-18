@@ -108,7 +108,7 @@ class CourseController extends Controller
         if ($user->role_id == config('number.role.supervisor')) {
             $course = $courseById->load([
                 'subjects',
-                'courseUsers.user',
+                'courseUsers.user.courseActive',
             ]);
             $users = User::where([
                 ['role_id', config('number.role.trainee')],

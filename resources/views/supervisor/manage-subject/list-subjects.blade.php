@@ -5,6 +5,14 @@
         href="{{ asset('bower_components/bower_package/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" href="{{ asset('css/supervisor_list_courses.css') }}" >
     <link rel="stylesheet" type="text/css" href="{{ asset('css/message.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('bower_components/bower_package/datatables.net-bs4/css/dataTables.bootstrap4.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/supervisor_list_courses.css') }}" >
+    <script type="text/javascript" language="javascript"
+        src="{{ asset('bower_components/bower_package/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" language="javascript"
+        src="{{ asset('bower_components/bower_package/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('js/datatable.js') }}"></script>
 @endsection
 @section('content')
     @if (session('messenger'))
@@ -21,6 +29,10 @@
                         <div class="modal-dialog d-flex flex-column w-md bg-body" id="user-nav">
                             <div class="navbar">
                                 <span class="text-md mx-2">{{ trans('supervisor.list_subjects.group') }}</span>
+                                <a href="{{ route('subject.create') }}"
+                                    class="float-right btn btn-primary mt-2">
+                                    {{ trans('supervisor.create_subject.new_subject') }}
+                                </a>
                             </div>
                             <div class="scrollable hover">
                                 <div class="sidenav p-2">
@@ -72,13 +84,9 @@
                                         class="dataTables_wrapper dt-bootstrap4 no-footer">
                                         <div class="row">
                                             <div class="tab-content" id="v-pills-tabContent">
-                                                <a href="{{ route('subject.create') }}"
-                                                    class="float-right btn btn-primary mt-2">
-                                                    {{ trans('supervisor.create_subject.new_subject') }}
-                                                </a>
                                                 <div class="tab-pane fade show active" id="all"
                                                     role="tabpanel" aria-labelledby="v-pills-home-tab">
-                                                    <table id="datatable"
+                                                    <table id="example"
                                                         class="table table-theme table-row v-middle dataTable no-footer"
                                                         role="grid"
                                                         aria-describedby="datatable_info">
@@ -124,11 +132,11 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach ($subjects as $subject)
+                                                            @foreach ($subjects as $index => $subject)
                                                                 <tr class="odd" data-id="1" role="row">
                                                                     <td class="sorting_1 column-id">
                                                                         <small class="text-muted">
-                                                                            {{ $subject->id }}
+                                                                            {{ $index + config('number.init') }}
                                                                         </small>
                                                                     </td>
                                                                     <td>
@@ -224,16 +232,6 @@
                                                             @endforeach
                                                         </tbody>
                                                     </table>
-                                                    <div class="row">
-                                                        <div class="col-sm-12 col-md-5">
-                                                        </div>
-                                                        <div class="col-sm-12 col-md-7">
-                                                            <div class="dataTables_paginate paging_simple_numbers"
-                                                                id="datatable_paginate">
-                                                                {{ $subjects->links('pagination') }}
-                                                            </div>
-                                                        </div>
-                                                    </div>
                                                 </div>
                                                 @foreach ($courses as $course)
                                                     <div class="tab-pane fade show" id="{{ 'course'.$course->id }}"
@@ -284,10 +282,12 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                @foreach ($course->subjects as $subject)
+                                                                @foreach ($course->subjects as $index => $subject)
                                                                     <tr class="odd" data-id="1" role="row">
                                                                         <td class="sorting_1 column-id">
-                                                                            <small class="text-muted">{{ $subject->id }}</small>
+                                                                            <small class="text-muted">
+                                                                                {{ $index + config('number.init') }}
+                                                                            </small>
                                                                         </td>
                                                                         <td>
                                                                             <a href="#">

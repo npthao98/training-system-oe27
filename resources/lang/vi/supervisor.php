@@ -22,6 +22,7 @@ return [
         'message' => 'Thông báo',
         'notification' => 'Thông báo',
         'days' => 'ngày',
+        'message_active_course' => 'Bạn muốn học viên bắt đầu học khoá học này?',
     ],
     'list_courses' => [
         'list_courses' => 'Danh sách khoá học',

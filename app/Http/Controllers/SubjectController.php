@@ -65,15 +65,16 @@ class SubjectController extends Controller
         ]);
         $today = now()->format(config('view.format_date.date'));
 
-        foreach ($subject->usersActive as $user) {
+        foreach ($subject->usersActive as $userActive) {
             $todayParse = Carbon::parse($today);
-            $startTimeParse = Carbon::parse($user->pivot->start_time);
-            $user->time = $startTimeParse->diffInDays($todayParse, false);
+            $startTimeParse = Carbon::parse($userActive->pivot->start_time);
+            $userActive->time = $startTimeParse->diffInDays($todayParse, false);
         }
 
         if ($user->role_id == config('number.role.supervisor')) {
-            $tasks = $subject->tasks->load('user')
-                ->where('created_at', 'like', $today . "%");
+            $abc = 'Max';
+            $tasks = $subject->tasks
+                ->where('created_at', '>=', $today);
 
             return view('supervisor.manage-subject.detail-subject',
                 compact('subject', 'tasks'));
@@ -85,11 +86,6 @@ class SubjectController extends Controller
                 $data['subject'] = $subject;
                 $data['tasks'] = $user->tasks
                     ->where('subject_id', $id);
-                $data['task_new'] = Task::where([
-                    ['subject_id', $id],
-                    ['user_id', $user->id],
-                    ['status', config('number.task.new')],
-                ])->first();
                 $data['subjectUser'] = $subjectUser;
 
                 return view('trainee.detail-subject', $data);

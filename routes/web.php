@@ -26,11 +26,22 @@ Route::middleware('locale')->group(function () {
         Route::post('course/assign/{course}', 'CourseController@assign')->name('course.assign');
         Route::resource('subject','SubjectController');
         Route::resource('task','TaskController');
-        Route::get('/active/{course}/{user}', 'TraineeController@active')->name('active');
+        Route::put('/trainee/{trainee}/active-course/{course}', 'TraineeController@activeCourse')
+            ->name('trainee.course.active');
         Route::resource('trainee','TraineeController');
         Route::put('trainee/{trainee}/pass-subject/{subject}', 'TraineeController@passSubject')
             ->name('trainee.subject.pass');
         Route::get('assign', 'TraineeController@assign')->name('assign');
         Route::resource('supervisor','SupervisorController');
+        Route::get('edit-password', 'HomeController@editPassword')
+            ->name('user.edit.password');
+        Route::put('update-password', 'HomeController@updatePassword')
+            ->name('user.update.password');
+        Route::get('edit-profile', 'HomeController@editProfile')
+            ->name('user.edit.profile');
+        Route::get('update-profile', 'HomeController@updateProfile')
+            ->name('user.update.profile');
+        Route::get('detail-profile', 'HomeController@showProfile')
+            ->name('user.detail.profile');
     });
 });

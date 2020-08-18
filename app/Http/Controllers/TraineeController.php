@@ -31,20 +31,27 @@ class TraineeController extends Controller
             ->with('messenger', trans('both.message.update_success'));
     }
 
-    public function active($courseId, $userId)
+    public function activeCourse($courseId, $userId)
     {
+        $today = now()->format(config('view.format_date.date'));
         CourseUser::where([
             'course_id' => $courseId,
             'user_id' => $userId,
-        ])->update(['status' => config('number.active')]);
-
+        ])->update([
+            'status' => config('number.active'),
+            'start_time' => $today,
+        ]);
         $subject = Subject::where('course_id', $courseId)->first();
         SubjectUser::where([
             'user_id' => $userId,
             'subject_id' => $subject->id,
-        ])->update(['status' => config('number.active')]);
+        ])->update([
+            'status' => config('number.active'),
+            'start_time' => $today,
+        ]);
 
-        return redirect()->route('trainee.show', ['trainee' => $userId]);
+        return redirect()->back()
+            ->with('messenger', trans('both.message.update_success'));
     }
 
     public function assign() {
