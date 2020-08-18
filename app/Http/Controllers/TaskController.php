@@ -53,9 +53,9 @@ class TaskController extends Controller
         $data['created_at'] = now()->format(config('view.format_date.datetime'));
         $data = $request->merge($data);
         Task::create($data->all());
-        session(['messageTask' => trans('trainee.message.create_task')]);
 
-        return redirect(route('subject.show', ['subject' => $request['subject_id']]));
+        return redirect(route('subject.show', ['subject' => $request['subject_id']]))
+            ->with('messenger', trans('trainee.message.create_task'));
     }
 
     public function show($id)
@@ -64,10 +64,6 @@ class TaskController extends Controller
             'user',
             'subject',
         ]);
-        if (session()->has('messageTask')) {
-            $data['messenger'] = session('messageTask');
-            session()->forget('messageTask');
-        }
 
         return view('supervisor.manage-task.detail-task', $data);
     }
@@ -101,9 +97,8 @@ class TaskController extends Controller
                 $this->handelStatus($course);
             }
 
-            session(['messageTask' => trans('trainee.message.update_task')]);
-
-            return redirect()->route('task.show', ['task' => $id]);
+            return redirect()->route('task.show', ['task' => $id])
+                ->with('messenger', trans('trainee.message.update_task'));
         } else {
             $task = Task::findOrFail($id);
             $task->update($request->only([
@@ -112,9 +107,9 @@ class TaskController extends Controller
                 'comment',
                 'actual',
             ]));
-            session(['messageTask' => trans('trainee.message.update_task')]);
 
-            return redirect(route('subject.show', ['subject' => $task->subject_id]));
+            return redirect(route('subject.show', ['subject' => $task->subject_id]))
+                ->with('messenger', trans('trainee.message.update_task'));
         }
     }
 

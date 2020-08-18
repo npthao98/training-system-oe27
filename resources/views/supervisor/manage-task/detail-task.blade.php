@@ -11,10 +11,10 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/message.css') }}">
 @endsection
 @section('content')
-    @if (isset($messenger))
+    @if (session('messenger'))
         <div id="messenger" class="alert alert-success" role="alert">
             <i data-feather="check"></i>
-            <span class="mx-2">{{ $messenger }}</span>
+            <span class="mx-2">{{ session('messenger') }}</span>
         </div>
     @endif
     <div id="main" class="layout-column flex">

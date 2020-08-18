@@ -153,7 +153,7 @@ return [
         'female' => 'Nữ',
         'submit' => 'Thêm mới',
         'password' => 'Mật khẩu',
-        'default' => 'Mặc định: 123456',
+        'default' => 'Mặc định: "password"',
     ],
     'assign' => [
         'assign' => 'CHỈ ĐỊNH',

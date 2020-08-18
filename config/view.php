@@ -38,4 +38,5 @@ return [
         'datetime' => 'Y-m-d h:m:s',
     ],
     'password_default' => 'password',
+    'avatar_default' => 'avatar.png',
 ];

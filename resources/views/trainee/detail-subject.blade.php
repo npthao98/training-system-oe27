@@ -2,6 +2,7 @@
 @section('css')
     <script src="{{ asset('bower_components/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('bower_components/ckeditor/samples/js/sample.js') }}"></script>
+    <script src="{{ asset('js/message.js') }}"></script>
     <link rel="stylesheet" type="text/css"
         href="{{ asset('bower_components/bower_package/summernote/dist/summernote-bs4.css') }}">
     <link rel="stylesheet" type="text/css"
@@ -9,8 +10,15 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/supervisor_detail_course.css') }}">
     <script src="{{ asset('bower_components/bower_package/jquery/dist/jquery.min.js') }}"></script>
     <link type="text/css" rel="stylesheet" href="{{ asset('css/trainee_detail_subject.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/message.css') }}">
 @endsection
 @section('content')
+    @if (session('messenger'))
+        <div id="messenger" class="alert alert-success" role="alert">
+            <i data-feather="check"></i>
+            <span class="mx-2">{{ session('messenger') }}</span>
+        </div>
+    @endif
     <div id="main" class="layout-column flex">
         <div id="content" class="flex ">
             <div>
@@ -33,18 +41,6 @@
                             @endif
                         </h1>
                     </div>
-                    @if (isset($messenger))
-                        <div class="mr-5 ml-5 mt-5 alert alert-success alert-dismissible fade show" role="alert">
-                            <div class="d-flex justify-content-center">
-                                <div class="mx-3">
-                                    {{ $messenger }}
-                                </div>
-                            </div>
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
-                    @endif
                     <div class="padding">
                         <div class="d-flex justify-content-center">
                             <img class="w-50" src="{{ asset(config('image.folder') . $subject->image) }}"
