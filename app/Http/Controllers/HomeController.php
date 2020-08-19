@@ -28,4 +28,39 @@ class HomeController extends Controller
 
         return redirect()->back();
     }
+
+    public function editPassword()
+    {
+        if (auth()->user()->role_id == config('number.role.trainee')) {
+            return view('auth.trainee.edit-password');
+        } else {
+            return view('auth.supervisor.edit-password');
+        }
+    }
+
+    public function updatePassword()
+    {
+    }
+
+    public function editProfile()
+    {
+        if (auth()->user()->role_id == config('number.role.trainee')) {
+            return view('auth.trainee.edit-profile');
+        } else {
+            return view('auth.supervisor.edit-profile');
+        }
+    }
+
+    public function updateProfile()
+    {
+    }
+
+    public function showProfile()
+    {
+        if (auth()->user()->role_id == config('number.role.trainee')) {
+            return view('auth.trainee.detail-profile');
+        } else {
+            return view('auth.supervisor.detail-profile');
+        }
+    }
 }

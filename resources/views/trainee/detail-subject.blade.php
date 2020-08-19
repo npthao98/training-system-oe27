@@ -66,7 +66,7 @@
                         <div>
                             {{ $subject->description }}
                         </div>
-                        @if ($subjectUser->status == config('number.active') && $task_new == null)
+                        @if ($subjectUser->status == config('number.active'))
                             <div class="d-flex justify-content-center padding">
                                 <button type="button" class="btn w-sm mb-1 btn-outline-info"
                                     data-toggle="modal" data-target="#myModal">
@@ -93,8 +93,24 @@
                                                 @foreach ($tasks as $task)
                                                     <li class="list-group-item list-group-item-action">
                                                         <a href="#" data-toggle="modal" data-target="#task{{ $task->id }}">
-                                                            {{ trans('trainee.app.task') }} {{ $task->id }}
+                                                    <span class="nav-text">
+                                                        {{ $task->created_at }} -
+                                                        {{ $task->user->fullname }}
+                                                    </span>
                                                         </a>
+                                                        @if ($task->status == config('number.task.new'))
+                                                            <span class="badge badge-warning float-right">
+                                                        {{ trans('supervisor.detail_task.new') }}
+                                                    </span>
+                                                        @elseif ($task->status == config('number.task.passed'))
+                                                            <span class="badge badge-success float-right">
+                                                        {{ trans('supervisor.detail_task.passed') }}
+                                                    </span>
+                                                        @else
+                                                            <span class="badge badge-danger float-right">
+                                                        {{ trans('supervisor.detail_task.failed') }}
+                                                    </span>
+                                                        @endif
                                                     </li>
                                                     <div class="container">
                                                         <div class="modal fade" id="task{{ $task->id }}" role="dialog">

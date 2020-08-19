@@ -127,15 +127,56 @@
                                                         <td>
                                                             <div class="item-action dropdown">
                                                                 @if ($courseActive->isEmpty())
-                                                                    <a href="{{ route('active', ['course' => $course->id, 'user' => $user->id]) }}"
-                                                                        class="btn btn-primary">
+                                                                    <button type="submit" class="btn btn-primary"
+                                                                        data-toggle="modal"
+                                                                        data-target="#course{{ $course->id }}">
                                                                         {{ trans('supervisor.detail_user.active') }}
-                                                                    </a>
+                                                                    </button>
                                                                 @else
                                                                     <button disabled class="btn btn-primary">
                                                                         {{ trans('supervisor.detail_user.active') }}
                                                                     </button>
                                                                 @endif
+                                                                <div class="container">
+                                                                    <div class="modal fade" id="course{{ $course->id }}" role="dialog">
+                                                                        <div class="modal-dialog" role="document">
+                                                                            <div class="row">
+                                                                                <div class="col-md-2"></div>
+                                                                                <div class="col-md-8">
+                                                                                    <div class="modal-content box-shadow mb-4">
+                                                                                        <div class="modal-header">
+                                                                                            <h5>
+                                                                                                {{ trans('supervisor.app.course') }}:
+                                                                                                {{ $course->title }}
+                                                                                            </h5>
+                                                                                            <button class="close" data-dismiss="modal">&times;</button>
+                                                                                        </div>
+                                                                                        <div class="modal-body">
+                                                                                            <p>
+                                                                                                {{ trans('supervisor.app.message_active_course') }}
+                                                                                            </p>
+                                                                                        </div>
+                                                                                        <div class="modal-footer">
+                                                                                            <button class="btn btn-light" data-dismiss="modal">
+                                                                                                {{ trans('both.cancel') }}
+                                                                                            </button>
+                                                                                            <form action="{{ route('trainee.course.active',
+                                                                                                ['trainee' => $user->id, 'course' => $course->id]) }}"
+                                                                                                method="POST">
+                                                                                                @method('PUT')
+                                                                                                @csrf
+                                                                                                <button type="submit" class="btn btn-primary">
+                                                                                                    {{ trans('supervisor.detail_user.active') }}
+                                                                                                </button>
+                                                                                            </form>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-2"></div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
                                                             </div>
                                                         </td>
                                                     </tr>

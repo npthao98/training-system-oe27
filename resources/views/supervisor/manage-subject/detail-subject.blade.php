@@ -53,7 +53,6 @@
                         <div class="card mb-1">
                             <div class="card-header no-border" id="headingOne">
                                 <h4>
-                                    <span><i data-feather='arrow-right'></i></span>
                                     <span>
                                         <a href="#" data-toggle="collapse" data-target="#collapseOne"
                                             aria-expanded="false" aria-controls="collapseOne">
@@ -140,7 +139,6 @@
                         <div class="card mb-1">
                             <div class="card-header no-border" id="headingTwo">
                                 <h4>
-                                    <span><i data-feather='arrow-right'></i></span>
                                     <span>
                                         <a href="#" data-toggle="collapse" data-target="#collapseTwo"
                                             aria-expanded="false" aria-controls="collapseTwo">
@@ -160,10 +158,23 @@
                                             <li class="list-group-item">
                                                 <a href="{{ route('task.show', ['task' => $task->id]) }}" class="link">
                                                     <span class="nav-text">
-                                                        {{ trans('supervisor.app.task') . " " . $task->id . ": " }}
+                                                        {{ $task->created_at }} -
                                                         {{ $task->user->fullname }}
                                                     </span>
                                                 </a>
+                                                @if ($task->status == config('number.task.new'))
+                                                    <span class="badge badge-warning float-right">
+                                                        {{ trans('supervisor.detail_task.new') }}
+                                                    </span>
+                                                @elseif ($task->status == config('number.task.passed'))
+                                                    <span class="badge badge-success float-right">
+                                                        {{ trans('supervisor.detail_task.passed') }}
+                                                    </span>
+                                                @else
+                                                    <span class="badge badge-danger float-right">
+                                                        {{ trans('supervisor.detail_task.failed') }}
+                                                    </span>
+                                                @endif
                                             </li>
                                         @endforeach
                                     </ul>

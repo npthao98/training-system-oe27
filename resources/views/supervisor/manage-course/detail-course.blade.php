@@ -56,7 +56,6 @@
                         <div class="card mb-1">
                             <div class="card-header no-border" id="headingOne">
                                 <h4>
-                                    <span><i data-feather='arrow-right'></i></span>
                                     <span>
                                         <a href="#" data-toggle="collapse" data-target="#collapseOne"
                                             aria-expanded="false" aria-controls="collapseOne">
@@ -89,7 +88,6 @@
                         <div class="card mb-1">
                             <div class="card-header no-border" id="headingTwo">
                                 <h4>
-                                    <span><i data-feather='arrow-right'></i></span>
                                     <span>
                                         <a href="#" data-toggle="collapse" data-target="#collapseTwo"
                                             aria-expanded="false" aria-controls="collapseTwo">
@@ -109,23 +107,77 @@
                                             <li class="list-group-item">
                                                 <a href="{{ route('trainee.show', ['trainee' => $courseUser->user_id]) }}"
                                                     class="link">
-                                                        <span class="nav-text">
-                                                            {{ $courseUser->user->fullname }}
-                                                        </span>
-                                                    @if ($courseUser->status == config('number.active'))
-                                                        <span class="float-right text-infor font-weight-bold">
-                                                            {{ trans('both.status.active') }}
-                                                        </span>
-                                                    @elseif ($courseUser->status == config('number.inactive'))
-                                                        <span class="float-right text-warning font-weight-bold">
-                                                            {{ trans('both.status.inactive') }}
-                                                        </span>
-                                                    @else
-                                                        <span class="float-right text-success font-weight-bold">
-                                                            {{ trans('both.status.passed') }}
-                                                        </span>
-                                                    @endif
+                                                    <span class="nav-text">
+                                                        {{ $courseUser->user->fullname }}
+                                                    </span>
                                                 </a>
+                                                @if ($courseUser->status == config('number.active'))
+                                                    <span class="badge badge-info">
+                                                        {{ trans('both.status.active') }}
+                                                    </span>
+                                                @elseif ($courseUser->status == config('number.inactive'))
+                                                    <span class="badge badge-warning">
+                                                        {{ trans('both.status.inactive') }}
+                                                    </span>
+                                                @else
+                                                    <span class="badge badge-success">
+                                                        {{ trans('both.status.passed') }}
+                                                    </span>
+                                                @endif
+                                                <div class="item-action dropdown float-right">
+                                                    @if ($courseUser->user->courseActive->isEmpty()
+                                                        && $courseUser->status == config('number.inactive'))
+                                                        <button type="submit" class="btn btn-primary"
+                                                            data-toggle="modal"
+                                                            data-target="#course{{ $courseUser->id }}">
+                                                            {{ trans('supervisor.detail_user.active') }}
+                                                        </button>
+                                                    @else
+                                                        <button disabled class="btn btn-primary">
+                                                            {{ trans('supervisor.detail_user.active') }}
+                                                        </button>
+                                                    @endif
+                                                    <div class="container">
+                                                        <div class="modal fade" id="course{{ $courseUser->id }}" role="dialog">
+                                                            <div class="modal-dialog" role="document">
+                                                                <div class="row">
+                                                                    <div class="col-md-2"></div>
+                                                                    <div class="col-md-8">
+                                                                        <div class="modal-content box-shadow mb-4">
+                                                                            <div class="modal-header">
+                                                                                <h5>
+                                                                                    {{ trans('supervisor.app.course') }}:
+                                                                                    {{ $course->title }}
+                                                                                </h5>
+                                                                                <button class="close" data-dismiss="modal">&times;</button>
+                                                                            </div>
+                                                                            <div class="modal-body">
+                                                                                <p>
+                                                                                    {{ trans('supervisor.app.message_active_course') }}
+                                                                                </p>
+                                                                            </div>
+                                                                            <div class="modal-footer">
+                                                                                <button class="btn btn-light" data-dismiss="modal">
+                                                                                    {{ trans('both.cancel') }}
+                                                                                </button>
+                                                                                <form action="{{ route('trainee.course.active',
+                                                                                    ['trainee' => $courseUser->user_id, 'course' => $course->id]) }}"
+                                                                                    method="POST">
+                                                                                    @method('PUT')
+                                                                                    @csrf
+                                                                                    <button type="submit" class="btn btn-primary">
+                                                                                        {{ trans('supervisor.detail_user.active') }}
+                                                                                    </button>
+                                                                                </form>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-2"></div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </li>
                                         @endforeach
                                     </ul>

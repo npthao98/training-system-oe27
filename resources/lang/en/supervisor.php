@@ -22,6 +22,7 @@ return [
         'message' => 'Message',
         'notification' => 'Notification',
         'days' => 'days',
+        'message_active_course' => 'Do you want to trainee active this course?',
     ],
     'list_courses' => [
         'list_courses' => 'List Courses',
