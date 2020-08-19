@@ -39,7 +39,7 @@ Route::middleware('locale')->group(function () {
             ->name('user.update.password');
         Route::get('edit-profile', 'HomeController@editProfile')
             ->name('user.edit.profile');
-        Route::get('update-profile', 'HomeController@updateProfile')
+        Route::put('update-profile', 'HomeController@updateProfile')
             ->name('user.update.profile');
         Route::get('detail-profile', 'HomeController@showProfile')
             ->name('user.detail.profile');

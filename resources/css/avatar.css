@@ -1,0 +1,18 @@
+#imageUpload {
+    display: none;
+}
+#profileImage {
+    cursor: pointer;
+}
+#profile-container {
+    width: 250px;
+    height: 250px;
+    overflow: hidden;
+}
+#profile-container img {
+    width: 250px;
+    height: 250px;
+}
+.add-image {
+    position: relative;
+}
