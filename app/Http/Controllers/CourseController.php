@@ -38,8 +38,7 @@ class CourseController extends Controller
                     'user_id' => intval($user),
                     'status' => config('number.inactive'),
                     'start_time' => $date,
-                    'end_time' => now()->addDays($subject->time)
-                        ->format(config('view.format_date.date')),
+                    'end_time' => $this->calculatorEndTime($subject->time),
                 ]);
             }
         }
@@ -131,7 +130,7 @@ class CourseController extends Controller
                 foreach ($course->traineesActive as $user) {
                     $todayParse = Carbon::parse($today);
                     $startTimeParse = Carbon::parse($user->pivot->start_time);
-                    $user->time = $startTimeParse->diffInDays($todayParse, false);
+                    $user->time = $todayParse->diffInWeekdays($startTimeParse);
                 }
 
                 return view('trainee.detail-course', compact('course', 'courseUser'));
@@ -230,9 +229,10 @@ class CourseController extends Controller
     public function handelStatus($courseId, $subjectsNotDeleteId)
     {
         $courseUsersActive = CourseUser::where([
-            ['course_id', $courseId],
-            ['status', config('number.active')],
+            'course_id' => $courseId,
+            'status' => config('number.active'),
         ])->with('user')->get();
+        $today = now()->format(config('view.format_date.date'));
 
         foreach ($courseUsersActive as $courseUserActive) {
             $user = $courseUserActive->user;
@@ -246,16 +246,36 @@ class CourseController extends Controller
                     ->where('status', config('number.inactive'))
                     ->whereIn('subject_id', $subjectsNotDeleteId)->first();
 
-                if (!$subjectUserInactive) {
-                    SubjectUser::where('id', $subjectUserInactive->id)
-                        ->update(['status' => config('number.active')]);
+                if ($subjectUserInactive) {
+                    $subjectUserInactive->update([
+                        'status' => config('number.active'),
+                        'star_time' => $today,
+                        'end_time' => $this->calculatorEndTime($subjectUserInactive->subject->time),
+                    ]);
                 } else {
                     CourseUser::where([
-                        ['course_id', $courseId],
-                        ['user_id', $user->id]
-                    ])->update(['status' => config('number.passed')]);
+                        'course_id' => $courseId,
+                        'user_id' => $user->id,
+                    ])->update([
+                        'status' => config('number.passed'),
+                        'end_time' => $today,
+                    ]);
                 }
             }
         }
+    }
+
+    public function calculatorEndTime($time)
+    {
+        $startTime = Carbon::parse(now()->format(config('view.format_date.date')));
+        $guessEndTime = Carbon::parse(now()->addDays($time)->format(config('view.format_date.date')));
+
+        $rangeWithoutWeekend = $guessEndTime->diffInWeekdays($startTime);
+        $rangeWeekend = $time - $rangeWithoutWeekend;
+        $rangeActual = $time + $rangeWeekend;
+
+        $endTime = now()->addDays($rangeActual)->format(config('view.format_date.date'));
+
+        return $endTime;
     }
 }

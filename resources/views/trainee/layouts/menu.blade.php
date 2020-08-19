@@ -57,19 +57,6 @@
                             </span>
                         </a>
                     </li>
-                    <li>
-                        <a href="{{ route('calendar') }}">
-                            <span class="nav-icon text-info">
-                                <i data-feather='calendar'></i>
-                            </span>
-                            <span class="nav-text">
-                                {{ trans('trainee.app.calendar') }}
-                            </span>
-                            <span class="nav-badge calendar">
-                                <b class="badge-circle xs text-danger"></b>
-                            </span>
-                        </a>
-                    </li>
                 </ul>
             </div>
         </div>

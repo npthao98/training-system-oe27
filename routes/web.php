@@ -20,7 +20,6 @@ Route::middleware('locale')->group(function () {
         Route::get('/home', 'HomeController@index')->name('home');
         Route::get('change-language/{language}', 'HomeController@changeLanguage')
             ->name('user.change-language');
-        Route::get('/calendar', 'TraineeController@showCalendar')->name('calendar');
         Route::get('/progress', 'TraineeController@showProgress')->name('progress');
         Route::resource('course','CourseController');
         Route::post('course/assign/{course}', 'CourseController@assign')->name('course.assign');
@@ -43,5 +42,6 @@ Route::middleware('locale')->group(function () {
             ->name('user.update.profile');
         Route::get('detail-profile', 'HomeController@showProfile')
             ->name('user.detail.profile');
+        Route::get('calendar/data', 'HomeController@getDate')->name('calendar.data');
     });
 });

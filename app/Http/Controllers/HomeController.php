@@ -15,6 +15,18 @@ class HomeController extends Controller
         $this->middleware('auth');
     }
 
+    public function getdate()
+    {
+        $courseUser = auth()->user()->courseUserActive->load('course');
+        $subjectUser = auth()->user()->subjectUsersActive->load('subject');
+        $data = [
+            $courseUser,
+            $subjectUser,
+        ];
+
+        return $data;
+    }
+
     public function index()
     {
         if (auth()->user()->role_id == config('number.role.trainee')) {

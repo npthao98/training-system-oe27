@@ -9,6 +9,7 @@ use App\Models\Role;
 use App\Models\Subject;
 use App\Models\SubjectUser;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class TraineeController extends Controller
@@ -25,21 +26,28 @@ class TraineeController extends Controller
         ]);
         $course = Subject::find($subjectId)->course;
         $user = User::find($userID);
-        $this->handelStatus($course, $user, $today);
+        $this->handelStatus($course, $user);
 
         return redirect()->back()
             ->with('messenger', trans('both.message.update_success'));
     }
 
-    public function activeCourse($courseId, $userId)
+    public function activeCourse($userId, $courseId)
     {
         $today = now()->format(config('view.format_date.date'));
+        $subjects = Course::find($courseId)->subjects;
+        $time = config('number.total_init');
+
+        foreach ($subjects as $subject_detail) {
+            $time += $subject_detail->time;
+        }
         CourseUser::where([
             'course_id' => $courseId,
             'user_id' => $userId,
         ])->update([
             'status' => config('number.active'),
             'start_time' => $today,
+            'end_time' => $this->calculatorEndTime($time),
         ]);
         $subject = Subject::where('course_id', $courseId)->first();
         SubjectUser::where([
@@ -48,6 +56,7 @@ class TraineeController extends Controller
         ])->update([
             'status' => config('number.active'),
             'start_time' => $today,
+            'end_time' => $this->calculatorEndTime($subject->time),
         ]);
 
         return redirect()->back()
@@ -65,13 +74,6 @@ class TraineeController extends Controller
         $subjects = $user->subjectsNotInactive->sortBy('pivot.start_time');
 
         return view('trainee.progress', compact('courses', 'subjects'));
-    }
-
-    public function showCalendar()
-    {
-        $subjectUser = auth()->user()->subjectUsersActive;
-
-        return view('trainee.calendar', compact('subjectUser'));
     }
 
     public function index()
@@ -162,27 +164,43 @@ class TraineeController extends Controller
         }
     }
 
-    public function handelStatus($course, $user, $today)
+    public function handelStatus($course, $user)
     {
         $subjects = $course->subjects->modelKeys();
-        $subject_user_inactive = $user->subjectUsers
+        $subjectUserInactive = $user->subjectUsers
             ->where('status', config('number.inactive'))
             ->whereIn('subject_id', $subjects)->first();
+        $startTime = now()->format(config('view.format_date.date'));
 
-        if ($subject_user_inactive) {
-            SubjectUser::where('id', $subject_user_inactive->id)
+        if ($subjectUserInactive) {
+            SubjectUser::where('id', $subjectUserInactive->id)
                 ->update([
                     'status' => config('number.active'),
-                    'start_time' => $today,
+                    'start_time' => $startTime,
+                    'end_time' => $this->calculatorEndTime($subjectUserInactive->subject->time),
                 ]);
         } else {
             CourseUser::where([
-                ['course_id', $course->id],
-                ['user_id', $user->id]
+                'course_id' => $course->id,
+                'user_id' => $user->id,
             ])->update([
                 'status' => config('number.passed'),
-                'end_time' => $today,
+                'end_time' => $startTime,
             ]);
         }
+    }
+
+    public function calculatorEndTime($time)
+    {
+        $startTime = Carbon::parse(now()->format(config('view.format_date.date')));
+        $guessEndTime = Carbon::parse(now()->addDays($time)->format(config('view.format_date.date')));
+
+        $rangeWithoutWeekend = $guessEndTime->diffInWeekdays($startTime);
+        $rangeWeekend = $time - $rangeWithoutWeekend;
+        $rangeActual = $time + $rangeWeekend;
+
+        $endTime = now()->addDays($rangeActual)->format(config('view.format_date.date'));
+
+        return $endTime;
     }
 }
