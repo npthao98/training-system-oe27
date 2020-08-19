@@ -50,6 +50,9 @@
                                 <a href="#" data-toggle="collapse" data-target="#collapseOne"
                                     aria-expanded="false" aria-controls="collapseOne">
                                     {{ trans('trainee.detail_course.list_subjects') }}
+                                    <span class="badge badge-success float-right">
+                                        {{ count($course->subjects) }}
+                                    </span>
                                 </a>
                             </div>
                             <div id="collapseOne" class="collapse" aria-labelledby="headingOne"
@@ -72,6 +75,9 @@
                                 <a href="#" data-toggle="collapse" data-target="#collapseTwo"
                                     aria-expanded="false" aria-controls="collapseTwo">
                                     {{ trans('trainee.detail_course.list_trainees') }}
+                                    <span class="badge badge-success float-right">
+                                        {{ count($course->traineesActive) }}
+                                    </span>
                                 </a>
                             </div>
                             <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
@@ -81,7 +87,10 @@
                                         @foreach ($course->traineesActive as $trainee)
                                             <li class="list-group-item list-group-item-action">
                                                 <a href="{{ route('trainee.show', ['trainee' => $trainee->id]) }}">
-                                                    {{ $trainee->fullname }}
+                                                    <span>{{ $trainee->fullname }}</span>
+                                                    <span class="text-info">
+                                                        ( {{ trans('supervisor.detail_subject.workdays') . ' : ' . $trainee->time }} )
+                                                    </span>
                                                 </a>
                                             </li>
                                         @endforeach
@@ -92,6 +101,11 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="d-flex justify-content-center mb-5">
+            <a href="{{ url()->previous() }}" class="btn btn-primary w-sm">
+                {{ trans('both.back') }}
+            </a>
         </div>
     </div>
 @endsection

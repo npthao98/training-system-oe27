@@ -2,25 +2,44 @@
 @section('css')
     <script src="{{ asset('bower_components/ckeditor/ckeditor.js') }}"></script>
     <script src="{{ asset('bower_components/ckeditor/samples/js/sample.js') }}"></script>
+    <script src="{{ asset('js/message.js') }}"></script>
     <link rel="stylesheet" type="text/css"
         href="{{ asset('bower_components/bower_package/summernote/dist/summernote-bs4.css') }}">
     <link rel="stylesheet" type="text/css"
         href="{{ asset('bower_components/bower_package/summernote/dist/summernote.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/supervisor_detail_course.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/message.css') }}">
 @endsection
 @section('content')
+    @if (session('messenger'))
+        <div id="messenger" class="alert alert-success" role="alert">
+            <i data-feather="check"></i>
+            <span class="mx-2">{{ session('messenger') }}</span>
+        </div>
+    @endif
     <div id="main" class="layout-column flex">
         <div id="content" class="flex ">
             <div>
                 <div class="page-hero page-container " id="page-hero">
-                    <div class="padding d-flex">
+                    <div class="padding">
                         <div class="page-title">
-                            <h2 class="text-md text-highlight">
-                                {{ trans('supervisor.detail_subject.detail_subject') }}
-                            </h2>
+                            <div class="float-left">
+                                <p>
+                                    <a href="{{ route('course.show', ['course' => $subject->course_id]) }}">
+                                        {{ trans('trainee.app.course') . ' '
+                                            . $subject->course_id . ': ' .  $subject->course->title }}
+                                    </a>
+                                </p>
+                            </div>
+                            <div class="float-right">
+                                <h3 class="text-success">
+                                    {{ trans('supervisor.list_subjects.time')
+                                        . ' : ' . $subject->time . ' ' . trans('supervisor.app.days') }}
+                                </h3>
+                            </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-center">
+                    <div class="d-flex justify-content-center mt-5">
                         <h1>
                             {{ $subject->title }}
                         </h1>
@@ -42,7 +61,7 @@
                                         </a>
                                     </span>
                                     <span class="badge badge-success float-right">
-                                        {{ count($subject->users) }}
+                                        {{ count($subject->usersActive) }}
                                     </span>
                                 </h4>
                             </div>
@@ -50,49 +69,104 @@
                                 data-parent="#accordion">
                                 <div class="card-body">
                                     <ul class="list-group list-group-flush">
-                                        @foreach ($subject->users as $user)
+                                        @foreach ($subject->usersActive as $user)
                                             <li class="list-group-item">
                                                 <a href="{{ route('trainee.show', ['trainee' => $user->id]) }}" class="link">
                                                     <span class="nav-text">
                                                         {{ $user->fullname }}
                                                     </span>
+                                                    @if ($user->time > $subject->time)
+                                                        <span class="text-danger">
+                                                            ( {{ trans('supervisor.detail_subject.workdays') . ' : ' . $user->time }} )
+                                                        </span>
+                                                    @else
+                                                        <span class="text-warning">
+                                                            ( {{ trans('supervisor.detail_subject.workdays') . ' : ' . $user->time }} )
+                                                        </span>
+                                                    @endif
                                                 </a>
+                                                <span class="float-right">
+                                                    <button type="submit" class="btn btn-primary w-sm"
+                                                        data-toggle="modal" data-target="#passUser{{ $user->id }}">
+                                                        {{ trans('supervisor.detail_task.pass') }}
+                                                    </button>
+                                                </span>
+                                                <div class="container">
+                                                    <div class="modal fade" id="passUser{{ $user->id }}" role="dialog">
+                                                        <div class="modal-dialog" role="document">
+                                                            <div class="row">
+                                                                <div class="col-md-3"></div>
+                                                                <div class="col-md-6">
+                                                                    <div class="modal-content box-shadow mb-4">
+                                                                        <div class="modal-header">
+                                                                            <h5 class="modal-title">
+                                                                                {{ trans('supervisor.app.message') }} :
+                                                                                {{ $user->fullname }}
+                                                                            </h5>
+                                                                            <button class="close" data-dismiss="modal">&times;</button>
+                                                                        </div>
+                                                                        <div class="modal-body">
+                                                                            <p>
+                                                                                {{ trans('supervisor.detail_subject.message_pass') }}
+                                                                            </p>
+                                                                        </div>
+                                                                        <div class="modal-footer">
+                                                                            <button class="btn btn-light" data-dismiss="modal">
+                                                                                {{ trans('both.cancel') }}
+                                                                            </button>
+                                                                            <form action="{{ route('trainee.subject.pass',
+                                                                                ['trainee' => $user->id, 'subject' => $subject->id]) }}"
+                                                                                method="post">
+                                                                                @method('PUT')
+                                                                                @csrf
+                                                                                <button type="submit" class="btn btn-primary w-sm">
+                                                                                    {{ trans('supervisor.detail_task.pass') }}
+                                                                                </button>
+                                                                            </form>
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3"></div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
                                             </li>
                                         @endforeach
                                     </ul>
                                 </div>
                             </div>
-                            <div class="card mb-1">
-                                <div class="card-header no-border" id="headingTwo">
-                                    <h4>
-                                        <span><i data-feather='arrow-right'></i></span>
-                                        <span>
-                                            <a href="#" data-toggle="collapse" data-target="#collapseTwo"
-                                                aria-expanded="false" aria-controls="collapseTwo">
-                                                {{ trans('supervisor.detail_subject.list_tasks') }}
-                                            </a>
-                                        </span>
-                                        <span class="badge badge-success float-right">
-                                            {{ count($tasks) }}
-                                        </span>
-                                    </h4>
-                                </div>
-                                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
-                                    data-parent="#accordion">
-                                    <div class="card-body">
-                                        <ul class="list-group list-group-flush">
-                                            @foreach ($tasks as $task)
-                                                <li class="list-group-item">
-                                                    <a href="{{ route('task.show', ['task' => $task->id]) }}" class="link">
-                                                        <span class="nav-text">
-                                                            {{ trans('supervisor.app.task') . " " . $task->id . ": " }}
-                                                            {{ $task->user->fullname }}
-                                                        </span>
-                                                    </a>
-                                                </li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
+                        </div>
+                        <div class="card mb-1">
+                            <div class="card-header no-border" id="headingTwo">
+                                <h4>
+                                    <span><i data-feather='arrow-right'></i></span>
+                                    <span>
+                                        <a href="#" data-toggle="collapse" data-target="#collapseTwo"
+                                            aria-expanded="false" aria-controls="collapseTwo">
+                                            {{ trans('supervisor.detail_subject.list_tasks') }}
+                                        </a>
+                                    </span>
+                                    <span class="badge badge-success float-right">
+                                        {{ count($tasks) }}
+                                    </span>
+                                </h4>
+                            </div>
+                            <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo"
+                                data-parent="#accordion">
+                                <div class="card-body">
+                                    <ul class="list-group list-group-flush">
+                                        @foreach ($tasks as $task)
+                                            <li class="list-group-item">
+                                                <a href="{{ route('task.show', ['task' => $task->id]) }}" class="link">
+                                                    <span class="nav-text">
+                                                        {{ trans('supervisor.app.task') . " " . $task->id . ": " }}
+                                                        {{ $task->user->fullname }}
+                                                    </span>
+                                                </a>
+                                            </li>
+                                        @endforeach
+                                    </ul>
                                 </div>
                             </div>
                         </div>
@@ -164,6 +238,7 @@
                 </div>
             </div>
         </div>
+    </div>
 @endsection
 @section('js')
     <script src="{{ asset('bower_components/bower_package/typeahead.js/dist/typeahead.bundle.min.js') }}"></script>

@@ -21,6 +21,7 @@ return [
         'sign_out' => 'Đăng xuất',
         'message' => 'Thông báo',
         'notification' => 'Thông báo',
+        'days' => 'ngày',
     ],
     'list_courses' => [
         'list_courses' => 'Danh sách khoá học',
@@ -89,6 +90,8 @@ return [
         'list_tasks' =>  'Danh sách báo cáo trong ngày',
         'list_trainees' => 'Danh sách học viên đang tham gia',
         'message_delete' => 'Bạn muốn xoá chủ đề này?',
+        'workdays' => 'số ngày học',
+        'message_pass' => 'Bạn muốn hoàn thành chủ đề cho học viên này?',
     ],
     'list_tasks' => [
         'id' => 'STT',

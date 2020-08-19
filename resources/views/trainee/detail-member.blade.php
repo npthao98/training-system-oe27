@@ -131,7 +131,7 @@
                         </div>
                         <br>
                         <div class="d-flex justify-content-center">
-                            <a href="{{ route('subject.show', ['subject' => $subject_id]) }}"
+                            <a href="{{ url()->previous()  }}"
                                 class="btn w-sm mb-1 btn-info">
                                 {{ trans('trainee.detail_member.back') }}
                             </a>

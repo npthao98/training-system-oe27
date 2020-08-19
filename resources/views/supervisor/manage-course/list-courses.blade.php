@@ -5,6 +5,14 @@
         href="{{ asset('bower_components/bower_package/datatables.net-bs4/css/dataTables.bootstrap4.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/supervisor_list_courses.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/message.css') }}">
+    <link rel="stylesheet" type="text/css"
+        href="{{ asset('bower_components/bower_package/datatables.net-bs4/css/dataTables.bootstrap4.css') }}">
+    <link rel="stylesheet" href="{{ asset('css/supervisor_list_courses.css') }}" >
+    <script type="text/javascript" language="javascript"
+        src="{{ asset('bower_components/bower_package/datatables/media/js/jquery.dataTables.min.js') }}"></script>
+    <script type="text/javascript" language="javascript"
+        src="{{ asset('bower_components/bower_package/datatables.net-bs4/js/dataTables.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('js/datatable.js') }}"></script>
 @endsection
 @section('content')
     @if (session('messenger'))
@@ -18,14 +26,15 @@
             <div>
                 <div class="page-hero page-container " id="page-hero">
                     <div class="padding pb-0">
-                        <div class="page-title">
+                        <div class="page-title mb-5">
                             <h2 class="text-md text-highlight">
                                 {{ trans('supervisor.list_courses.list_courses') }}
+                                <a href="{{ route('course.create') }}"
+                                    class="btn btn-primary mt-2 float-right">
+                                    {{ trans('supervisor.create_course.new_course') }}
+                                </a>
                             </h2>
                         </div>
-                        <a href="{{ route('course.create') }}" class="btn btn-primary mt-2">
-                            {{ trans('supervisor.create_course.new_course') }}
-                        </a>
                     </div>
                 </div>
                 <div class="page-content page-container" id="page-content">
@@ -34,57 +43,57 @@
                             <div id="datatable_wrapper" class="dataTables_wrapper dt-bootstrap4 no-footer">
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <table id="datatable"
+                                        <table id="example"
                                             class="table table-theme table-row v-middle dataTable no-footer"
                                             role="grid"
                                             aria-describedby="datatable_info">
                                             <thead>
-                                            <tr role="row">
-                                                <th class="sorting_asc column-width27" tabindex="0"
-                                                    aria-controls="datatable" rowspan="1"
-                                                    colspan="1" aria-sort="ascending"
-                                                    aria-label="ID: activate to sort column descending">
-                                                    <span class="text-muted">
-                                                        {{ trans('supervisor.list_courses.id') }}
-                                                    </span>
-                                                </th>
-                                                <th class="sorting column-width39" tabindex="0"
-                                                    aria-controls="datatable" rowspan="1" colspan="1"
-                                                    aria-label="Owner: activate to sort column ascending">
-                                                    <span class="text-muted">
-                                                        {{ trans('supervisor.list_courses.image') }}
-                                                    </span>
-                                                </th>
-                                                <th class="sorting column-width768" tabindex="0"
-                                                    aria-controls="datatable" rowspan="1" colspan="1"
-                                                    aria-label="Project: activate to sort column ascending">
-                                                    <span class="text-muted">
-                                                        {{ trans('supervisor.list_courses.title') }}
-                                                    </span>
-                                                </th>
-                                                <th class="sorting_disabled column-width34" rowspan="1"
-                                                    colspan="1" aria-label="Tasks">
-                                                    <span class="text-muted d-none d-sm-block">
-                                                        {{ trans('supervisor.list_courses.subjects') }}
-                                                    </span>
-                                                </th>
-                                                <th class="sorting_disabled column-width35" rowspan="1"
-                                                    colspan="1" aria-label="Finish">
-                                                    <span class="text-muted d-none d-sm-block">
-                                                        {{ trans('supervisor.list_courses.attending') }}
-                                                    </span>
-                                                </th>
-                                                <th class="sorting_disabled column-width17" rowspan="1"
-                                                    colspan="1" aria-label="">
-                                                </th>
-                                            </tr>
+                                                <tr role="row">
+                                                    <th class="sorting_asc column-width27" tabindex="0"
+                                                        aria-controls="datatable" rowspan="1"
+                                                        colspan="1" aria-sort="ascending"
+                                                        aria-label="ID: activate to sort column descending">
+                                                        <span class="text-muted">
+                                                            {{ trans('supervisor.list_courses.id') }}
+                                                        </span>
+                                                    </th>
+                                                    <th class="sorting column-width39" tabindex="0"
+                                                        aria-controls="datatable" rowspan="1" colspan="1"
+                                                        aria-label="Owner: activate to sort column ascending">
+                                                        <span class="text-muted">
+                                                            {{ trans('supervisor.list_courses.image') }}
+                                                        </span>
+                                                    </th>
+                                                    <th class="sorting column-width768" tabindex="0"
+                                                        aria-controls="datatable" rowspan="1" colspan="1"
+                                                        aria-label="Project: activate to sort column ascending">
+                                                        <span class="text-muted">
+                                                            {{ trans('supervisor.list_courses.title') }}
+                                                        </span>
+                                                    </th>
+                                                    <th class="sorting_disabled column-width34" rowspan="1"
+                                                        colspan="1" aria-label="Tasks">
+                                                        <span class="text-muted d-none d-sm-block">
+                                                            {{ trans('supervisor.list_courses.subjects') }}
+                                                        </span>
+                                                    </th>
+                                                    <th class="sorting_disabled column-width35" rowspan="1"
+                                                        colspan="1" aria-label="Finish">
+                                                        <span class="text-muted d-none d-sm-block">
+                                                            {{ trans('supervisor.list_courses.attending') }}
+                                                        </span>
+                                                    </th>
+                                                    <th class="sorting_disabled column-width17" rowspan="1"
+                                                        colspan="1" aria-label="">
+                                                    </th>
+                                                </tr>
                                             </thead>
                                             <tbody>
-                                                @foreach ($courses as $course)
+                                                @foreach ($courses as $index => $course)
                                                     <tr class="odd" data-id="1" role="row">
                                                         <td class="sorting_1 column-id">
                                                             <small class="text-muted">
-                                                                {{ $course->id }}
+                                                                {{ $index + config('number.init') }}
                                                             </small>
                                                         </td>
                                                         <td>
@@ -179,15 +188,6 @@
                                                 @endforeach
                                             </tbody>
                                         </table>
-                                    </div>
-                                </div>
-                                <div class="row">
-                                    <div class="col-sm-12 col-md-5">
-                                    </div>
-                                    <div class="col-sm-12 col-md-7">
-                                        <div class="dataTables_paginate paging_simple_numbers" id="datatable_paginate">
-                                            {{ $courses->links('pagination') }}
-                                        </div>
                                     </div>
                                 </div>
                             </div>

@@ -11,6 +11,7 @@ use App\Models\Subject;
 use App\Models\SubjectUser;
 use App\Models\Task;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CourseController extends Controller
@@ -55,7 +56,7 @@ class CourseController extends Controller
             $data['courses'] = Course::withCount([
                 'subjects',
                 'courseUsers',
-            ])->paginate(config('view.paginate_10'));
+            ])->get();
 
             return view('supervisor.manage-course.list-courses', $data);
         } else {
@@ -102,6 +103,7 @@ class CourseController extends Controller
     {
         $user = auth()->user();
         $courseById = Course::find($id);
+        $today = now()->format(config('view.format_date.date'));
 
         if ($user->role_id == config('number.role.supervisor')) {
             $course = $courseById->load([
@@ -125,6 +127,12 @@ class CourseController extends Controller
                     'subjects',
                     'traineesActive',
                 ]);
+
+                foreach ($course->traineesActive as $user) {
+                    $todayParse = Carbon::parse($today);
+                    $startTimeParse = Carbon::parse($user->pivot->start_time);
+                    $user->time = $startTimeParse->diffInDays($todayParse, false);
+                }
 
                 return view('trainee.detail-course', compact('course', 'courseUser'));
             } else {

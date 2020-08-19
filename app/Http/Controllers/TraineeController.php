@@ -13,6 +13,24 @@ use Illuminate\Http\Request;
 
 class TraineeController extends Controller
 {
+    public function passSubject($userID, $subjectId)
+    {
+        $today = now()->format(config('view.format_date.date'));
+        SubjectUser::where([
+            'user_id' => $userID,
+            'subject_id' => $subjectId,
+        ])->update([
+            'status' => config('number.passed'),
+            'end_time' => $today,
+        ]);
+        $course = Subject::find($subjectId)->course;
+        $user = User::find($userID);
+        $this->handelStatus($course, $user, $today);
+
+        return redirect()->back()
+            ->with('messenger', trans('both.message.update_success'));
+    }
+
     public function active($courseId, $userId)
     {
         CourseUser::where([
@@ -134,6 +152,30 @@ class TraineeController extends Controller
 
             return redirect()->back()
                 ->with('messenger', trans('supervisor.detail_user.unlock_success'));
+        }
+    }
+
+    public function handelStatus($course, $user, $today)
+    {
+        $subjects = $course->subjects->modelKeys();
+        $subject_user_inactive = $user->subjectUsers
+            ->where('status', config('number.inactive'))
+            ->whereIn('subject_id', $subjects)->first();
+
+        if ($subject_user_inactive) {
+            SubjectUser::where('id', $subject_user_inactive->id)
+                ->update([
+                    'status' => config('number.active'),
+                    'start_time' => $today,
+                ]);
+        } else {
+            CourseUser::where([
+                ['course_id', $course->id],
+                ['user_id', $user->id]
+            ])->update([
+                'status' => config('number.passed'),
+                'end_time' => $today,
+            ]);
         }
     }
 }

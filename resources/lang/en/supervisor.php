@@ -21,6 +21,7 @@ return [
         'sign_out' => 'Sign out',
         'message' => 'Message',
         'notification' => 'Notification',
+        'days' => 'days',
     ],
     'list_courses' => [
         'list_courses' => 'List Courses',
@@ -89,6 +90,8 @@ return [
         'list_tasks' =>  'List Tasks Of Today',
         'list_trainees' => 'List Trainees Attending',
         'message_delete' => 'Do you want to delete this subject?',
+        'workdays' => 'workdays',
+        'message_pass' => 'Do you want to pass subject for this user?',
     ],
     'list_tasks' => [
         'id' => 'ID',
