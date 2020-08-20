@@ -44,19 +44,20 @@
             <li class="nav-item dropdown">
                 <a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center px-2 text-color">
                     <span class="avatar-image avatar w-24">
-                        <img src="{{ asset(config('image.vi')) }}"></span>
+                        <img src="{{ asset(config('image.folder') . Auth::user()->avatar) }}">
+                    </span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right w mt-3 animate fadeIn">
-                    <a class="dropdown-item" href="#">
+                    <div class="ml-4">
                         <span>{{ trans('supervisor.app.fullname') }}</span>
+                    </div>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="{{ route('user.detail.profile') }}">
+                        <span>{{ trans('both.my_profile') }}</span>
                     </a>
                     <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">
-                        <span>{{ trans('supervisor.app.profile') }}</span>
-                    </a>
-                    <div class="dropdown-divider"></div>
-                    <a class="dropdown-item" href="#">
-                        <span>{{ trans('supervisor.app.account_settings') }}</span>
+                    <a class="dropdown-item" href="{{ route('user.edit.password') }}">
+                        <span>{{ trans('both.change_password') }}</span>
                     </a>
                     <form id="logout-form" action="{{ route('logout') }}" method="POST">
                         @csrf

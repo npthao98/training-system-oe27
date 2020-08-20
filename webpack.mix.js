@@ -7,6 +7,7 @@ mix.js('resources/js/create_subject.js', 'public/js/create_subject.js')
     .js('resources/js/ckeditor.js', 'public/js/ckeditor.js')
     .js('resources/js/add_subject.js', 'public/js/add_subject.js')
     .js('resources/js/datatable.js', 'public/js/datatable.js')
+    .js('resources/js/avatar.js', 'public/js/avatar.js')
     .js('resources/js/assign_trainee.js', 'public/js/assign_trainee.js');
 
 mix.styles('resources/css/supervisor_detail_course.css', 'public/css/supervisor_detail_course.css')
@@ -18,6 +19,7 @@ mix.styles('resources/css/supervisor_detail_course.css', 'public/css/supervisor_
     .styles('resources/css/login.css', 'public/css/login.css')
     .styles('resources/css/dashboard.css', 'public/css/dashboard.css')
     .styles('resources/css/progress.css', 'public/css/progress.css')
+    .styles('resources/css/avatar.css', 'public/css/avatar.css')
     .styles('resources/css/message.css', 'public/css/message.css');
 
 mix.sass('resources/sass/app.scss', 'public/css/app');
