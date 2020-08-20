@@ -62,6 +62,11 @@ class User extends Authenticatable
         return $this->hasMany(CourseUser::class);
     }
 
+    public function courseUserActive()
+    {
+        return $this->courseUsers()->where('status', config('number.active'));
+    }
+
     public function courseUsersNotInactive()
     {
         return $this->hasMany(CourseUser::class)

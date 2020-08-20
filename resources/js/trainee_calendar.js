@@ -2088,8 +2088,6 @@
             segmentElementEach(segments, function(segment, element) {
             });
 
-            attachHandlers(segments, modifiedEventId);
-
             segmentElementEach(segments, function(segment, element) {
                 trigger('eventAfterRender', segment.event, segment.event, element);
             });
@@ -2618,52 +2616,43 @@ $(document).ready(function() {
 
         },
 
-        events: [
-            {
-                title: 'All Day Event',
-                start: new Date(y, m, 1)
-            },
-            {
-                id: 999,
-                title: 'Repeating Event',
-                start: new Date(y, m, d-3, 16, 0),
-                allDay: false,
-                className: 'info'
-            },
-            {
-                id: 999,
-                title: 'Repeating Event',
-                start: new Date(y, m, d+4, 16, 0),
-                allDay: false,
-                className: 'info'
-            },
-            {
-                title: 'Meeting',
-                start: new Date(y, m, d, 10, 30),
-                allDay: false,
-                className: 'important'
-            },
-            {
-                title: 'Lunch',
-                start: new Date(y, m, d, 12, 0),
-                end: new Date(y, m, d, 14, 0),
-                allDay: false,
-                className: 'important'
-            },
-            {
-                title: 'Birthday Party',
-                start: new Date(y, m, d+1, 19, 0),
-                end: new Date(y, m, d+1, 22, 30),
-                allDay: false,
-            },
-            {
-                title: 'Click for Google',
-                start: new Date(y, m, 28),
-                end: new Date(y, m, 29),
-                url: 'https://ccp.cloudaccess.net/aff.php?aff=5188',
-                className: 'success'
-            }
-        ],
+        events: [],
     });
 
+    const response = fetch('/calendar/data')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach((arrSchedule)=>{
+                arrSchedule.forEach((schedule)=> {
+                    var startTime = schedule.start_time.split("-");
+                    var endTime = schedule.end_time.split("-");
+                    var test = new Date(Number(startTime[0]), Number(startTime[1])-1, Number(startTime[2]));
+
+                    if (schedule.course) {
+                        calendar.fullCalendar('renderEvent',
+                            {
+                                title: 'Study course: ' + schedule.course.title,
+                                start: new Date(Number(startTime[0]), Number(startTime[1])-1, Number(startTime[2])),
+                                end: new Date(Number(endTime[0]), Number(endTime[1])-1, Number(endTime[2])),
+                                url: '/course/' + schedule.course_id,
+                                className: 'success text-success'
+                            },
+                            true
+                        );
+                    } else {
+                        calendar.fullCalendar('renderEvent',
+                            {
+                                title: 'Study subject: ' + schedule.subject.title,
+                                start: new Date(Number(startTime[0]), Number(startTime[1])-1, Number(startTime[2])),
+                                end: new Date(Number(endTime[0]), Number(endTime[1])-1, Number(endTime[2])),
+                                url: '/subject/' + schedule.subject_id,
+                                className: 'success'
+                            },
+                            true
+                        );
+                    }
+                });
+            });
+        });
 });
+
