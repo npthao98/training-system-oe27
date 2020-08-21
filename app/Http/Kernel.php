@@ -2,6 +2,7 @@
 
 namespace App\Http;
 
+use App\Http\Middleware\CheckActive;
 use App\Http\Middleware\CheckSupervisor;
 use App\Http\Middleware\CheckTrainee;
 use App\Http\Middleware\Locale;
@@ -69,5 +70,6 @@ class Kernel extends HttpKernel
         'locale' => Locale::class,
         'trainee' => CheckTrainee::class,
         'supervisor' => CheckSupervisor::class,
+        'user.active' => CheckActive::class,
     ];
 }

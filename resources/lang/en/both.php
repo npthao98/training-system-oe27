@@ -31,7 +31,7 @@ return [
         'error_new_password' => 'Password must be greater than 8 characters',
         'error_re_password' => 'Re-password does not match with new password',
         'update_password_success' => 'Update password success',
-        'update_profile_success' => 'Update profile success',
+        'account_inactive' => 'Account inactive',
     ],
     'status' => [
         'active' => 'Active',

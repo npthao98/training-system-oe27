@@ -32,6 +32,7 @@ return [
         'error_re_password' => 'Mật khẩu nhập lại không khớp với mật khẩu mới',
         'update_password_success' => 'Đổi mật khẩu thành công',
         'update_profile_success' => 'Cập nhật tài khoản thành công',
+        'account_inactive' => 'Tài khoản bị khoá',
     ],
     'status' => [
         'active' => 'Đang học',
