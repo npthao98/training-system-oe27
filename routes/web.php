@@ -12,14 +12,13 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
 Route::middleware('locale')->group(function () {
     Auth::routes();
-    Route::middleware('auth')->group(function () {
+    Route::get('change-language/{language}', 'HomeController@changeLanguage')
+        ->name('user.change-language');
+    Route::middleware('auth', 'user.active')->group(function () {
         Route::get('/', 'HomeController@index')->name('home');
         Route::get('/home', 'HomeController@index')->name('home');
-        Route::get('change-language/{language}', 'HomeController@changeLanguage')
-            ->name('user.change-language');
         Route::get('/progress', 'TraineeController@showProgress')->name('progress');
         Route::resource('course','CourseController');
         Route::post('course/assign/{course}', 'CourseController@assign')->name('course.assign');

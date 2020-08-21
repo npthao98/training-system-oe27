@@ -10,6 +10,11 @@
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}">
                         @csrf
+                        @if (session('messenger'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('messenger') }}
+                            </div>
+                        @endif
                         <div class="md-form-group float-label margin">
                             <input id="email" type="email"
                                 class="md-input @error ('email') is-invalid @enderror"
