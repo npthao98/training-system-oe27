@@ -99,19 +99,19 @@ class SubjectController extends Controller
 
         if ($user->role_id == config('number.role.supervisor')) {
             $tasks = $this->subjectRepo
-                ->getTasksBySubjectId($id)
+                ->getTasksBySubject($subject)
                 ->where('created_at', '>=', $today);
 
             return view('supervisor.manage-subject.detail-subject',
                 compact('subject', 'tasks'));
         } else {
-            $subjectUser = $this->subjectRepo->getSubjectUsersBySubjectId($id)
+            $subjectUser = $this->subjectRepo->getSubjectUsersBySubject($subject)
                 ->firstWhere('user_id', $user->id);
 
             if ($subjectUser) {
                 $data['subject'] = $subject;
                 $data['tasks'] = $this->subjectRepo
-                    ->getTasksBySubjectId($id)
+                    ->getTasksBySubject($subject)
                     ->where('user_id', auth()->user()->id);
                 $data['subjectUser'] = $subjectUser;
 
@@ -150,7 +150,8 @@ class SubjectController extends Controller
 
     public function destroy($id)
     {
-        $course = $this->subjectRepo->getCourseBySubjectId($id);
+        $subject = $this->subjectRepo->getById($id);
+        $course = $this->subjectRepo->getCourseBySubject($subject);
         $this->handelDeleteSubjectUsers($id);
         $this->handelDeleteTasks($id);
         $this->handelDeleteSubject($id);
@@ -177,9 +178,6 @@ class SubjectController extends Controller
 
     public function handelStatus($course)
     {
-        $conditions = [
-            'course_id' => $course->id,
-        ];
         $courseUsersActive = $this->courseUserRepo
             ->getWhereEqual([
                 'course_id' => $course->id,
