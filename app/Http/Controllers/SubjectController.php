@@ -3,38 +3,63 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\SubjectRequest;
-use App\Models\Course;
-use App\Models\CourseUser;
-use App\Models\Role;
-use App\Models\Subject;
-use App\Models\SubjectUser;
-use App\Models\Task;
+use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\CourseUser\CourseUserRepositoryInterface;
+use App\Repositories\Subject\SubjectRepositoryInterface;
+use App\Repositories\SubjectUser\SubjectUserRepositoryInterface;
+use App\Repositories\Task\TaskRepositoryInterface;
+use App\Repositories\User\UserRepositoryInterface;
 use Carbon\Carbon;
-use Illuminate\Http\Request;
 
 class SubjectController extends Controller
 {
-    public function __construct()
-    {
+    protected $subjectRepo;
+    protected $courseRepo;
+    protected $subjectUserRepo;
+    protected $courseUserRepo;
+    protected $taskRepo;
+    protected $userRepo;
+
+    public function __construct(
+        SubjectRepositoryInterface $subjectRepo,
+        CourseRepositoryInterface $courseRepo,
+        SubjectUserRepositoryInterface $subjectUserRepo,
+        CourseUserRepositoryInterface $courseUserRepository,
+        TaskRepositoryInterface $taskRepo,
+        UserRepositoryInterface $userRepo
+    ) {
+        $this->subjectRepo = $subjectRepo;
+        $this->courseRepo = $courseRepo;
+        $this->subjectUserRepo = $subjectUserRepo;
+        $this->courseUserRepo = $courseUserRepository;
+        $this->taskRepo = $taskRepo;
+        $this->userRepo = $userRepo;
         $this->middleware('supervisor')
             ->except('show');
     }
 
     public function index()
     {
-        $data['courses'] = Course::all()->load([
+        $relation = [
             'subjects',
             'subjects.subjectUsers',
-        ]);
-        $data['subjects'] = Subject::all();
+        ];
+        $courses = $this->courseRepo->getAll($relation);
+        $subjects = $this->subjectRepo->getAll();
 
-        return view('supervisor.manage-subject.list-subjects', $data);
+        return view('supervisor.manage-subject.list-subjects',
+            compact([
+                'courses',
+                'subjects',
+            ]));
     }
 
     public function create()
     {
-        $courses = Course::where('status', config('number.course.active'))
-            ->get();
+        $courses = $this->courseRepo
+            ->getWhereEqual([
+                'status' => config('number.course.active'),
+            ]);
 
         return view('supervisor.manage-subject.create-subject',
             compact('courses'));
@@ -42,7 +67,7 @@ class SubjectController extends Controller
 
     public function store(SubjectRequest $request)
     {
-        $subject = Subject::create([
+        $data = [
             'title' => $request->title,
             'image' => $request->image->getClientOriginalName(),
             'description' => $request->content_description,
@@ -50,7 +75,8 @@ class SubjectController extends Controller
             'time' => $request->time,
             'created_at' => now()->format(config('view.format_date.datetime')),
             'status' => config('number.subject.active'),
-        ]);
+        ];
+        $subject = $this->subjectRepo->create($data);
 
         return redirect()->route('subject.show', ['subject' => $subject->id]);
     }
@@ -58,11 +84,11 @@ class SubjectController extends Controller
     public function show($id)
     {
         $user = auth()->user();
-        $subjectById = Subject::find($id);
-        $subject = $subjectById->load([
+        $relation = [
             'usersActive',
             'course',
-        ]);
+        ];
+        $subject = $this->subjectRepo->getById($id, $relation);
         $today = now()->format(config('view.format_date.date'));
 
         foreach ($subject->usersActive as $userActive) {
@@ -72,20 +98,21 @@ class SubjectController extends Controller
         }
 
         if ($user->role_id == config('number.role.supervisor')) {
-            $abc = 'Max';
-            $tasks = $subject->tasks
+            $tasks = $this->subjectRepo
+                ->getTasksBySubjectId($id)
                 ->where('created_at', '>=', $today);
 
             return view('supervisor.manage-subject.detail-subject',
                 compact('subject', 'tasks'));
         } else {
-            $subjectUser = $subjectById->subjectUsers
-                ->where('user_id', $user->id)->first();
+            $subjectUser = $this->subjectRepo->getSubjectUsersBySubjectId($id)
+                ->firstWhere('user_id', $user->id);
 
             if ($subjectUser) {
                 $data['subject'] = $subject;
-                $data['tasks'] = $user->tasks
-                    ->where('subject_id', $id);
+                $data['tasks'] = $this->subjectRepo
+                    ->getTasksBySubjectId($id)
+                    ->where('user_id', auth()->user()->id);
                 $data['subjectUser'] = $subjectUser;
 
                 return view('trainee.detail-subject', $data);
@@ -97,9 +124,10 @@ class SubjectController extends Controller
 
     public function edit($id)
     {
-        $subject = Subject::findOrFail($id);
-        $courses = Course::where('status', config('number.course.active'))
-            ->get();
+        $subject = $this->subjectRepo->getById($id);
+        $courses = $this->courseRepo->getWhereEqual([
+            'status' => config('number.course.active'),
+        ]);
 
         return view('supervisor.manage-subject.edit-subject',
             compact('subject', 'courses'));
@@ -107,13 +135,14 @@ class SubjectController extends Controller
 
     public function update(SubjectRequest $request, $id)
     {
-        $subject = Subject::findOrFail($id)->update([
+        $data = [
             'title' => $request->title,
             'image' => $request->image->getClientOriginalName(),
             'description' => $request->content_description,
             'course_id' => $request->course_id,
             'time' => $request->time,
-        ]);
+        ];
+        $this->subjectRepo->update($id, $data);
 
         return redirect()->route('subject.show', ['subject' => $id]);
 
@@ -121,7 +150,7 @@ class SubjectController extends Controller
 
     public function destroy($id)
     {
-        $course = Subject::findOrFail($id);
+        $course = $this->subjectRepo->getCourseBySubjectId($id);
         $this->handelDeleteSubjectUsers($id);
         $this->handelDeleteTasks($id);
         $this->handelDeleteSubject($id);
@@ -133,55 +162,63 @@ class SubjectController extends Controller
 
     public function handelDeleteSubject($subject_id)
     {
-        Subject::destroy($subject_id);
+        $this->subjectRepo->delete($subject_id);
     }
 
     public function handelDeleteSubjectUsers($subject_id)
     {
-        SubjectUser::where('subject_id', $subject_id)->delete();
+        $this->subjectUserRepo->deleteWhereEqual(['subject_id' => $subject_id]);
     }
 
     public function handelDeleteTasks($subject_id)
     {
-        Task::where('subject_id', $subject_id)->delete();
+        $this->taskRepo->deleteWhereEqual(['subject_id' => $subject_id]);
     }
 
     public function handelStatus($course)
     {
-        $courseUsersActive = CourseUser::where([
+        $conditions = [
             'course_id' => $course->id,
-            'status' => config('number.active'),
-        ])->with('user')->get();
-        $subjects = $course->subjects->modelKeys();
+        ];
+        $courseUsersActive = $this->courseUserRepo
+            ->getWhereEqual([
+                'course_id' => $course->id,
+            ], 'user')
+            ->where('status', config('number.active'));
+        $subjects = $this->courseRepo->getSubjectsByCourse($course);
 
         foreach ($courseUsersActive as $courseUserActive) {
-            $user = $courseUserActive->user;
-            $subjectUserActive = $user->subjectUsers
+            $user = $this->courseUserRepo->getUserByCourseUser($courseUserActive);
+            $subjectUsers = $this->userRepo->getUserSubjectsByUser($user);
+            $subjectUserActive = $subjectUsers
                 ->where('status', config('number.active'))
                 ->whereIn('subject_id', $subjects)
                 ->first();
             $today = now()->format(config('view.format_date.date'));
 
             if (!$subjectUserActive) {
-                $subjectUserInactive = $user->subjectUsers
+                $subjectUserInactive = $subjectUsers
                     ->where('status', config('number.inactive'))
-                    ->whereIn('subject_id', $subjects)->first();
+                    ->whereIn('subject_id', $subjects)
+                    ->first();
 
                 if ($subjectUserInactive) {
-                    SubjectUser::where('id', $subjectUserInactive->id)
-                        ->update([
-                            'status' => config('number.active'),
-                            'star_time' => $today,
-                            'end_time' => $this->calculatorEndTime($subjectUserInactive->subject->time),
-                        ]);
+                    $attributes = [
+                        'status' => config('number.active'),
+                        'star_time' => $today,
+                        'end_time' => $this->calculatorEndTime($subjectUserInactive->subject->time),
+                    ];
+                    $this->subjectUserRepo->update($subjectUserInactive->id, $attributes);
                 } else {
-                    CourseUser::where([
-                        'course_id' => $course->id,
-                        'user_id' => $user->id,
-                    ])->update([
+                    $attributes = [
                         'status' => config('number.passed'),
                         'end_time' => $today,
+                    ];
+                    $courseUser = $this->courseUserRepo->getWhereEqual([
+                        'course_id' => $course->id,
+                        'user_id' => $user->id,
                     ]);
+                    $this->courseUserRepo->update($courseUser->first()->id, $attributes);
                 }
             }
         }
