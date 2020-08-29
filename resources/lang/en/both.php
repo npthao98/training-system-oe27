@@ -32,6 +32,7 @@ return [
         'error_re_password' => 'Re-password does not match with new password',
         'update_password_success' => 'Update password success',
         'account_inactive' => 'Account inactive',
+        'update_not_success' => 'Update not success',
     ],
     'status' => [
         'active' => 'Active',

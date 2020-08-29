@@ -10,6 +10,7 @@ use App\Repositories\SubjectUser\SubjectUserRepositoryInterface;
 use App\Repositories\Task\TaskRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class SubjectController extends Controller
 {
@@ -67,7 +68,7 @@ class SubjectController extends Controller
 
     public function store(SubjectRequest $request)
     {
-        $data = [
+        $attribute = [
             'title' => $request->title,
             'image' => $request->image->getClientOriginalName(),
             'description' => $request->content_description,
@@ -76,7 +77,7 @@ class SubjectController extends Controller
             'created_at' => now()->format(config('view.format_date.datetime')),
             'status' => config('number.subject.active'),
         ];
-        $subject = $this->subjectRepo->create($data);
+        $subject = $this->subjectRepo->create($attribute);
 
         return redirect()->route('subject.show', ['subject' => $subject->id]);
     }
@@ -142,23 +143,33 @@ class SubjectController extends Controller
             'course_id' => $request->course_id,
             'time' => $request->time,
         ];
-        $this->subjectRepo->update($id, $data);
 
-        return redirect()->route('subject.show', ['subject' => $id]);
+        try {
+            $this->subjectRepo->update($id, $data);
 
+            return redirect()->route('subject.show', ['subject' => $id]);
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('subject.show', ['subject' => $id])
+                ->with('error', trans('both.message.update_not_success'));
+        }
     }
 
     public function destroy($id)
     {
-        $subject = $this->subjectRepo->getById($id);
-        $course = $this->subjectRepo->getCourseBySubject($subject);
-        $this->handelDeleteSubjectUsers($id);
-        $this->handelDeleteTasks($id);
-        $this->handelDeleteSubject($id);
-        $this->handelStatus($course);
+        try {
+            $subject = $this->subjectRepo->getById($id);
+            $course = $this->subjectRepo->getCourseBySubject($subject);
+            $this->handelDeleteSubjectUsers($id);
+            $this->handelDeleteTasks($id);
+            $this->handelDeleteSubject($id);
+            $this->handelStatus($course);
 
-        return redirect()->route('subject.index')
-            ->with('messenger', trans('both.message.delete_subject_success'));
+            return redirect()->route('subject.index')
+                ->with('messenger', trans('both.message.delete_subject_success'));
+        } catch (ModelNotFoundException $e) {
+            return redirect()->route('subject.index')
+                ->with('error', trans('both.message.update_not_success'));
+        }
     }
 
     public function handelDeleteSubject($subject_id)
@@ -183,21 +194,23 @@ class SubjectController extends Controller
                 'course_id' => $course->id,
             ], 'user')
             ->where('status', config('number.active'));
-        $subjects = $this->courseRepo->getSubjectsByCourse($course);
+        $subjects = $this->courseRepo
+            ->getSubjectsByCourse($course);
+        $subjectsId = $subjects->modelKeys();
 
         foreach ($courseUsersActive as $courseUserActive) {
             $user = $this->courseUserRepo->getUserByCourseUser($courseUserActive);
             $subjectUsers = $this->userRepo->getUserSubjectsByUser($user);
             $subjectUserActive = $subjectUsers
                 ->where('status', config('number.active'))
-                ->whereIn('subject_id', $subjects)
+                ->whereIn('subject_id', $subjectsId)
                 ->first();
             $today = now()->format(config('view.format_date.date'));
 
             if (!$subjectUserActive) {
                 $subjectUserInactive = $subjectUsers
                     ->where('status', config('number.inactive'))
-                    ->whereIn('subject_id', $subjects)
+                    ->whereIn('subject_id', $subjectsId)
                     ->first();
 
                 if ($subjectUserInactive) {

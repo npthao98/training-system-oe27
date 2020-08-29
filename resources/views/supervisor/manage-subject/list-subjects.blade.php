@@ -21,6 +21,12 @@
             <span class="mx-2">{{ session('messenger') }}</span>
         </div>
     @endif
+    @if (session('error'))
+        <div id="messenger" class="alert alert-danger" role="alert">
+            <i data-feather="x"></i>
+            <span class="mx-2">{{ session('error') }}</span>
+        </div>
+    @endif
     <div id="main" class="layout-column flex">
         <div id="content" class="flex ">
             <div class="d-flex flex fixed-content">

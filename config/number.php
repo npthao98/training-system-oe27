@@ -28,9 +28,14 @@ return [
     'default_text' => 50,
     'init' => 1,
     'length_password' => 8,
+    'time_default' => 2,
     'gender' => [
         'male' => 'male',
         'female' => 'female',
     ],
     'total_init' => 0,
+    'empty' => 0,
+    'test' => [
+        'id' => 1,
+    ],
 ];

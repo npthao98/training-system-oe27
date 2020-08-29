@@ -33,6 +33,7 @@ return [
         'update_password_success' => 'Đổi mật khẩu thành công',
         'update_profile_success' => 'Cập nhật tài khoản thành công',
         'account_inactive' => 'Tài khoản bị khoá',
+        'update_not_success' => 'Cập nhật lỗi',
     ],
     'status' => [
         'active' => 'Đang học',
