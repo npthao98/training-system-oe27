@@ -27,4 +27,9 @@ class SubjectRepository extends BaseRepository implements SubjectRepositoryInter
     {
         return $subject->course;
     }
+
+    public function destroyArraySubjects($subjectIds)
+    {
+        $this->model->destroy($subjectIds);
+    }
 }

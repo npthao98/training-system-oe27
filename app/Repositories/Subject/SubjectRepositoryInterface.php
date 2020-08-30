@@ -9,4 +9,6 @@ interface SubjectRepositoryInterface
     public function getSubjectUsersBySubject($subject);
 
     public function getCourseBySubject($subject);
+
+    public function destroyArraySubjects($subjectIds);
 }

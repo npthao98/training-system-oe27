@@ -17,4 +17,14 @@ class CourseRepository extends BaseRepository implements CourseRepositoryInterfa
     {
         return $course->subjects;
     }
+
+    public function getCourseUsersByCourse($course)
+    {
+        return $course->courseUsers;
+    }
+
+    public function getSubjectTasksByCourse($course)
+    {
+        return $course->subjectTasks;
+    }
 }

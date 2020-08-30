@@ -2,23 +2,32 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
-use App\Models\User;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
-    public function __construct()
+    protected $userRepo;
+
+    public function __construct(UserRepositoryInterface $userRepo)
     {
         $this->middleware('auth')->except('changeLanguage');
+
+        $this->userRepo = $userRepo;
     }
 
     public function getdate()
     {
-        $courseUser = auth()->user()->courseUserActive->load('course');
-        $subjectUser = auth()->user()->subjectUsersActive->load('subject');
+        $courseUser = $this->userRepo
+            ->getCourseUserActiveByUser(auth()->user(), [
+                'course',
+            ]);
+        $subjectUser = $this->userRepo->getSubjectUsersActiveByUser(auth()->user(),
+            [
+                'subject',
+            ]);
         $data = [
             $courseUser,
             $subjectUser,
@@ -63,8 +72,10 @@ class HomeController extends Controller
             return redirect()->back()
                 ->with('messenger', trans('both.message.error_re_password'));
         } else {
-            User::where('id', auth()->user()->id)
-                ->update(['password' => bcrypt($request->newPassword)]);
+            $this->userRepo->update(
+                auth()->user()->id,
+                ['password' => bcrypt($request->newPassword)]
+            );
 
             return redirect()->route('user.detail.profile')
                 ->with('messenger', trans('both.message.update_password_success'));
@@ -87,13 +98,20 @@ class HomeController extends Controller
 
     public function updateProfile(Request $request)
     {
-        User::where('id', $request->id)
-            ->update([
+        if (isset($request->avatarReplace)) {
+            $avatar = $request->avatarReplace->getClientOriginalName();
+        } else {
+            $avatar = $request->avatar;
+        }
+        $this->userRepo->update(
+            $request->id,
+            [
                 'fullname' => $request->fullname,
-                'avatar' => $request->avatar->getClientOriginalName(),
+                'avatar' => $avatar,
                 'gender' => $request->gender,
                 'birthday' => $request->birthday,
-            ]);
+            ]
+        );
 
         return redirect()->route('user.detail.profile')
             ->with('messenger', trans('both.message.update_profile_success'));

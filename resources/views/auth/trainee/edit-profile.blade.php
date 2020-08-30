@@ -21,8 +21,9 @@
                         <div id="profile-container" class="d-flex justify-content-center">
                             <img id="profileImage" src="{{ asset(config('image.folder') . $user->avatar) }}" />
                         </div>
+                        <input type="hidden" name="avatar" value="{{ $user->avatar }}">
                         <input id="imageUpload" type="file"
-                            name="avatar" value="{{ $user->avatar }}" placeholder="Photo" required="" capture>
+                            name="avatarReplace" capture>
                         <br>
                         <div class="text-info">
                             {{ trans('both.note_avatar') }}
@@ -99,9 +100,8 @@
                     </div>
                     <div class="col-3">
                         <div class="d-flex justify-content-center mt-5">
-                            <button type="submit" class="btn btn-primary mt-1 w-sm">
-                                {{ trans('supervisor.new_trainee.submit') }}
-                            </button>
+                            <input type="submit" class="btn btn-primary mt-1 w-sm"
+                                value="{{ trans('supervisor.new_trainee.submit') }}">
                         </div>
                     </div>
                     <div class="col-3"></div>

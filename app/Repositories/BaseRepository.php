@@ -50,6 +50,12 @@ abstract class BaseRepository implements RepositoryInterface
         return false;
     }
 
+    public function updateWhereEqual($conditions, $attribute = [])
+    {
+        $this->model->where($conditions)
+            ->update($attribute);
+    }
+
     public function delete($id)
     {
         $result = $this->getById($id);
@@ -66,6 +72,12 @@ abstract class BaseRepository implements RepositoryInterface
     public function deleteWhereEqual($conditions)
     {
         $this->model->where($conditions)
+            ->delete();
+    }
+
+    public function deleteWhereIn($column, $conditions)
+    {
+        $this->model->whereIn($column, $conditions)
             ->delete();
     }
 

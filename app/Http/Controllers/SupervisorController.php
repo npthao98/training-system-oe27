@@ -2,15 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Repositories\User\UserRepositoryInterface;
 use Illuminate\Http\Request;
 
 class SupervisorController extends Controller
 {
+    protected $userRepo;
+
+    public function __construct(UserRepositoryInterface $userRepo)
+    {
+        $this->userRepo = $userRepo;
+    }
+
     public function index()
     {
-        $users = User::where('role_id', config('number.role.supervisor'))
-            ->get();
+        $users = $this->userRepo
+            ->getWhereEqual(['role_id' => config('number.role.supervisor')]);
 
         return view('supervisor.manage-user.list-supervisors', compact('users'));
     }
@@ -25,7 +32,7 @@ class SupervisorController extends Controller
 
     public function show($id)
     {
-        $user = User::find($id)->load('role');
+        $user = $this->userRepo->getById($id, ['role']);
 
         return view('supervisor.manage-user.detail-user', compact('user'));
     }

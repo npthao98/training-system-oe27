@@ -20,7 +20,7 @@
             <span class="mx-2">{{ session('messenger') }}</span>
         </div>
     @endif
-    <div id="main" class="layout-column flex">
+    <div id="main" class="layout-column flex padding">
         <div id="content" class="flex ">
             <div class="tab-pane fade show active" id="all"
                 role="tabpanel" aria-labelledby="v-pills-home-tab">

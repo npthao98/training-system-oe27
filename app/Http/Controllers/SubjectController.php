@@ -200,7 +200,7 @@ class SubjectController extends Controller
 
         foreach ($courseUsersActive as $courseUserActive) {
             $user = $this->courseUserRepo->getUserByCourseUser($courseUserActive);
-            $subjectUsers = $this->userRepo->getUserSubjectsByUser($user);
+            $subjectUsers = $this->userRepo->getSubjectUsersByUser($user);
             $subjectUserActive = $subjectUsers
                 ->where('status', config('number.active'))
                 ->whereIn('subject_id', $subjectsId)

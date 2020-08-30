@@ -12,9 +12,13 @@ interface RepositoryInterface
 
     public function update($id, $attribute = []);
 
+    public function updateWhereEqual($conditions, $attribute = []);
+
     public function delete($id);
 
     public function deleteWhereEqual($conditions);
+
+    public function deleteWhereIn($column, $conditions);
 
     public function getWhereEqual($conditions, $relation = []);
 }

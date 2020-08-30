@@ -3,44 +3,54 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\TaskRequest;
-use App\Models\Course;
-use App\Models\CourseUser;
-use App\Models\Role;
-use App\Models\Subject;
-use App\Models\SubjectUser;
-use App\Models\Task;
-use Illuminate\Http\Request;
+use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\Subject\SubjectRepositoryInterface;
+use App\Repositories\Task\TaskRepositoryInterface;
 
 class TaskController extends Controller
 {
-    public function __construct()
-    {
+    protected $courseRepo;
+    protected $taskRepo;
+    protected $subjectRepo;
+
+    public function __construct(
+        CourseRepositoryInterface $courseRepo,
+        TaskRepositoryInterface $taskRepo,
+        SubjectRepositoryInterface $subjectRepo
+    ) {
         $this->middleware('trainee')->only('store');
         $this->middleware('supervisor')->only([
             'index',
             'show',
         ]);
+        $this->courseRepo = $courseRepo;
+        $this->taskRepo = $taskRepo;
+        $this->subjectRepo = $subjectRepo;
     }
 
     public function index()
     {
-        $courses = Course::where('status', config('number.course.active'))
-            ->with([
+        $courses = $this->courseRepo
+            ->getWhereEqual([
+                'status' => config('number.course.active'),
+            ], [
                 'subjects.tasks',
                 'subjectTasks',
-            ])->get();
+            ]);
 
         foreach ($courses as $course) {
-            $course->subjectTasks = $course->subjectTasks->sortBy('status');
+            $course->listTasks = $this->courseRepo->getSubjectTasksByCourse($course)
+                ->sortBy('status');
 
             foreach ($course->subjects as $subject) {
-                $subject->tasks = $subject->tasks->sortBy('status');
+                $subject->listTasks = $this->subjectRepo->getTasksBySubject($subject)
+                    ->sortBy('status');
             }
         }
-        $tasks = Task::with([
+        $tasks = $this->taskRepo->getAll([
             'subject',
             'user',
-        ])->orderBy('status')->get();
+        ])->sortBy('status');
 
         return view('supervisor.manage-task.list-tasks', compact('courses', 'tasks'));
     }
@@ -55,7 +65,7 @@ class TaskController extends Controller
         $data['status'] = config('number.task.new');
         $data['created_at'] = now()->format(config('view.format_date.datetime'));
         $data = $request->merge($data);
-        Task::create($data->all());
+        $this->taskRepo->create($data->all());
 
         return redirect(route('subject.show', ['subject' => $request['subject_id']]))
             ->with('messenger', trans('trainee.message.create_task'));
@@ -63,12 +73,12 @@ class TaskController extends Controller
 
     public function show($id)
     {
-        $data['task'] = Task::find($id)->load([
+        $task = $this->taskRepo->getById($id, [
             'user',
             'subject',
         ]);
 
-        return view('supervisor.manage-task.detail-task', $data);
+        return view('supervisor.manage-task.detail-task', compact('task'));
     }
 
     public function edit($id)
@@ -85,24 +95,22 @@ class TaskController extends Controller
             if (isset($request['failed'])) {
                 $status = config('number.task.failed');
             }
-            Task::where('id', $id)
-                ->update([
-                    'status' => $status,
-                    'review' => $request['review'],
-                ]);
+            $this->taskRepo->update($id, [
+                'status' => $status,
+                'review' => $request['review'],
+            ]);
 
             return redirect()->route('task.show', ['task' => $id])
                 ->with('messenger', trans('trainee.message.update_task'));
         } else {
-            $task = Task::findOrFail($id);
-            $task->update($request->only([
+            $this->taskRepo->update($id, $request->only([
                 'plan',
                 'next_plan',
                 'comment',
                 'actual',
             ]));
 
-            return redirect(route('subject.show', ['subject' => $task->subject_id]))
+            return redirect()->back()
                 ->with('messenger', trans('trainee.message.update_task'));
         }
     }
