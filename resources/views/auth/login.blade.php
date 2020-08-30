@@ -52,7 +52,7 @@
                             </div>
                         </div>
                         <div class="form-group row d-flex justify-content-center margin-tb">
-                            <button type="submit" class="btn btn-primary width-100">
+                            <button type="submit" class="btn btn-primary width-100" id="btn-login">
                                 {{ trans('both.login.login') }}
                             </button>
                             @if (Route::has('password.request'))

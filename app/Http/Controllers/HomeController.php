@@ -12,7 +12,7 @@ class HomeController extends Controller
 {
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware('auth')->except('changeLanguage');
     }
 
     public function getdate()
@@ -39,7 +39,6 @@ class HomeController extends Controller
     public function changeLanguage($language)
     {
         Session::put('website_language', $language);
-
         return redirect()->back();
     }
 
