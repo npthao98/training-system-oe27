@@ -22,13 +22,13 @@
                 </a>
                 <div class="mb-2 float-right language">
                     <div class="navbar-header language">
-                        <a class="navbar-brand float-left"
-                           href="{{ route('user.change-language', ['en']) }}">
+                        <a id="en" class="navbar-brand float-left"
+                           href="{{ route('user.change-language', ['language' => 'en']) }}">
                             <img class="language-image" src="{{ asset(config('image.en')) }}"
                                 alt="{{ trans('trainee.app.english') }}">
                         </a>
-                        <a class="navbar-brand float-left"
-                           href="{{ route('user.change-language', ['vi']) }}">
+                        <a id="vi" class="navbar-brand float-left"
+                           href="{{ route('user.change-language', ['language' => 'vi']) }}">
                             <img src="{{ asset(config('image.vi')) }}"
                                 alt="{{ trans('trainee.app.vietnam') }}" class="language-image">
                         </a>
