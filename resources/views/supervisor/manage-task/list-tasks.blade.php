@@ -133,11 +133,12 @@
                                                             </tr>
                                                         </thead>
                                                         <tbody>
-                                                            @foreach ($tasks as $index => $task)
+                                                            @php $index = config('number.init') ?> @endphp
+                                                            @foreach ($tasks as $task)
                                                                 <tr class="odd" data-id="1" role="row">
                                                                     <td class="sorting_1 column-id">
                                                                         <small class="text-muted">
-                                                                            {{ $index + config('number.init')}}
+                                                                            {{ $index++ }}
                                                                         </small>
                                                                     </td>
                                                                     <td class="flex">
@@ -226,9 +227,10 @@
                                                                             {{ trans('supervisor.list_tasks.trainee') }}
                                                                         </span>
                                                                     </th>
-                                                                    <th class="column-width17" rowspan="1"
-                                                                        colspan="1" aria-label="Tasks">
-                                                                        <span class="text-muted d-none d-sm-block">
+                                                                    <th class="column-width17" tabindex="0"
+                                                                        aria-controls="datatable" rowspan="1" colspan="1"
+                                                                        aria-label="Project: activate to sort column ascending">
+                                                                        <span class="text-muted">
                                                                             {{ trans('supervisor.list_tasks.status') }}
                                                                         </span>
                                                                     </th>
@@ -238,7 +240,7 @@
                                                                 </tr>
                                                             </thead>
                                                             <tbody>
-                                                                @foreach ($course->subjectTasks as $index => $task)
+                                                                @foreach ($course->listTasks as $index => $task)
                                                                     <tr class="odd" data-id="1" role="row">
                                                                         <td class="sorting_1 column-id">
                                                                             <small class="text-muted">
@@ -334,7 +336,7 @@
                                                                     </tr>
                                                                 </thead>
                                                                 <tbody>
-                                                                    @foreach ($subject->tasks as $index => $task)
+                                                                    @foreach ($subject->listTasks as $index => $task)
                                                                         <tr class="odd" data-id="1" role="row">
                                                                             <td class="sorting_1 column-id">
                                                                                 <small class="text-muted">
