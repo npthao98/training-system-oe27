@@ -174,4 +174,14 @@ return [
         'time_required' => 'Yêu cầu thêm thời gian dự kiến',
         'time_min' => 'Thời gian quá nhỏ, yêu cầu chọn thời gian lớn hơn 1',
     ],
+    'mail' => [
+        'report' => [
+            'id' => 'STT',
+            'name' => 'Tên',
+            'email' => 'E-mail',
+            'course_active' => 'Khoá học đang học',
+            'subject_active' => 'Chủ đề đang học',
+            'days' => 'Số ngày đã học (Khoá học)',
+        ],
+    ],
 ];

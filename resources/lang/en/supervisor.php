@@ -174,4 +174,14 @@ return [
         'time_required' => 'Time field is required',
         'time_min' => 'Time too small, choose bigger than this time',
     ],
+    'mail' => [
+        'report' => [
+            'id' => 'id',
+            'name' => 'Name',
+            'email' => 'Email',
+            'course_active' => 'Course active',
+            'subject_active' => 'Subject active',
+            'days' => 'Days (Course)',
+        ],
+    ],
 ];

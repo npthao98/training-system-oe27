@@ -38,4 +38,6 @@ return [
     'test' => [
         'id' => 1,
     ],
+    'report_weekday' => 4,
+    'report_hour' => '16:00',
 ];
