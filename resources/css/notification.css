@@ -1,0 +1,16 @@
+.badge-notify {
+    background: red;
+    color: #fff;
+    position: relative;
+    top: -8px;
+    left: -11px;
+    border-radius: 50%;
+    font-size: 8px;
+}
+.menu-notification {
+    width: 250px;
+}
+.notification-item {
+    margin-bottom: 0px;
+    border-radius: unset;
+}
