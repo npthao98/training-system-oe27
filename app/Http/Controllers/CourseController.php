@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationEvent;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\CourseRequest;
+use App\Notifications\TraineeNotification;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\CourseUser\CourseUserRepositoryInterface;
 use App\Repositories\Subject\SubjectRepositoryInterface;
@@ -12,6 +14,7 @@ use App\Repositories\Task\TaskRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Pusher\Pusher;
 
 class CourseController extends Controller
 {
@@ -46,9 +49,36 @@ class CourseController extends Controller
         $date = now()->format(config('view.format_date.date'));
 
         foreach ($users as $user) {
+            $user_id = intval($user);
+            $user_detail = $this->userRepo->getById($user_id);
+            $notification = [
+                'title' => config('notification.added_course.title'),
+                'route_name' => config('notification.added_course.route_name'),
+                'id' => $id,
+                'user_id' => $user_id,
+                'titleable' => $course->title,
+            ];
+            $user_detail->notify(new TraineeNotification($notification));
+            $options = array(
+                'cluster' => env('PUSHER_APP_CLUSTER'),
+                'encrypted' => true
+            );
+            $pusher = new Pusher(
+                env('PUSHER_APP_KEY'),
+                env('PUSHER_APP_SECRET'),
+                env('PUSHER_APP_ID'),
+                $options
+            );
+            $pusher->trigger(
+                config('notification.notification_channel'),
+                config('notification.notification_event'),
+                $notification
+            );
+            event(new NotificationEvent($notification));
+
             $this->courseUserRepo->create([
                 'course_id' => $id,
-                'user_id' => intval($user),
+                'user_id' => $user_id,
                 'status' => config('number.inactive'),
                 'start_time' => $date,
                 'end_time' => $date,
@@ -57,14 +87,13 @@ class CourseController extends Controller
             foreach ($subjects as $subject) {
                 $this->subjectUserRepo->create([
                     'subject_id' => $subject->id,
-                    'user_id' => intval($user),
+                    'user_id' => $user_id,
                     'status' => config('number.inactive'),
                     'start_time' => $date,
                     'end_time' => $this->calculatorEndTime($subject->time),
                 ]);
             }
         }
-
         return redirect()->route('course.show', ['course' => $id])
             ->with('messenger', trans('both.message.update_success'));
     }

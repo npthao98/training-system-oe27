@@ -20,6 +20,12 @@
             <span class="mx-2">{{ session('messenger') }}</span>
         </div>
     @endif
+    <div class="navbar padding">
+        <a href="{{ route('trainee.create') }}"
+            class="btn btn-primary">
+            {{ trans('supervisor.new_trainee.new_trainee') }}
+        </a>
+    </div>
     <div id="main" class="layout-column flex padding">
         <div id="content" class="flex ">
             <div class="tab-pane fade show active" id="all"

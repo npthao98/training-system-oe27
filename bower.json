@@ -15,6 +15,7 @@
     "tests"
   ],
   "dependencies": {
-    "bower_package": "https://github.com/npthao98/bower_package.git"
+    "bower_package": "https://github.com/npthao98/bower_package.git",
+    "pusher-js": "pusher#^7.0.0"
   }
 }

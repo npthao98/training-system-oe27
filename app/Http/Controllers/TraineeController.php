@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NotificationEvent;
 use App\Http\Requests\UserRequest;
+use App\Notifications\TraineeNotification;
 use App\Repositories\Course\CourseRepositoryInterface;
 use App\Repositories\CourseUser\CourseUserRepositoryInterface;
 use App\Repositories\Subject\SubjectRepositoryInterface;
@@ -10,6 +12,7 @@ use App\Repositories\SubjectUser\SubjectUserRepositoryInterface;
 use App\Repositories\User\UserRepositoryInterface;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Pusher\Pusher;
 
 class TraineeController extends Controller
 {
@@ -81,6 +84,32 @@ class TraineeController extends Controller
             'start_time' => $today,
             'end_time' => $this->calculatorEndTime($subject->time),
         ]);
+
+        $user_detail = $this->userRepo->getById($userId);
+        $notification = [
+            'title' => config('notification.actived_course.title'),
+            'route_name' => config('notification.actived_course.route_name'),
+            'id' => $courseId,
+            'user_id' => $userId,
+            'titleable' => $course->title,
+        ];
+        $user_detail->notify(new TraineeNotification($notification));
+        $options = array(
+            'cluster' => env('PUSHER_APP_CLUSTER'),
+            'encrypted' => true
+        );
+        $pusher = new Pusher(
+            env('PUSHER_APP_KEY'),
+            env('PUSHER_APP_SECRET'),
+            env('PUSHER_APP_ID'),
+            $options
+        );
+        $pusher->trigger(
+            config('notification.notification_channel'),
+            config('notification.notification_event'),
+            $notification
+        );
+        event(new NotificationEvent($notification));
 
         return redirect()->back()
             ->with('messenger', trans('both.message.update_success'));
