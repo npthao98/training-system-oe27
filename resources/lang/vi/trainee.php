@@ -51,4 +51,9 @@ return [
         'create_task' => 'Tạo báo cáo thành công',
         'update_task' => 'Cập nhật thành công',
     ],
+    'notification' => [
+        'added_course' => 'Bạn đã được thêm vào khoá học ',
+        'actived_course' => 'Bạn đã được bắt đầu khoá học ',
+        'review_task' => 'Báo cáo đã được duyệt, làm ơn kiểm tra báo cáo ',
+    ],
 ];

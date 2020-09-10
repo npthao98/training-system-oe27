@@ -42,5 +42,9 @@ Route::middleware('locale')->group(function () {
         Route::get('detail-profile', 'HomeController@showProfile')
             ->name('user.detail.profile');
         Route::get('calendar/data', 'HomeController@getDate')->name('calendar.data');
+        Route::get('notifications/data', 'NotificationController@getNotifications')
+            ->name('notification.data');
+        Route::get('read-notification/{notification}', 'NotificationController@readNotification')
+            ->name('notification.read');
     });
 });

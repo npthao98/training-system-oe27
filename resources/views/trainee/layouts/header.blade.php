@@ -1,6 +1,21 @@
 <div id="header" class="page-header ">
+    <input type="hidden" id="user_id" value="{{ Auth::user()->id }}">
     <div class="navbar navbar-expand-lg">
         <ul class="nav navbar-menu order-1 order-lg-2">
+            <li class="nav-item dropdown dropdown-notifications">
+                <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#"
+                    role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i data-feather="bell"></i>
+                    <span class="badge badge-notify">
+                        <p class="m-0" id="number-notifications">
+                            {{ count(Auth::user()->unreadNotifications) }}
+                        </p>
+                    </span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-right menu-notification p-0"
+                    aria-labelledby="navbarDropdown">
+                </div>
+            </li>
             <li class="nav-item dropdown">
                 <a class="nav-link px-2" data-toggle="dropdown">
                     <i data-feather="settings"></i>

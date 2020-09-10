@@ -51,4 +51,9 @@ return [
         'create_task' => 'Create new task success',
         'update_task' => 'Update task success',
     ],
+    'notification' => [
+        'added_course' => 'You have been added to course ',
+        'actived_course' => 'You have been actived to course ',
+        'review_task' => 'Task is reviewed - please check this task ',
+    ],
 ];

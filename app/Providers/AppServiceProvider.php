@@ -4,7 +4,9 @@ namespace App\Providers;
 
 use App\Repositories\Course\CourseRepository;
 use App\Repositories\Course\CourseRepositoryInterface;
+use App\Repositories\Notification\NotificationRepository;
 use App\Repositories\CourseUser\CourseUserRepository;
+use App\Repositories\Notification\NotificationRepositoryInterface;
 use App\Repositories\SubjectUser\SubjectUserRepository;
 use App\Repositories\CourseUser\CourseUserRepositoryInterface;
 use App\Repositories\Subject\SubjectRepository;
@@ -43,6 +45,10 @@ class AppServiceProvider extends ServiceProvider
         $this->app->singleton(
             UserRepositoryInterface::class,
             UserRepository::class
+        );
+        $this->app->singleton(
+            NotificationRepositoryInterface::class,
+            NotificationRepository::class
         );
     }
 
