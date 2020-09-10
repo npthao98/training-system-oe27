@@ -44,6 +44,7 @@ Route::middleware('locale')->group(function () {
         Route::get('calendar/data', 'HomeController@getDate')->name('calendar.data');
         Route::get('notifications/data', 'NotificationController@getNotifications')
             ->name('notification.data');
+        Route::get('trainees-by-course/data', 'ChartController@getTraineeByCourse');
         Route::get('read-notification/{notification}', 'NotificationController@readNotification')
             ->name('notification.read');
     });
