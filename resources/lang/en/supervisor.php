@@ -184,4 +184,5 @@ return [
             'days' => 'Days (Course)',
         ],
     ],
+    'title_chart_trainees_by_course' => 'chart of trainees statistics by course',
 ];

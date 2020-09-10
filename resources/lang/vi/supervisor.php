@@ -184,4 +184,5 @@ return [
             'days' => 'Số ngày đã học (Khoá học)',
         ],
     ],
+    'title_chart_trainees_by_course' => 'biểu đồ thống kê học viên theo khoá học',
 ];

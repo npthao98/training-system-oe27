@@ -16,6 +16,7 @@
   ],
   "dependencies": {
     "bower_package": "https://github.com/npthao98/bower_package.git",
-    "pusher-js": "pusher#^7.0.0"
+    "pusher-js": "pusher#^7.0.0",
+    "chart.js": "^2.9.3"
   }
 }

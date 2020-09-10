@@ -9,6 +9,7 @@ mix.js('resources/js/create_subject.js', 'public/js/create_subject.js')
     .js('resources/js/datatable.js', 'public/js/datatable.js')
     .js('resources/js/avatar.js', 'public/js/avatar.js')
     .js('resources/js/assign_trainee.js', 'public/js/assign_trainee.js')
+    .js('resources/js/chart_trainees_by_course.js', 'public/js/chart_trainees_by_course.js')
     .js('resources/js/pusher.js', 'public/js/pusher.js');
 
 mix.styles('resources/css/supervisor_detail_course.css', 'public/css/supervisor_detail_course.css')
